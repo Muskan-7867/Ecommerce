@@ -39,11 +39,9 @@ const ProductDisplay = () => {
 
   useEffect(() => {
     if (product?.category) {
-      console.log("from categoryids", product._id)
+      console.log("from categoryidss", product._id)
       fetchRelatedProducts(product._id);
-     
-
-    }
+   }
   }, [product]);
 
   useEffect(() => {
