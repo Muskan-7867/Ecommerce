@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
 
 
 const AdminPrivateLayout: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+     navigate("dashboard")
+  },[])
   return (
     <div className="flex h-screen w-full bg-glamgo-base-red">
        <Sidebar />

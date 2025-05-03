@@ -16,6 +16,8 @@ export interface Product {
   inStock: boolean;
   images: ProductImage[];
   category: string;
+  [key: string]: unknown;
+  totalProduct: number;
 }
 
 export  interface Category {
@@ -35,4 +37,11 @@ export interface ProductFormData {
   inStock: string;
   category: string;
   images?: FileList;
+}
+
+export interface CategoryFormData {
+  name: string;
+  description: string;
+  image? : FileList;
+  products: string[];
 }

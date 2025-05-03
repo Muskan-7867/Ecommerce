@@ -2,7 +2,7 @@ import { Product } from "../../../../types/Product";
 
 const ProductDescAndFeature = ({ product }: { product: Product }) => {
   return (
-    <div className="ml-2 w-full">
+    <div className=" w-full">
     
       <p className="text-gray-700 mt-6 text-sm w-full overflow-auto">
         {product.description}

@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <div className="w-full">
       {/* Hero Image Section */}
-      <div className="w-full h-64 md:h-[28rem] bg-green-50 relative flex justify-center items-center">
+      <div className="w-full h-64 md:h-[28rem]  relative flex justify-center items-center">
         <img
           src="https://t4.ftcdn.net/jpg/05/53/37/57/360_F_553375789_afGBuBMWWCKUUGXQR2BFuVAvhfJZZQfd.jpg"
           alt="contact"

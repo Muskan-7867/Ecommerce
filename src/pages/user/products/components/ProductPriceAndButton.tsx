@@ -16,7 +16,7 @@ interface ProductPriceProps {
   setRefreshCart?: React.Dispatch<React.SetStateAction<boolean>>;
 
 }
-const ProductPrice = ({
+const ProductPriceAndButton = ({
   IsPresentInCart,
   setIsPresentInCart,
   cartCountValue = 0,
@@ -72,11 +72,11 @@ const ProductPrice = ({
   }
   
   return (
-    <div className="mt-8 w-full p-4 ">
+    <div className="mt-8 w-full ">
       <div className="flex">
-        <span className="text-3xl font-bold text-gray-900">
-          Rs{product.price.toFixed(2)}
-          {product.originalPrice &&  <span className="text-sm line-through ms-2 text-gray-500 font-normal">{product.originalPrice.toFixed(2)}</span>}
+        <span className="text-3xl font-normal text-gray-900">
+          Rs {product.price.toFixed(2)} /-
+          {product.originalPrice &&  <span className="text-sm line-through  text-gray-500 font-normal">{product.originalPrice.toFixed(2)}</span>}
 
         </span>
       </div>
@@ -113,4 +113,4 @@ const ProductPrice = ({
   );
 };
 
-export default ProductPrice;
+export default ProductPriceAndButton;

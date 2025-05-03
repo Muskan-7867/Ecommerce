@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { fetchCategories, fetchProductIds, getProductsByCategory } from "./fetchers";
+import { fetchCategories, fetchProductIds, getAllProducts, getProductsByCategory } from "./fetchers";
 
  const getCategoriesQuery = () => {
   return queryOptions({
@@ -24,8 +24,17 @@ import { fetchCategories, fetchProductIds, getProductsByCategory } from "./fetch
     enabled: productIds.length > 0,
     
   });
-}
+ }
+
+  const getAllProductsQuery = () => {
+    return queryOptions({
+      queryKey: ["allproducts"],
+      queryFn: getAllProducts,
+     
+    })
+  }
 
 
 
-export { getCategoriesQuery, getProductsQuery, getCartProductIdQuery };
+
+export { getCategoriesQuery, getProductsQuery, getCartProductIdQuery, getAllProductsQuery };

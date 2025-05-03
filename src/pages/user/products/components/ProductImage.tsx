@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Product } from "../../../../types/Product";
+import { motion } from "motion/react";
+
 
 const ProductImage = ({ product }: { product: Product }) => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -10,17 +12,22 @@ const ProductImage = ({ product }: { product: Product }) => {
   return (
     <div className="w-full md:w-1/2 p-4 md:p-6 space-y-4">
       {/* Main Image */}
-      <div className="w-full aspect-square max-h-[400px]">
+      <motion.div 
+      layoutId={product.images[0].publicId}
+      className="w-full aspect-square max-h-[400px]">
         <img
           src={mainImage}
           className="w-full h-full object-cover rounded-lg"
           alt={product?.name || "Product main image"}
         />
-      </div>
+      </motion.div>
 
       {/* Thumbnails */}
       <div className="w-full flex justify-center">
-        <div className="flex gap-2 md:gap-4 overflow-x-auto pb-2 scrollbar-hide">
+        <motion.div
+        // layoutId={product.images[0].publicId}
+        
+        className="flex gap-2 md:gap-4 overflow-x-auto pb-2 scrollbar-hide">
           {images.length > 0 ? (
             images.map((image, index) => (
               <img
@@ -40,7 +47,7 @@ const ProductImage = ({ product }: { product: Product }) => {
               No additional images available
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -6,7 +6,8 @@ import { TiShoppingCart } from "react-icons/ti";
 import { Package } from "lucide-react";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { FaArrowRightLong, FaSquarePollHorizontal } from "react-icons/fa6";
-import { FaUser, FaTimes } from "react-icons/fa"; // ✖️ Cross icon
+import { FaUser, FaTimes } from "react-icons/fa";
+import { TbCategoryPlus } from "react-icons/tb";
 
 type OptionTypes = {
   href: string;
@@ -20,9 +21,12 @@ const Sidebar: React.FC = () => {
 
   const SidebarOptions: OptionTypes[] = [
     { title: "Dashboard", href: "dashboard", Icon: <MdDashboard size={20} /> },
-    { title: "Orders", href: "order", Icon: <TiShoppingCart size={20} /> },
     { title: "Products", href: "products", Icon: <Package size={20} /> },
-    {
+
+    { title: "Category", href: "category", Icon: <TbCategoryPlus size={20} /> },
+    { title: "Orders", href: "order", Icon: <TiShoppingCart size={20} /> },
+
+   {
       title: "Customers",
       href: "customers",
       Icon: <LiaUserFriendsSolid size={22} />

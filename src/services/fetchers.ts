@@ -11,7 +11,7 @@ const fetchCategories = async () => {
     const response = await axios.get(`${BASE_URL}/api/v2/product/categories`, {
       headers: { "Content-Type": "application/json" }
     });
-    console.log("from fetcher" ,response.data)
+    console.log("from fetcher", response.data);
     return response.data.categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -20,10 +20,13 @@ const fetchCategories = async () => {
 
 const getProductsByCategory = async (name: string) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/v2/product/category/${name}`, {
-      headers: { "Content-Type": "application/json" }
-    });
-    
+    const response = await axios.get(
+      `${BASE_URL}/api/v2/product/category/${name}`,
+      {
+        headers: { "Content-Type": "application/json" }
+      }
+    );
+
     return response.data.products;
   } catch (error) {
     console.error("failed to fetch products:", error);
@@ -72,9 +75,11 @@ const getFilteredProducts = async (
   search: string | null
 ) => {
   try {
-    console.log("from fetcher" , category)
+    console.log("from fetcher", category);
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/get/${limit}/${page}/${minPrice}/${maxPrice}/${category}/${search || "-"}`,
+      `${BASE_URL}/api/v2/product/get/${limit}/${page}/${minPrice}/${maxPrice}/${category}/${
+        search || "-"
+      }`,
       {
         headers: { "Content-Type": "application/json" }
       }
@@ -90,6 +95,29 @@ const getFilteredProducts = async (
   }
 };
 
+const getAllProducts = async () => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/api/v2/product/all`);
+    return response.data.products;
+  } catch (error) {
+    console.error("Failed to fetch all products:", error);
+    throw error;
+  }
+}
+
+
+const deleteProduct = async (id: string) => {
+  try {
+    const response = await axios.delete(
+      `${BASE_URL}/api/v2/product/delete/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("failed to delete product:", error);
+    throw new Error("Failed to delete product");
+  }
+};
 
 
 
@@ -99,6 +127,6 @@ export {
   fetchProductIds,
   fetchCurrentUser,
   getFilteredProducts,
-
-
+  deleteProduct,
+  getAllProducts
 };

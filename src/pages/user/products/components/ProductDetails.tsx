@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import ProductDescAndFeature from "./ProductDescAndFeature";
 import ProductName from "./ProductName";
-import ProductPrice from "./ProductPrice";
 import { Product } from "../../../../types/Product";
+import ProductPriceAndButton from "./ProductPriceAndButton";
 
 const ProductDetails = ({ product }: { product: Product }) => {
   const [isPresentInCart, setIsPresentInCart] = useState(false);
@@ -19,7 +19,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
     <div className="w-full p-4">
       <ProductName product={product} />
       <ProductDescAndFeature product={product} />
-      <ProductPrice
+      <ProductPriceAndButton
         product={product}
         IsPresentInCart={isPresentInCart}
         setIsPresentInCart={setIsPresentInCart}

@@ -123,7 +123,7 @@ const AddProductForm = () => {
   return (
     <div className="flex flex-col items-center min-h-screen mt-6 px-4">
       <h1 className="text-3xl font-bold font-serif text-primary mb-6">
-        Add Product
+        Create Product
       </h1>
 
       <div className="w-full max-w-full bg-white rounded-lg shadow-md p-6 border border-gray-200">
