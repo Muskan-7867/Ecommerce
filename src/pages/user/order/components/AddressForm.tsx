@@ -1,15 +1,16 @@
 import axios from "axios";
 import Form from "./Form";
-import { FormData } from "../../../../types/auth";
+import { AddressFormData } from "../../../../types/auth";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { addressSchema } from "../../../../Schemas/addressSchema.ts"
+import { CreateUserAddress } from "../../../../services/fetchers.ts";
 
 type FormErrors = {
   [key in keyof FormData]?: string;
 };
-const FORM_DATA: FormData = {
+const FORM_DATA: AddressFormData = {
   street: "",
   city: "",
   state: "",
@@ -22,8 +23,7 @@ const FORM_DATA: FormData = {
 const AddressForm = () => {
   const { userId } = useParams<{ userId: string }>();
   const token = Cookies.get("authToken");
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const [formData, setFormData] = useState<FormData>(FORM_DATA);
+  const [formData, setFormData] = useState<AddressFormData>(FORM_DATA);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -32,8 +32,9 @@ const AddressForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitSuccess(false);
+  
     const result = addressSchema.safeParse(formData);
-
+  
     if (!result.success) {
       const newErrors: FormErrors = {};
       result.error.errors.forEach((err) => {
@@ -44,37 +45,23 @@ const AddressForm = () => {
       setIsSubmitting(false);
       return;
     }
-
+  
     setErrors({});
-
+  
     const Data = {
       ...formData,
-      userId
+      userId,
     };
-
+  
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/v1/user/address`,
-        Data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      console.log("Address added successfully", response.data);
+      const response = await CreateUserAddress(Data, token || "");
+      console.log("Address added successfully", response);
       setSubmitSuccess(true);
-
       setFormData(FORM_DATA);
     } catch (error) {
       console.error("Error adding address", error);
-      if (axios.isAxiosError(error) && error.response) {
-        // Handle server validation errors
-        if (error.response.data.errors) {
-          setErrors(error.response.data.errors);
-        }
+      if (axios.isAxiosError(error) && error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
       }
     } finally {
       setIsSubmitting(false);

@@ -37,7 +37,7 @@ export interface CurrentUser {
   
 };
 
-export interface FormData {
+export interface AddressFormData {
   phone: string;
   street: string;
   address?: string;

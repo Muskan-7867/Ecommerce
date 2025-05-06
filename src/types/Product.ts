@@ -17,6 +17,7 @@ export interface Product {
   images: ProductImage[];
   category: string;
   [key: string]: unknown;
+  quantity: number;
   totalProduct: number;
 }
 
@@ -34,7 +35,7 @@ export interface ProductFormData {
   features: string;
   price: number | string;
   rating: number | string;
-  inStock: string;
+  inStock: boolean;
   category: string;
   images?: FileList;
 }
@@ -44,4 +45,14 @@ export interface CategoryFormData {
   description: string;
   image? : FileList;
   products: string[];
+}
+
+export interface EditProductData {
+  name: string;
+  description: string;
+  features: string;
+  price: number | string;
+  inStock: boolean;
+  category: string;
+
 }

@@ -13,6 +13,7 @@ export type CategoryType = {
   name: string;
   description?: string;
   images: ProductImage[];
+  approved: boolean;
 };
 const CategorySection = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
