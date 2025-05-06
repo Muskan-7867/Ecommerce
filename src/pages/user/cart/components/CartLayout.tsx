@@ -5,22 +5,26 @@ import { useQuery } from "@tanstack/react-query";
 import { getCartProductIdQuery } from "../../../../services/queries";
 import cartloader from "../../../../../public/animations/cartLoader.json";
 import Lottie from "lottie-react";
+import CartSummary from "./CartSummary";
 
 const CartLayout = () => {
+  const [quantities, setQuantities] = useState<{ [id: string]: number }>({});
   const [products, setProducts] = useState<Product[]>([]);
-  const CartProdId = localStorage.getItem("productIds");
+  const CartProdId = localStorage.getItem("productIds") || "[]";
   const productIds = CartProdId ? JSON.parse(CartProdId) : [];
-  const {
-    data: cartproducts,
-    isLoading,
-    isError
-  } = useQuery(getCartProductIdQuery(productIds));
-
+  const { data: cartproducts, isLoading, isError} = useQuery(getCartProductIdQuery(productIds));
+  
   useEffect(() => {
     if (cartproducts) {
       setProducts(cartproducts);
+      const initialQuantities = cartproducts.reduce((acc, product) => {
+        acc[product._id] = 1;
+        return acc;
+      }, {} as { [id: string]: number });
+      setQuantities(initialQuantities);
     }
   }, [cartproducts]);
+  
 
   const handleDelete = (id: string) => {
     const existingRaw = localStorage.getItem("productIds");
@@ -35,9 +39,16 @@ const CartLayout = () => {
     setProducts((prev) => prev.filter((product) => product._id !== id));
   };
 
+  const handleChangeQuantity = (id: string, quantity: number) => {
+    if (quantity < 1) return;
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: quantity
+    }));
+  };
   return (
     <div className="grid grid-cols-12 gap-4 mt-18 min-h-screen">
-      <div className="lg:col-span-8  col-span-12 p-6">
+      <div className="lg:col-span-8  col-span-12 p-6 ">
         <h1 className="text-xl font-bold font-serif mb-4">Cart Products</h1>
         {isLoading && (
           <div className="w-full flex flex-col items-center justify-center ">
@@ -54,15 +65,22 @@ const CartLayout = () => {
           {products?.map((product) => (
             <div>
               <li key={product._id} className="p-4 rounded-lg shadow">
-                <CartDetails product={product} onDelete={handleDelete} />
+                <CartDetails
+                  product={product}
+                  onDelete={handleDelete}
+                  quantity={quantities[product._id] || 1}
+                  handleChangeQuantity={handleChangeQuantity}
+                />
               </li>
             </div>
           ))}
         </ul>
       </div>
 
-      <div className="bg-red-100 lg:col-span-4 col-span-12 p-6">
-        <h1 className="text-xl font-bold font-serif mb-4">Cart Summary</h1>
+      <div className=" lg:col-span-4 col-span-12 p-6">
+        {/* for summary */}
+        <CartSummary products={products} quantities={quantities} />
+
       </div>
     </div>
   );

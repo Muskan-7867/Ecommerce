@@ -1,17 +1,32 @@
-import { FaTrash } from "react-icons/fa";
 import { Product } from "../../../../types/Product";
-import { useState } from "react";
+import { LiaRupeeSignSolid } from "react-icons/lia";
+import { RxCross2 } from "react-icons/rx";
 
 interface CartDetailsProps {
   product: Product;
   onDelete: (id: string) => void;
+  quantity: number;
+  handleChangeQuantity: (id: string, quantity: number) => void;
 }
 
-const CartDetails = ({ product, onDelete }: CartDetailsProps) => {
-  const [quantity, setQuantity] = useState(1);
-
+const CartDetails = ({
+  product,
+  onDelete,
+  quantity,
+  handleChangeQuantity,
+}: CartDetailsProps) => {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4   bg-white">
+    <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white rounded-lg ">
+      {/*  Delete Button */}
+      <button
+        onClick={() => onDelete(product._id)}
+        className="absolute top-2 right-2 p-1 text-red-500 hover:text-white hover:bg-red-500 border border-gray-300 rounded-full transition"
+        title="Remove item"
+        aria-label="Remove item"
+      >
+        <RxCross2 className="text-base" />
+      </button>
+
       {/* Product Image */}
       <div className="flex justify-center items-center sm:w-[80px]">
         <img
@@ -21,34 +36,34 @@ const CartDetails = ({ product, onDelete }: CartDetailsProps) => {
         />
       </div>
 
-      {/* Info */}
+      {/* ℹ Product Info */}
       <div className="flex-1 sm:px-4 space-y-1">
         <h3 className="text-lg sm:text-xl font-semibold">{product.name}</h3>
-        <p className="text-gray-700 text-sm sm:text-base font-medium">
-          ${product.price.toFixed(2)}
-        </p>
+        <div className="text-gray-700 text-sm sm:text-base font-medium flex items-center">
+          <LiaRupeeSignSolid />
+          {product.price.toFixed(2)}
+        </div>
       </div>
 
-      {/* Quantity */}
+      {/* 🔢 Quantity */}
       <div className="flex flex-col items-start sm:items-center gap-1">
         <p className="text-sm font-medium">Qty</p>
-        <input
-          type="number"
-          min="1"
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          className="w-16 border border-gray-300 text-center rounded-md py-1 px-2 text-sm"
-        />
+        <div className="flex gap-8">
+          <button
+            onClick={() => handleChangeQuantity(product._id, quantity + 1)}
+            className="p-2 border border-gray-200 w-14 rounded-sm"
+          >
+            +
+          </button>
+          <p className="mt-2">{quantity}</p>
+          <button
+            onClick={() => handleChangeQuantity(product._id, quantity - 1)}
+            className="p-2 border border-gray-200 w-14 rounded-sm"
+          >
+            -
+          </button>
+        </div>
       </div>
-
-      {/* Delete */}
-      <button
-        onClick={() => onDelete(product._id)}
-        className="self-end sm:self-center mt-2 lg:mt-24 sm:mt-0 text-red-500 hover:text-red-700 transition"
-        title="Remove item"
-      >
-        <FaTrash className="text-lg" />
-      </button>
     </div>
   );
 };
