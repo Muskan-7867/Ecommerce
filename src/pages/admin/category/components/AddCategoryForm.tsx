@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { CategoryFormData } from "../../../../types/Product";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
-
+import { createCategory } from "../../../../services/fetchers";
 
 const AddCategoryForm = () => {
   const [formData, setFormData] = useState<CategoryFormData>({
@@ -44,29 +41,22 @@ const AddCategoryForm = () => {
   useEffect(() => {
     setDisabled(productImages.length >= 4);
   }, [productImages]);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     const token = Cookies.get("authToken");
-
     const data = new FormData();
+  
     data.append("name", formData.name);
     data.append("description", formData.description);
     productImages.forEach((image) => {
       data.append("images", image);
     });
-
+  
     try {
-      const response = await axios.post(`${BASE_URL}/api/v2/product/category`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      console.log("Category added:", response.data);
+      const response = await createCategory(data, token || "");
+      console.log("Category added:", response);
       setSubmitSuccess(true);
       setFormData({ name: "", description: "", products: [] });
       setProductImages([]);
@@ -78,7 +68,8 @@ const AddCategoryForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <div className="mt-8">
+       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       {submitSuccess && (
         <div className="bg-green-100 text-green-700 p-2 rounded">
           Category added successfully!
@@ -140,6 +131,7 @@ const AddCategoryForm = () => {
         {isSubmitting ? "Adding..." : "Add Category"}
       </button>
     </form>
+    </div>
   );
 };
 
