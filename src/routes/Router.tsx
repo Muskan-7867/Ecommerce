@@ -56,7 +56,6 @@ const Router = () => {
             />
           ))}
         </Route>
-
       </Routes>
     </>
   );

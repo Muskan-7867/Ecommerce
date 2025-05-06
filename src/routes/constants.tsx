@@ -7,6 +7,7 @@ import Order from "../pages/admin/order/Order";
 import Customers from "../pages/admin/customers/customers";
 import AddProductForm from "../pages/admin/products/components/AddProductForm";
 import Categories from "../pages/admin/category/Categories";
+import EditProduct from "../pages/admin/products/components/EditProduct";
 
 interface RootDocument {
   href: string;
@@ -53,6 +54,13 @@ const Admin_Private_routes: RootDocument[] = [
     href: "productform",
     page: AddProductForm
   },
+
+  {
+    href: "editproduct",
+    page: EditProduct
+  }
+
+  
  
 ];
 
