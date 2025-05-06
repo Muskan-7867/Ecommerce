@@ -4,6 +4,7 @@ import { Product } from "../../../../types/Product";
 import { useNavigate } from "react-router-dom";
 import useCurrentUser from "../../../../hooks/useCurrentUser";
 import { CurrentUser } from "../../../../types/auth";
+import { LiaRupeeSignSolid } from "react-icons/lia";
 
 interface ProductPriceProps {
   product: Product;
@@ -14,7 +15,6 @@ interface ProductPriceProps {
   setCurrentId?: React.Dispatch<React.SetStateAction<string>>;
   refreshCart?: boolean;
   setRefreshCart?: React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 const ProductPriceAndButton = ({
   IsPresentInCart,
@@ -24,14 +24,13 @@ const ProductPriceAndButton = ({
   setCurrentId,
   setRefreshCart,
   refreshCart = false,
-  product,
- 
+  product
 }: ProductPriceProps) => {
   const { RemoveProductFromCart, addProductToCart } = useCart();
-  const navigate= useNavigate();
-  const { currentUser } = useCurrentUser() as { currentUser: CurrentUser};
+  const navigate = useNavigate();
+  const { currentUser } = useCurrentUser() as { currentUser: CurrentUser };
   const userId = currentUser?._id;
-   
+
   useEffect(() => {
     const data = localStorage.getItem("productIds");
     const arrayOfProdId = JSON.parse(data!);
@@ -39,7 +38,9 @@ const ProductPriceAndButton = ({
       for (let i = 0; i < arrayOfProdId.length; i++) {
         if (arrayOfProdId[i] == product._id) {
           setIsPresentInCart(true);
-        }}}
+        }
+      }
+    }
   }, [
     IsPresentInCart,
     cartCountValue,
@@ -66,18 +67,24 @@ const ProductPriceAndButton = ({
       setRefreshCart(!refreshCart);
     }
   };
-  
+
   const handleBuy = () => {
-    navigate(`/addressform/${userId}`)
-  }
-  
+    navigate(`/addressform/${userId}`);
+  };
+
   return (
     <div className="mt-8 w-full ">
       <div className="flex">
         <span className="text-3xl font-normal text-gray-900">
-          Rs {product.price.toFixed(2)} /-
-          {product.originalPrice &&  <span className="text-sm line-through  text-gray-500 font-normal">{product.originalPrice.toFixed(2)}</span>}
-
+          <div className="flex items-center">
+            <LiaRupeeSignSolid />
+            <h1 className="text-sm">{product.price.toFixed(2)} /-</h1>
+          </div>
+          {product.originalPrice && (
+            <span className="text-sm line-through  text-gray-500 font-normal">
+              {product.originalPrice.toFixed(2)}
+            </span>
+          )}
         </span>
       </div>
 
@@ -88,7 +95,10 @@ const ProductPriceAndButton = ({
         >
           {IsPresentInCart ? "Remove From Cart" : "Add To Cart"}
         </button>
-        <button onClick={handleBuy} className=" bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-8 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors">
+        <button
+          onClick={handleBuy}
+          className=" bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-8 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors"
+        >
           Buy Now
         </button>
       </div>

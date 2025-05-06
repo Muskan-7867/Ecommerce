@@ -10,15 +10,11 @@ import { getFilteredProducts } from "../../../../services/fetchers";
 const Products = () => {
   const [products, setProducts] = useState<Product[] | []>([]);
   const [search] = useQueryState("search");
-
-  const [category] = useQueryState("category", {
-    defaultValue: "all"
-  });
+  const [category] = useQueryState("category", { defaultValue: "all"});
   const [page] = useQueryState("page", parseAsInteger.withDefault(1));
   const [limit] = useQueryState("limit", parseAsInteger.withDefault(9));
   const [minPrice] = useQueryState("minPrice",parseAsInteger.withDefault(0));
-  const [maxPrice] = useQueryState("maxPrice",parseAsInteger.withDefault(100000)
-  );
+  const [maxPrice] = useQueryState("maxPrice",parseAsInteger.withDefault(100000));
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [products]);

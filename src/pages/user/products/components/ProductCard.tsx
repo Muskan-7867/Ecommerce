@@ -3,6 +3,7 @@ import useCart from "../../../../hooks/useCart";
 import { useEffect, useState } from "react";
 import useCartStore from "../../../../store/Cart/Cart.store";
 import { Product } from "../../../../types/Product";
+import { LiaRupeeSignSolid } from "react-icons/lia";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const [isPresentInCart, setIsPresentInCart] = useState<boolean>(false);
@@ -11,7 +12,6 @@ const ProductCard = ({ product }: { product: Product }) => {
   const { addProductToCart, RemoveProductFromCart } = useCart();
   const navigate = useNavigate();
   const { cartCountValue } = useCartStore();
-
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
@@ -50,7 +50,12 @@ const ProductCard = ({ product }: { product: Product }) => {
         </p>
       </div>
       <div className="flex justify-between products-center mt-2">
-        <p className="text-amber-600 font-bold text-sm">${product.price}</p>
+        <p className="text-amber-600 font-bold text-sm">
+          <div className="flex items-center">
+            <LiaRupeeSignSolid className="font-semibold text-xl" />
+            <h1 className="text-sm"> {product.price}</h1>
+          </div>
+        </p>
         <button
           onClick={(e) => {
             e.stopPropagation();
