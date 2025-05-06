@@ -19,7 +19,7 @@ const SingleProduct = () => {
       <div className="min-h-screen w-full py-12 px-4 sm:px-6 lg:px-8 flex justify-center items-center">
         <div
           onClick={(e) => e.stopPropagation()}
-          className="max-w-6xl mx-auto bg-white rounded-xl  overflow-hidden relative"
+          className="max-w-6xl mx-auto bg-white min-h-auto rounded-xl  overflow-hidden relative"
         >
           <div className="md:flex">
             {/* Left side - product images */}
