@@ -5,6 +5,7 @@ import { CiMenuKebab } from "react-icons/ci";
 import { useSingleProductStore } from "../../../store/product/Table.store";
 
 interface Column<T> {
+
   label: string | React.ReactNode;
   key: keyof T | "checkbox" | "action";
   bg?: string;
@@ -38,7 +39,7 @@ const Table = <T extends { [key: string]: unknown }>({
     console.log("from table", row);
     // Toggle the dialog
     if (openDialog === rowIndex) {
-      setOpenDialog(null);
+      setOpenDialog(-1);
       return;
     }
 
@@ -131,7 +132,7 @@ const Table = <T extends { [key: string]: unknown }>({
                       : "top-full mt-2"
                   }`}
                 >
-                  <DialogBox />
+                  <DialogBox setOpenDialog={setOpenDialog} />
                 </div>
               )}
             </tr>
