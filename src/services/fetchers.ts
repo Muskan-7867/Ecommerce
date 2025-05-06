@@ -1,16 +1,34 @@
 import axios from "axios";
-import { Product } from "../types/Product";
+import { EditProductData, Product } from "../types/Product";
 import Cookies from "js-cookie";
-import { CurrentUser } from "../types/auth";
+import { AddressFormData, CurrentUser } from "../types/auth";
 const token = Cookies.get("authToken");
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 //for user
-const fetchCategories = async () => {
+const fetchUserCategories = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/v2/product/categories`, {
-      headers: { "Content-Type": "application/json" }
-    });
+    const response = await axios.get(
+      `${BASE_URL}/api/v2/product/usercategories`,
+      {
+        headers: { "Content-Type": "application/json" }
+      }
+    );
+    console.log("from fetcher", response.data);
+    return response.data.categories;
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+  }
+};
+
+const fetchAdminCategories = async () => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/v2/product/admincategories`,
+      {
+        headers: { "Content-Type": "application/json" }
+      }
+    );
     console.log("from fetcher", response.data);
     return response.data.categories;
   } catch (error) {
@@ -21,7 +39,7 @@ const fetchCategories = async () => {
 const getProductsByCategory = async (name: string) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/category/${name}`,
+      `${BASE_URL}/api/v2/product/category/name/${name}`,
       {
         headers: { "Content-Type": "application/json" }
       }
@@ -95,19 +113,18 @@ const getFilteredProducts = async (
   }
 };
 
+//for admin
 const getAllProducts = async () => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/api/v2/product/all`);
+    const response = await axios.post(`${BASE_URL}/api/v2/product/all`);
     return response.data.products;
   } catch (error) {
     console.error("Failed to fetch all products:", error);
     throw error;
   }
-}
+};
 
-
-const deleteProduct = async (id: string) => {
+const deleteProduct = async (id: string | unknown) => {
   try {
     const response = await axios.delete(
       `${BASE_URL}/api/v2/product/delete/${id}`
@@ -119,14 +136,76 @@ const deleteProduct = async (id: string) => {
   }
 };
 
+const updateProduct = async (id: string, data: EditProductData) => {
+  const response = await axios.put(
+    `${BASE_URL}/api/v2/product/update/${id}`,
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+  return response.data;
+};
 
+const createProduct = async (formData: FormData) => {
+  const response = await axios.post(
+    `${BASE_URL}/api/v2/product/create`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }
+  );
+  return response.data;
+};
+
+const createCategory = async (data: FormData, token: string) => {
+  const response = await axios.post(
+    `${BASE_URL}/api/v2/product/category`,
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return response.data;
+};
+
+const CreateUserAddress = async (data: AddressFormData, token: string) => {
+  const response = await axios.post(`${BASE_URL}/api/v1/user/address`, data, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+};
+
+const fetchCategory = async (categoryId: string) => {
+  console.log( "from fetcherss" , categoryId);
+  const response = await axios.get(
+    `${BASE_URL}/api/v2/product/category/${categoryId}`
+  );
+  return response.data;
+};
 
 export {
-  fetchCategories,
+  fetchUserCategories,
   getProductsByCategory,
   fetchProductIds,
   fetchCurrentUser,
   getFilteredProducts,
   deleteProduct,
-  getAllProducts
+  getAllProducts,
+  updateProduct,
+  createProduct,
+  createCategory,
+  CreateUserAddress,
+  fetchAdminCategories,
+  fetchCategory
 };

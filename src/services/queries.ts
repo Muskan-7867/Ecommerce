@@ -1,10 +1,17 @@
 import { queryOptions } from "@tanstack/react-query";
-import { fetchCategories, fetchProductIds, getAllProducts, getProductsByCategory } from "./fetchers";
+import { deleteProduct, fetchAdminCategories,fetchProductIds, fetchUserCategories, getAllProducts, getFilteredProducts, getProductsByCategory } from "./fetchers";
 
  const getCategoriesQuery = () => {
   return queryOptions({
     queryKey: ["categories"],
-    queryFn: fetchCategories
+    queryFn: fetchUserCategories
+  });
+};
+
+const getAdminCategoriesQuery = () => {
+  return queryOptions({
+    queryKey: ["admincategories"],
+    queryFn: fetchAdminCategories
   });
 };
 
@@ -34,7 +41,23 @@ import { fetchCategories, fetchProductIds, getAllProducts, getProductsByCategory
     })
   }
 
+  const getFilteredProdQuery = ( page: number, limit: number, minPrice: number, maxPrice: number, category: string, search: string | null) => {
+    return queryOptions({
+      queryKey: ["filteredproducts", page, limit, minPrice, maxPrice, category,search],
+      queryFn: () =>  getFilteredProducts(page, limit, minPrice, maxPrice, category,search),
+  
+    })
+  }
+  
+   const deleteProductQuery = (id: string | unknown) => {
+    return queryOptions({
+      queryKey: ["deleteproduct", id],
+      queryFn: () =>  deleteProduct(id),
+      enabled: id !== undefined,
+    
+    })
+  }
 
 
 
-export { getCategoriesQuery, getProductsQuery, getCartProductIdQuery, getAllProductsQuery };
+export { getCategoriesQuery, getProductsQuery, getCartProductIdQuery, getAllProductsQuery, deleteProductQuery, getFilteredProdQuery, getAdminCategoriesQuery };
