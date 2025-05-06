@@ -35,8 +35,8 @@ export interface ProductFormData {
   features: string;
   price: number | string;
   rating: number | string;
-  inStock: boolean;
-  category: string;
+  inStock: string | number | readonly string[] | undefined;
+category: string;
   images?: FileList;
 }
 

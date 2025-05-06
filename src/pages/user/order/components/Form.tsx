@@ -1,11 +1,11 @@
 import React from "react";
-import { FormData } from "../../../../types/auth";
+import { AddressFormData } from "../../../../types/auth";
 
 interface FormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  formData: FormData;
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  errors: { [key in keyof FormData]?: string };
+  formData: AddressFormData;
+  setFormData: React.Dispatch<React.SetStateAction<AddressFormData>>;
+  errors: { [key in keyof AddressFormData]?: string };
   isSubmitting: boolean;
 }
 
