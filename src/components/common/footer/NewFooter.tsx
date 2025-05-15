@@ -1,3 +1,4 @@
+import { useQueryState } from "nuqs";
 import {
   foundation,
   JuicerJag,
@@ -6,21 +7,35 @@ import {
   toy
 } from "../../../constants/imagePath";
 import Footer from "./Footer";
-
 import { useNavigate } from "react-router-dom";
-import { useCategoryStore } from "../../../store/product/Product.store";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoriesQuery } from "../../../services/queries";
+import { CategoryType } from "../../../pages/user/Home/components/CategorySection";
+import { useEffect } from "react";
 
 const NewFooter = () => {
   const navigate = useNavigate();
-  const setSelectedCategory = useCategoryStore(
-    (state) => state.setSelectedCategory
-  );
+  const [, setCategory] = useQueryState("category");
+
+  const { data: categories } = useQuery(getCategoriesQuery());
 
   const handleCategoryClick = (categoryName: string) => {
-    setSelectedCategory(categoryName);
-    navigate("/products");
-  };
+    const selectedCategory = categories?.find(
+      (cat: CategoryType) =>
+        cat.name.toLowerCase() === categoryName.toLowerCase()
+    );
 
+    if (selectedCategory) {
+      setCategory(selectedCategory._id); 
+      navigate("/products");
+    } else {
+      console.warn("Category not found:", categoryName);
+    }
+  };
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="h-[30rem] flex items-end justify-center bg-gradient-to-b from-transparent to-red-100 ">
@@ -49,7 +64,7 @@ const NewFooter = () => {
         />
 
         <img
-          onClick={() => handleCategoryClick("sports")}
+          onClick={() => handleCategoryClick("fashion")}
           src={shoe}
           className="w-[3rem] md:w-[9rem] lg:block lg:w-[15rem] aspect-auto cursor-pointer"
         />

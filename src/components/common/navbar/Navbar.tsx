@@ -19,24 +19,28 @@ const Navbar = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { cartCountValue } = useCartStore();
-  const { currentUser , setCurrentUser} = useCurrentUser() as {
+  const { currentUser, setCurrentUser } = useCurrentUser() as {
     currentUser: CurrentUser | null;
     setCurrentUser: (user: CurrentUser | null) => void;
-    
   };
-  
+
+  // const { email, password } = useUserStore();
+  // console.log("from navbar", email, password);
+
   useEffect(() => {
     const data = localStorage.getItem("productIds");
     const array = JSON.parse(data || "[]");
     setCartCount(array.length);
   }, [cartCountValue]);
-  const getFirstLetter = (email: string) => email?.charAt(0).toUpperCase() || 'm';
+
+  const getFirstLetter = (email: string) =>
+    email?.charAt(0).toUpperCase() || "m";
 
   const handleLLogOut = () => {
     Cookies.remove("authToken");
     setCurrentUser(null);
     setIsDropdownVisible(false);
-
+    navigate("/login")
   };
 
   return (
