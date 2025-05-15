@@ -1,23 +1,39 @@
 import { useEffect, useState } from "react";
 import { fetchCurrentUser } from "../services/fetchers";
 import { CurrentUser } from "../types/auth";
+import useCurrentUserStore from "../store/User/user.store";
 
 const useCurrentUser = () => {
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null | unknown>(null);
+  const {  setCurrentUserForStore , setIsLoggined, fetch} =
+    useCurrentUserStore();
+  // console.log("from hook---> ", currentUserFromStore);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null | unknown>(
+    null
+  );
+
   const fetchUser = async () => {
     try {
       const user = await fetchCurrentUser();
-      setCurrentUser(user);
-      console.log("from hook", user);
+      if(user){
+        setIsLoggined(true);
+        setCurrentUser(user);
+      }
+      // console.log("from hook", user);
     } catch {
       console.log("something went wrong");
-      setCurrentUser(null)
+      setCurrentUser(null);
     }
   };
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [fetch]);
+
+  useEffect(() => {
+    setCurrentUserForStore(currentUser);
+    // console.log("from hook", currentUser);
+  }, [currentUser]);
+
   return { fetchUser, currentUser, setCurrentUser };
 };
 
