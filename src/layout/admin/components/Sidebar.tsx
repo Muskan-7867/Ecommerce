@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { Bag } from "../../../constants/imagePath";
 import { ReactElement, useState } from "react";
-import { MdDashboard, MdOutlinePercent } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
 import { Package } from "lucide-react";
 import { LiaUserFriendsSolid } from "react-icons/lia";
@@ -26,7 +25,7 @@ const Sidebar: React.FC = () => {
     { title: "Category", href: "category", Icon: <TbCategoryPlus size={20} /> },
     { title: "Orders", href: "order", Icon: <TiShoppingCart size={20} /> },
 
-   {
+    {
       title: "Customers",
       href: "customers",
       Icon: <LiaUserFriendsSolid size={22} />
@@ -36,11 +35,6 @@ const Sidebar: React.FC = () => {
       title: "Reports",
       href: "/reports",
       Icon: <FaSquarePollHorizontal size={20} />
-    },
-    {
-      title: "Discounts",
-      href: "/discounts",
-      Icon: <MdOutlinePercent size={20} />
     }
   ];
 
@@ -78,7 +72,7 @@ const Sidebar: React.FC = () => {
               <Link
                 key={option.title}
                 to={option.href}
-                onClick={() => setIsOpen(false)} 
+                onClick={() => setIsOpen(false)}
                 className={`flex items-center px-4 py-3 rounded-lg text-xs font-medium transition-colors ${
                   isActive
                     ? "bg-primary/80 text-white font-bold"
@@ -90,39 +84,6 @@ const Sidebar: React.FC = () => {
               </Link>
             );
           })}
-        </div>
-
-        <hr className="text-gray-300" />
-
-        {/* Settings & Support Section */}
-        <div className="flex flex-col gap-2 mt-6 px-2">
-          <Link
-            to="/settings"
-            className={`flex items-center px-4 py-3 rounded-lg text-xs font-medium transition-colors ${
-              location.pathname === "/settings"
-                ? "bg-blue-100 text-blue-500 font-bold"
-                : "hover:bg-gray-100 hover:text-blue-500 text-[#333333]"
-            }`}
-          >
-            <div className="w-6 h-6 mr-4 flex items-center justify-center">
-              <img src={Bag} />
-            </div>
-            <span>Settings</span>
-          </Link>
-
-          <Link
-            to="/supportandfeedback"
-            className={`flex items-center px-4 py-3 rounded-lg text-xs font-medium transition-colors ${
-              location.pathname === "/supportandfeedback"
-                ? "bg-blue-100 text-blue-500 font-bold"
-                : "hover:bg-gray-100 hover:text-blue-500 text-[#333333]"
-            }`}
-          >
-            <div className="w-6 h-6 mr-4 flex items-center justify-center">
-              <img src={Bag} />
-            </div>
-            <span>Support & Feedback</span>
-          </Link>
         </div>
       </div>
     </>
