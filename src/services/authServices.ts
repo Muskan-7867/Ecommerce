@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import {
   LoginData,
   LoginResponse,
@@ -7,7 +8,7 @@ import {
 } from "../types/auth";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const token = localStorage.getItem("token");
+const token = Cookies.get("authToken")
 
 // Login
 const loginUser = async (userData: LoginData): Promise<LoginResponse> => {

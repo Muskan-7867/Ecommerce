@@ -136,6 +136,20 @@ const deleteProduct = async (id: string | unknown) => {
   }
 };
 
+const deleteOrder = async (orderid: string | unknown) => {
+  console.log("from deleteorder", orderid);
+  try {
+    const response = await axios.delete(
+      `${BASE_URL}/api/v2/product/order/delete/${orderid}`
+    );
+    console.log();
+    return response.data;
+  } catch (error) {
+    console.error("failed to delete order:", error);
+    throw new Error("Failed to delete order");
+  }
+};
+
 const updateProduct = async (id: string, data: EditProductData) => {
   const response = await axios.put(
     `${BASE_URL}/api/v2/product/update/${id}`,
@@ -177,7 +191,7 @@ const createCategory = async (data: FormData, token: string) => {
 };
 
 const CreateUserAddress = async (data: AddressFormData, token: string) => {
-  const response = await axios.post(`${BASE_URL}/api/v1/user/address`, data, {
+  const response = await axios.put(`${BASE_URL}/api/v1/user/address`, data, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
@@ -187,11 +201,95 @@ const CreateUserAddress = async (data: AddressFormData, token: string) => {
 };
 
 const fetchCategory = async (categoryId: string) => {
-  console.log( "from fetcherss" , categoryId);
   const response = await axios.get(
     `${BASE_URL}/api/v2/product/category/${categoryId}`
   );
   return response.data;
+};
+
+const fetchUserAddress = async (addressId: string | undefined) => {
+  if (!addressId) {
+    throw new Error("Address ID is required");
+  }
+
+  const token = Cookies.get("authToken");
+  if (!token) {
+    throw new Error("No token provided");
+  }
+
+  const response = await axios.get(
+    `${BASE_URL}/api/v1/user/useraddress/${addressId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return response.data;
+};
+
+const getOrders = async () => {
+  console.log("from fetcher in get order");
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/v2/product/orderproducts`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (!response.data.order) return [];
+
+    return response.data.order;
+  } catch {
+    return [];
+  }
+};
+const fetchProductById = async (id: string | undefined) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/v2/product/single/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return response.data.product;
+  } catch {
+    console.log("error in fetching product by id");
+  }
+};
+
+const getSingleProductById = async (singleproductid: string | undefined) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/v2/product/single/${singleproductid}`,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    console.log("from getsingle", response.data.product);
+    return response.data.product;
+  } catch {
+    console.log("error in fetching product by id");
+  }
+};
+
+const getUsers = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/v1/user/allusers`);
+    console.log("from fetch users", response.data.users);
+    return response.data.users;
+  } catch {
+    console.log("error in fetching users");
+  }
 };
 
 export {
@@ -207,5 +305,11 @@ export {
   createCategory,
   CreateUserAddress,
   fetchAdminCategories,
-  fetchCategory
+  fetchCategory,
+  fetchUserAddress,
+  getOrders,
+  fetchProductById,
+  getSingleProductById,
+  deleteOrder,
+  getUsers
 };

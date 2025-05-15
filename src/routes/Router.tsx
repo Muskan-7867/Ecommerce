@@ -15,6 +15,9 @@ import AdminPublicLayout from "../layout/admin/AdminPublicLayout";
 import { Admin_auth_routes, Admin_Private_routes } from "./constants";
 import React from "react";
 import AdminPrivateLayout from "../layout/admin/AdminPrivateLayout";
+import CheckOut from "../pages/user/order/components/CheckOut";
+import OrderSuccessPage from "../pages/user/order/components/OrderSuccessPopUp";
+import UserOrderTable from "../pages/user/profile/components/UserOrderTable";
 
 const Router = () => {
   return (
@@ -29,10 +32,13 @@ const Router = () => {
           <Route path="/can" element={<Can />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/products/:id" element={<ProductDisplay />} />
-          <Route path="/addressform/:userId" element={<AddressForm />} />
+          <Route path="/addressform" element={<AddressForm />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/checkout/:id" element={<CheckOut  />} />
+          <Route path="/ordersuccesspage" element={<OrderSuccessPage  />} />
           <Route path="/edit/:userId" element={<EditProfile />} />
+           <Route path="/userordertable" element={<UserOrderTable />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
 

@@ -1,3 +1,7 @@
+import { OrderData } from "./Product";
+
+
+
 export interface LoginData {
   email: string;
   password: string;
@@ -24,20 +28,10 @@ export interface RegisterResponse {
     id: string;
     username: string;
     email: string;
-
   };
 }
-export interface CurrentUser {
-  _id: number;
-  username?: string;
-  email: string;
-  role: string;
-  address?: string;
-  contact?:string;
-  
-};
-
 export interface AddressFormData {
+  _id?: string; // optional if needed
   phone: string;
   street: string;
   address?: string;
@@ -46,4 +40,17 @@ export interface AddressFormData {
   state: string;
   country: string;
   pincode: string;
+}
+
+export interface CurrentUser {
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
+  contact: string;
+  role: "admin" | "user";
+  address?: AddressFormData; // ✅ FIXED: Now it's an object
+  order?: OrderData[];  
+  createdAt?: string;
+  updatedAt?: string;
 }

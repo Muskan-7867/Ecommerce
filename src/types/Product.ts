@@ -1,3 +1,6 @@
+import { AddressFormData } from "./auth";
+
+
 export type ProductImage = {
   url: string;
   publicId: string;
@@ -56,3 +59,20 @@ export interface EditProductData {
   category: string;
 
 }
+
+export interface OrderItem {
+  product: string | Product; 
+  price: number;
+  quantity: number;
+}
+
+export interface OrderData {
+  quantity: number;
+  totalQuantity: number;
+  totalPrice: number;
+  address: AddressFormData | undefined;
+  orderItems: OrderItem[];
+}
+
+
+
