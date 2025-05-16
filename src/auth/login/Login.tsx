@@ -38,7 +38,6 @@ const Login = () => {
 
     } catch (error) {
       console.error("Login error:", error);
-      alert(error instanceof Error ? error.message : "Login failed");
     }
   };
 
