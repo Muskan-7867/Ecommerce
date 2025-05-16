@@ -5,7 +5,7 @@ const ProductDescAndFeature = ({ product }: { product: Product }) => {
     <div className=" w-full">
     
       <p className="text-gray-700 mt-6 text-sm w-full overflow-auto">
-        {product.description}
+        {product?.description}
       </p>
 
       <div className="mt-6">
@@ -14,7 +14,7 @@ const ProductDescAndFeature = ({ product }: { product: Product }) => {
         <ul className="mt-2">
           <li className="flex items-center">
             <ul className="list-disc ml-5 text-gray-600">
-              {product.features
+              {product?.features
                 ?.split("/n")
                 .map((feature: string, index: number) => (
                   <li key={index}>{feature.trim()}</li>

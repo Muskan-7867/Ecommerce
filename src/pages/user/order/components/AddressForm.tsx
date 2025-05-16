@@ -1,10 +1,9 @@
-import axios from "axios";
 import Form from "./Form";
 import { AddressFormData } from "../../../../types/auth";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { addressSchema } from "../../../../Schemas/addressSchema.ts"
+import { addressSchema } from "../../../../Schemas/addressSchema.ts";
 import { CreateUserAddress } from "../../../../services/fetchers.ts";
 
 type FormErrors = {
@@ -23,46 +22,54 @@ const FORM_DATA: AddressFormData = {
 const AddressForm = () => {
   const { userId } = useParams<{ userId: string }>();
   const token = Cookies.get("authToken");
-  const [formData, setFormData] = useState<AddressFormData>(FORM_DATA);
-  const [errors, setErrors] = useState<FormErrors>({});
+ 
+  const { state } = useLocation();
+  const existingAddress = state?.address as
+    | Partial<AddressFormData>
+    | undefined;
+  const [formData, setFormData] = useState<AddressFormData>({
+    ...FORM_DATA,
+    ...(existingAddress || {})
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [gotoAddressForm, setGoToAddressForm] = useState(true);
+  console.log(gotoAddressForm);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitSuccess(false);
-  
+
     const result = addressSchema.safeParse(formData);
-  
     if (!result.success) {
       const newErrors: FormErrors = {};
       result.error.errors.forEach((err) => {
         const path = err.path[0] as keyof FormData;
         newErrors[path] = err.message;
       });
-      setErrors(newErrors);
+    
       setIsSubmitting(false);
       return;
     }
-  
-    setErrors({});
-  
+
+
     const Data = {
       ...formData,
-      userId,
+      userId
     };
-  
+
     try {
       const response = await CreateUserAddress(Data, token || "");
       console.log("Address added successfully", response);
       setSubmitSuccess(true);
       setFormData(FORM_DATA);
+      navigate(-1);
+      setGoToAddressForm(false);
     } catch (error) {
       console.error("Error adding address", error);
-      if (axios.isAxiosError(error) && error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
-      }
+     
     } finally {
       setIsSubmitting(false);
     }
@@ -72,19 +79,25 @@ const AddressForm = () => {
     <div className="flex justify-center items-center min-h-screen px-4 mt-10">
       <div className="w-full max-w-2xl bg-white p-8 rounded-md">
         <h1 className="text-2xl font-semibold text-black mb-6 text-center font-serif">
-          Add a Shipping Address
+          {existingAddress
+            ? "Update Shipping Address"
+            : "Add a Shipping Address"}
         </h1>
+
         {submitSuccess && (
           <div className="mb-4 p-4 bg-green-100 text-green-700 rounded">
-            Address added successfully!
+            {existingAddress
+              ? "Address updated successfully"
+              : "Address added successfully"}
           </div>
         )}
         <Form
           handleSubmit={handleSubmit}
           formData={formData}
           setFormData={setFormData}
-          errors={errors}
+         
           isSubmitting={isSubmitting}
+          isEditing={!existingAddress}
         />
       </div>
     </div>

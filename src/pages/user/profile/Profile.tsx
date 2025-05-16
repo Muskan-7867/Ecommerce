@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import { CurrentUser } from "../../../types/auth";
 
+import UserAddress from "./components/UserAddress";
+
 const Profile = () => {
   const navigate = useNavigate();
   const { currentUser } = useCurrentUser() as {
@@ -9,46 +11,49 @@ const Profile = () => {
   };
 
   const handleEdit = () => {
-   navigate(`/edit/${currentUser?._id}`)
+    navigate(`/edit/${currentUser?._id}`);
   };
+
+  if (!currentUser) return null;
+
   return (
-    <>
-      {currentUser && (
-        <div className="w-full h-[50rem] bg-white shadow-xl rounded-3xl p-6 flex flex-col items-center justify-start gap-4 transition-all mt-28">
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-sm flex justify-center mt-8">
-            <img src="../../../../public/assets/user.png" />
+    <div className="w-full max-w-6xl mx-auto mt-28 p-6 bg-white rounded-3xl space-y-10">
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* User Info */}
+        <div className="p-6 rounded-xl flex flex-col items-center text-center">
+          <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-primary mb-4">
+            <img
+              src="/assets/user.png"
+              alt="User"
+              className="w-full h-full object-cover"
+            />
           </div>
+          <h1 className="text-xl font-semibold text-primary">
+            {currentUser.username}
+          </h1>
+          <p className="text-gray-600">{currentUser.email}</p>
+          <p className="text-gray-700">{currentUser.contact}</p>
 
-          {/* User Info */}
-          <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold text-primary">
-              {currentUser.username}
-            </h1>
-            <p className="text-gray-600">{currentUser.email}</p>
-            <p className="text-black">{currentUser.contact}</p>
-          </div>
-
-          <button
-            onClick={handleEdit}
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary transition "
-          >
-            Edit Profile
-          </button>
-
-          {/* Address */}
-          <div className="w-full flex flex-col items-start justify-center gap-4 mt-8">
-            <h1 className="text-2xl font-bold text-primary">Address</h1>
-            <p className="text-gray-600">{currentUser?.address}</p>
-          </div>
-
-          {/* Order History*/}
-          <div className="w-full flex flex-col items-start justify-center gap-4 mt-8">
-            <h1 className="text-2xl font-bold text-primary">Order History</h1>
-            <p className="text-gray-600">No Orders Yet</p>
+          <div className="mt-4 flex flex-col gap-2 w-full">
+            <button
+              onClick={handleEdit}
+              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition"
+            >
+              Edit Profile
+            </button>
+            <button
+              onClick={() => navigate("/userordertable")}
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
+            >
+              View My Orders
+            </button>
           </div>
         </div>
-      )}
-    </>
+
+        {/* Address Card */}
+        <UserAddress currentUser={currentUser} />
+      </div>
+    </div>
   );
 };
 

@@ -7,6 +7,8 @@ import PaddingWrapper from "../../../components/wrappers/PaddingWrapper";
 import Pagination from "./components/Pagination";
 
 const ProductPageLayout: React.FC = () => {
+
+
   return (
     <ScreenHandler>
       <PaddingWrapper>
@@ -20,7 +22,7 @@ const ProductPageLayout: React.FC = () => {
               <Products />
             </div>
           </div>
-          <Pagination  totalProducts={30} productPerPage={5} />
+          <Pagination totalProducts={30} productPerPage={5} />
         </div>
       </PaddingWrapper>
     </ScreenHandler>

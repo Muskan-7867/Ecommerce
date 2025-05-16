@@ -15,14 +15,14 @@ export type CategoryType = {
   images: ProductImage[];
   approved: boolean;
 };
+
 const CategorySection = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftBtn, setShowLeftBtn] = useState(false);
   const [showRightBtn, setShowRightBtn] = useState(true);
   const [category, setCategory] = useQueryState("category");
   const navigate = useNavigate();
-  console.log(category)
-
+  console.log(category);
   const {
     data: categories,
     isPending,
@@ -46,8 +46,6 @@ const CategorySection = () => {
       return () => container.removeEventListener("scroll", checkScrollPosition);
     }
   }, []);
-
-  
 
   const scrollLeft = () =>
     scrollContainerRef.current?.scrollBy({ left: -300, behavior: "smooth" });

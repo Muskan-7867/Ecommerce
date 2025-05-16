@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Product } from "../../../../types/Product";
@@ -7,74 +7,57 @@ import ProductImage from "./ProductImage";
 import ProductCard from "./ProductCard";
 import Lottie from "lottie-react";
 import ProductLoader from "../../../../../public/animations/loader.json";
+import { useSingleProduct } from "../../../../store/product/Product.store";
 
 const ProductDisplay = () => {
   const Base_url = import.meta.env.VITE_BASE_URL;
   const { id } = useParams<{ id: string }>();
-
-  const [product, setProduct] = useState<Product | null>(null);
+  const { singleProduct: product, setSingleProduct } = useSingleProduct();
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const Id = product?.category;
-  console.log("from categoryid", Id);
 
-  const fetchRelatedProducts = async (currentProductId: string) => {
-    if (!product?.category) return;
-
+  const fetchRelatedProducts = async (currentProductId: string, categoryId: string) => {
     try {
       const res = await axios.get(
-        `${Base_url}/api/v2/product/categoryid/${Id}`
+        `${Base_url}/api/v2/product/categoryid/${categoryId}`
       );
 
-      const filteredProducts = res.data.products.filter(
-        (p: Product) => p._id !== currentProductId
-      );
-
-      setRelatedProducts(filteredProducts);
+      const filtered = res.data.products.filter((p: Product) => p._id !== currentProductId);
+      setRelatedProducts(filtered);
     } catch (err) {
       console.error("Failed to fetch related products:", err);
     }
   };
 
   useEffect(() => {
-    if (product?.category) {
-      console.log("from categoryidss", product._id)
-      fetchRelatedProducts(product._id);
-   }
-  }, [product]);
-
-  useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${Base_url}/api/v2/product/single/${id}`,
-          {
-            headers: { "Content-Type": "application/json" }
-          }
-        );
+        const res = await axios.get(`${Base_url}/api/v2/product/single/${id}`);
+        const data = res.data.product;
 
-        const productData = response?.data?.product;
-
-        if (!productData) {
+        if (!data) {
           setError("Product not found");
           return;
         }
-        console.log("from prod display", productData);
-        setProduct(productData);
-      } catch (error) {
-        console.error("Error fetching product:", error);
+       setSingleProduct(data);
+      } catch (err) {
+        console.error("Error fetching product:", err);
         setError("Failed to load product details");
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) {
-      fetchProduct();
+    if (id) fetchProduct();
+  }, [Base_url, id, setSingleProduct]);
+
+  useEffect(() => {
+    if (product?.category) {
+      fetchRelatedProducts(product._id, product.category);
     }
-  }, [Base_url, id]);
+  }, [product]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,30 +76,24 @@ const ProductDisplay = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen w-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-14 flex justify-center items-center">
+      <div className="min-h-screen w-full bg-gray-50 py-12 px-4 mt-14 flex justify-center items-center">
         <div className="text-lg">Product not found</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-full py-12 px-4 sm:px-6 lg:px-8 mt-28">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl  overflow-hidden">
+    <div className="min-h-screen w-full py-12 px-4 mt-28">
+      <div className="max-w-6xl mx-auto bg-white rounded-xl overflow-hidden">
         <div className="md:flex">
-          {/* Left side - product images */}
           <ProductImage product={product} />
           {error && <p className="text-red-700">{error}</p>}
-
-          {/* Right side - product details */}
           <ProductDetails product={product} />
         </div>
       </div>
 
-      {/* Related products */}
       <div className="max-w-full mx-auto mt-16 p-4">
-        <h1 className="text-2xl font-bold mb-6 text-primary">
-          Related Products
-        </h1>
+        <h1 className="text-2xl font-bold mb-6 text-primary">Related Products</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {relatedProducts.map((prod) => (
             <ProductCard product={prod} key={prod._id} />

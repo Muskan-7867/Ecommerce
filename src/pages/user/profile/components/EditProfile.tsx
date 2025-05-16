@@ -2,24 +2,24 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import useCurrentUser from "../../../../hooks/useCurrentUser";
 import { CurrentUser } from "../../../../types/auth";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
-  const { currentUser } = useCurrentUser() as {
-    currentUser: CurrentUser | null;
-  };
+  const { currentUser } = useCurrentUser() as {currentUser: CurrentUser | null};
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
-  const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
+  const token = Cookies.get("authToken");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser) {
       setUsername(currentUser.username || "");
       setEmail(currentUser.email || "");
       setContact(currentUser.contact || "");
-      setAddress(currentUser.address || "");
     }
   }, [currentUser]);
 
@@ -27,16 +27,18 @@ const EditProfile = () => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `${BASE_URL}/api/v1/user/update`,{ username, email, contact, address
-        },
-        {
-          withCredentials: true
-        }
+        `${BASE_URL}/api/v1/user/update`,
+        { username,  email,  contact },
+        { headers: { Authorization: `Bearer ${token}` }}
       );
+
       setMessage(res.data.message);
+      navigate("/profile")
       
-    } catch  {
-      setMessage( "Something went wrong");
+      console.log("from userupdate", res.data.message);
+    } catch (error) {
+      setMessage("Something went wrong");
+      console.error("Update error:", error);
     }
   };
 
@@ -80,16 +82,6 @@ const EditProfile = () => {
               type="text"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              className="py-2 border-b-2 border-primary focus:outline-none"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-black">Address</label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
               className="py-2 border-b-2 border-primary focus:outline-none"
             />
           </div>

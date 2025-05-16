@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import useCart from "../../../../hooks/useCart";
 import { Product } from "../../../../types/Product";
-import { useNavigate } from "react-router-dom";
-import useCurrentUser from "../../../../hooks/useCurrentUser";
-import { CurrentUser } from "../../../../types/auth";
 import { LiaRupeeSignSolid } from "react-icons/lia";
+import { useNavigate } from "react-router-dom";
 
 interface ProductPriceProps {
   product: Product;
@@ -27,9 +25,8 @@ const ProductPriceAndButton = ({
   product
 }: ProductPriceProps) => {
   const { RemoveProductFromCart, addProductToCart } = useCart();
+
   const navigate = useNavigate();
-  const { currentUser } = useCurrentUser() as { currentUser: CurrentUser };
-  const userId = currentUser?._id;
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
@@ -69,7 +66,8 @@ const ProductPriceAndButton = ({
   };
 
   const handleBuy = () => {
-    navigate(`/addressform/${userId}`);
+    navigate(`/checkout/${product._id}`);
+    console.log("buy ")
   };
 
   return (

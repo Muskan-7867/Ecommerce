@@ -5,8 +5,15 @@ import ElectronicsProducts from "../products/ElectronicsProducts/ElectronicsProd
 import Hero from "./components/Hero";
 import HeroSection from "./components/HeroSection";
 import KitchenProducts from "../products/KitchenProducts/KitchenProducts";
+import { useEffect } from "react";
+import useCurrentUserStore from "../../../store/User/user.store";
 
 const Home = () => {
+  const { reFetch } = useCurrentUserStore();
+
+  useEffect(() => {
+    reFetch();
+  }, []);
   return (
     <div className="flex flex-col min-h-screen  ">
       <Hero />

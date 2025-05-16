@@ -8,7 +8,6 @@ interface CartDetailsProps {
   quantity: number;
   handleChangeQuantity: (id: string, quantity: number) => void;
 }
-
 const CartDetails = ({
   product,
   onDelete,
@@ -46,7 +45,7 @@ const CartDetails = ({
       </div>
 
       {/* 🔢 Quantity */}
-      <div className="flex flex-col items-start sm:items-center gap-1">
+      <div className="flex flex-col items-start sm:items-center gap-1 mr-22">
         <p className="text-sm font-medium">Qty</p>
         <div className="flex gap-8">
           <button

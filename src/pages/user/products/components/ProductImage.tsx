@@ -13,7 +13,7 @@ const ProductImage = ({ product }: { product: Product }) => {
     <div className="w-full md:w-1/2 p-4 md:p-6 space-y-4">
       {/* Main Image */}
       <motion.div 
-      layoutId={product.images[0].publicId}
+      layoutId={product?.images[0]?.publicId}
       className="w-full aspect-square max-h-[400px]">
         <img
           src={mainImage}

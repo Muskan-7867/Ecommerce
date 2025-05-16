@@ -18,6 +18,7 @@ const Products = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [products]);
+  
   useEffect(() => {
     fetchFilterProducts();
   }, [page, limit, minPrice, maxPrice, category, search]);
@@ -31,7 +32,6 @@ const Products = () => {
       category,
       search
     );
-    console.log("from filtered", data, category);
     setProducts(data.products);
   };
 
