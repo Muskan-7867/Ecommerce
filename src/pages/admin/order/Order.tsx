@@ -1,7 +1,11 @@
+import { useSingleOrderStore } from "../../../store/product/Table.store";
+
 import OrderSummary from "./components/orderSummary";
-import OrderTable from "./components/ordertable";
+import OrderTable from "./components/OrderTable";
+import SingleOrderProd from "./components/SingleOrderProd";
 
 const Order = () => {
+  const { showSingleOrder } = useSingleOrderStore();
   return (
     <div className="w-full min-h-screen mt-16  border-2 border-gray-100 py-7 px-8 overflow-y-scroll scrollbar-hide">
       <div className="shadow-lg pl-14 py-6 pr-8 rounded-2xl border border-gray-50 bg-[#FFFFFF]">
@@ -11,8 +15,10 @@ const Order = () => {
           </h3>
         </div>
         <OrderSummary />
+
         <OrderTable />
       </div>
+      {showSingleOrder && <SingleOrderProd />}
     </div>
   );
 };

@@ -6,16 +6,24 @@ import { fields } from "./data";
 import UploadProdImage from "./UploadProdImage";
 
 const AddProductForm = () => {
-  const [category, setCategory] = useQueryState("category", { defaultValue: "all"});
+  const [category, setCategory] = useQueryState("category", {
+    defaultValue: "all"
+  });
   const [disabled, setDisabled] = useState(false);
   const [productImages, setProductImages] = useState<File[]>([]);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const [formData, setFormData] = useState({
-    name: "", description: "", features: "", price: "", originalPrice: "", category: "" });
 
-   const getInputType = (label: string): string => {
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    features: "",
+    price: "",
+    originalPrice: "",
+    category: ""
+  });
+
+  const getInputType = (label: string): string => {
     const lower = label.toLowerCase();
     if (lower.includes("price") || lower.includes("originalPrice"))
       return "number";
@@ -34,7 +42,6 @@ const AddProductForm = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
- 
 
   useEffect(() => {
     console.log("from useffectr", productImages);
@@ -55,11 +62,18 @@ const AddProductForm = () => {
       data.append("price", formData.price);
       data.append("category", category);
       productImages.forEach((file) => data.append("images", file));
-  
+
       const response = await createProduct(data);
       console.log(response);
       setSubmitSuccess(true);
-      setFormData({name: "",description: "",features: "",price: "",originalPrice: "",category: ""  });
+      setFormData({
+        name: "",
+        description: "",
+        features: "",
+        price: "",
+        originalPrice: "",
+        category: ""
+      });
       setProductImages([]);
     } catch (err) {
       console.error("Failed to add product:", err);
@@ -67,8 +81,8 @@ const AddProductForm = () => {
       setIsSubmitting(false);
     }
   };
-  
- return (
+
+  return (
     <div className="flex flex-col items-center min-h-screen mt-6 px-4">
       <h1 className="text-3xl font-bold font-serif text-primary mb-6">
         Create Product
@@ -105,15 +119,18 @@ const AddProductForm = () => {
           ))}
 
           {/* Image Upload Field */}
-         <UploadProdImage productImages={productImages} setProductImages={setProductImages} disabled={disabled}/>
+          <UploadProdImage
+            productImages={productImages}
+            setProductImages={setProductImages}
+            disabled={disabled}
+          />
 
           {/* Submit Button */}
           <button
             type="submit"
             className="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition"
           >
-        {isSubmitting ? "Adding..." : "Add Product"}
-            
+            {isSubmitting ? "Adding..." : "Add Product"}
           </button>
         </form>
       </div>

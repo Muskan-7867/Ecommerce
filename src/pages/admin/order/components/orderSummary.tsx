@@ -1,12 +1,15 @@
 import React from "react";
 import Summary from "../../../../components/common/admin/Summary";
-import { joining, monthjoining, notification, payment } from "../../../../constants/imagePath"
+import { CgToday } from "react-icons/cg";
+import { MdCalendarMonth, MdSummarize } from "react-icons/md";
+import { RiSecurePaymentFill } from "react-icons/ri";
+
 
 const bookingData = [
-    { title: "Today's orders", amount: "16", icon: joining },
-    { title: "Month's orders", amount: "62", icon: monthjoining },
-    { title: "Total orders", amount: "65", icon: payment },
-    { title: "Total Payment", amount: "$1280", icon: notification },
+    { title: "Today's orders", amount: "16", icon: CgToday },
+    { title: "Month's orders", amount: "62", icon: MdCalendarMonth },
+    { title: "Total orders", amount: "65", icon: MdSummarize },
+    { title: "Total Payment", amount: "$1280", icon: RiSecurePaymentFill },
 ];
 
 const OrderSummary: React.FC = () => {
