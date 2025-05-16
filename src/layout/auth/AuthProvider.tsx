@@ -12,7 +12,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (currentUser) {
       console.log("from hook", currentUserFromStore, currentUser);
     }
-  }, [currentUser, currentUserFromStore, reFetch]);
+  }, []);
 
   return <div>{children}</div>;
 };
