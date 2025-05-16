@@ -108,6 +108,7 @@ const Table = <T extends { [key: string]: unknown }>({
                 <DialogBoxWrapper
                   position={dialogPosition}
                   setOpenDialog={setOpenDialog}
+                  row={row}
                 />
               )}
             </tr>
