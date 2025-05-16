@@ -7,38 +7,7 @@ import { insights } from "./Insights/components/insightData";
 import Insightgraph from "../../../components/common/admin/Insightgraph";
 
 const Dashboard: React.FC = () => {
-  // const ordersColumns = ["Order ID", "User", "Artist", "Status", "Action"];
-  // const ordersData = [
-  //   {
-  //     order_id: "1001",
-  //     user: "Jane Cooper",
-  //     artist: "Luxe salon",
-  //     status: "In Process",
-  //     action: "View",
-  //   },
-  // ];
-
-  // const supportColumns = ["Request ID", "User", "Message", "Status", "Action"];
-  // const supportData = [
-  //   {
-  //     request_id: "1002",
-  //     user: "Alice Brown",
-  //     message: "Issue with service",
-  //     status: "Completed",
-  //     action: "View",
-  //   },
-  // ];
-
-  // const handleActionClick = (
-  //   action: string,
-  //   row: Record<string, string | number>
-  // ) => {
-  //   console.log(`Action: ${action}, Row:`, row);
-  // };
-
-  // Ref for horizontal scrolling
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -51,12 +20,12 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  return (
+  return (  
     <div className="min-h-screen mt-16 border border-gray-100 py-2 pl-8">
       <InsightsHeader
         title="Insights"
         yearOptions={["2025", "2024", "2023", "2022"]}
-        monthOptions={["February", "January"]}
+        monthOptions={["May", "April", "March" ]}
       />
 
       {/* Insights Section */}
