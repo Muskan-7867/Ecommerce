@@ -1,151 +1,56 @@
-import { useState } from "react";
-import Table from "../../../../components/common/admin/Table";
-import OrderFilterBar from "../../order/components/orderfilterbar";
+import { useQuery } from "@tanstack/react-query";
+import TableData, { Column } from "../../order/components/TableData";
+import { fetchUsersQuery } from "../../../../services/queries";
+import Pagination from "../../../user/products/components/Pagination";
+import { CurrentUser } from "../../../../types/auth";
+import { useEffect } from "react";
 
-interface Order {
-  orderid: string;
-  username: string;
-  quantity: number;
-  status: string;
-  paymentstatus: string;
-}
+const OrderTable = () => {
+  const itemsPerPage = 10;
+  const { data: users } = useQuery(fetchUsersQuery());
 
-const orders = [
-  {
-    orderid: "11002",
-    username: "Flores Juanita",
-    quantity: 1,
-    status: "Pending",
-    paymentstatus: "Pending"
-  },
-  {
-    orderid: "11001",
-    username: "Miles Esther",
-    quantity: 2,
-    status: "Shipped",
-    paymentstatus: "Paid"
-  },
-  {
-    orderid: "11003",
-    username: "Henry Arthur",
-    quantity: 5,
-    status: "Delivered",
-    paymentstatus: "Failed"
-  },
-  {
-    orderid: "11004",
-    username: "Black Marvin",
-    quantity: 3,
-    status: "Cancelled",
-    paymentstatus: "Paid"
-  },
-  {
-    orderid: "11005",
-    username: "Doe John",
-    quantity: 4,
-    status: "Processing",
-    paymentstatus: "Failed"
-  },
-  {
-    orderid: "11006",
-    username: "Smith Alice",
-    quantity: 2,
-    status: "Shipped",
-    paymentstatus: "Completed"
-  },
-  {
-    orderid: "11005",
-    username: "Doe John",
-    quantity: 4,
-    status: "Processing",
-    paymentstatus: "Sent"
-  },
-  {
-    orderid: "11006",
-    username: "Smith Alice",
-    quantity: 2,
-    status: "Shipped",
-    paymentstatus: "Sent"
-  },
-  {
-    orderid: "11005",
-    username: "Doe John",
-    quantity: 4,
-    status: "Processing",
-    paymentstatus: "In Progress"
-  },
-  {
-    orderid: "11006",
-    username: "Smith Alice",
-    quantity: 2,
-    status: "Shipped",
-    paymentstatus: "In Progress"
-  }
-];
+  useEffect(() => {
+    if (users) {
+      console.log("from table", users);
+    }
+  }, [users]);
 
-const CustomerTable = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-
-  // Filter logic
-  const filteredOrders = orders.filter((order) => {
-    return order.username.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-
-  // Table columns definition
-  const columns = [
- 
-    { label: " Name", key: "orderid" as const },
-    { label: " Email", key: "username" as const },
-    { label: "Address", key: "quantity" as const },
-    { label: "City", key: "status" as const },
-    { label: "Pincode", key: "status" as const },
+  const columns: Column<CurrentUser>[] = [
+    { label: "UserName", key: "username" },
+    { label: "Email", key: "email" },
+    { label: "Contact", key: "contact" },
     {
-      label: "Payment Status",
-      key: "paymentstatus" as const,
-      renderData: (order: Order) => {
-        let textColor = "text-black"; 
-
-        if (
-          ["Completed", "Sent", "In Progress", "Paid"].includes(
-            order.paymentstatus
-          )
-        ) {
-          textColor = "text-green-500"; // Green for success statuses
-        } else if (order.paymentstatus === "Failed") {
-          textColor = "text-red-500"; // Red for failed
-        }
-
-        return <span className={textColor}>{order.paymentstatus}</span>;
-      }
+      label: "Orders",
+      render: (row) => row.order?.length
     },
     {
-      label: "Action",
-      key: "action" as const,
-      renderData: () => (
-        <button className="text-black font-bold text-2xl hover:text-gray-800">
-          ⋮
-        </button>
+      label: "Address",
+      render: (row) => (
+        <div className="">
+          <span>{row.address?.address1 || "Address 1 not available"}</span>
+          {", "}
+          <span>{row.address?.street || "Street not available"}</span>
+          {", "}
+          <span>{row.address?.city || "City not available"}</span>
+          {", "}
+          <span>{row.address?.state || "State not available"}</span>
+          {", "}
+          <span>{row.address?.country || "Country not available"}</span>
+          {", "}
+        </div>
       )
     }
   ];
 
   return (
     <>
-      <OrderFilterBar
-        searchTerm={searchTerm}
-        onSearchChange={(e) => setSearchTerm(e.target.value)}
-        selectedDate={selectedDate}
-        onDateChange={(e) => setSelectedDate(e.target.value)}
-        selectedKYC={""}
-        onKYCChange={() => {}}
-        selectedMembership={""}
-        onMembershipChange={() => {}}
+      <TableData<CurrentUser> columns={columns} data={users ?? []} />
+      <Pagination
+        totalProducts={users?.length ?? 0}
+        productPerPage={itemsPerPage}
       />
-
-      <Table columns={columns} data={filteredOrders} />
     </>
   );
 };
 
-export default CustomerTable;
+export default OrderTable;
