@@ -14,7 +14,7 @@ const fetchUserCategories = async () => {
         headers: { "Content-Type": "application/json" }
       }
     );
-    console.log("from fetcher", response.data);
+  
     return response.data.categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -29,7 +29,7 @@ const fetchAdminCategories = async () => {
         headers: { "Content-Type": "application/json" }
       }
     );
-    console.log("from fetcher", response.data);
+ 
     return response.data.categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -93,7 +93,6 @@ const getFilteredProducts = async (
   search: string | null
 ) => {
   try {
-    console.log("from fetcher", category);
     const response = await axios.get(
       `${BASE_URL}/api/v2/product/get/${limit}/${page}/${minPrice}/${maxPrice}/${category}/${
         search || "-"
@@ -102,7 +101,6 @@ const getFilteredProducts = async (
         headers: { "Content-Type": "application/json" }
       }
     );
-    console.log("filtered products", response.data);
     return {
       ProductCount: response.data.totalProduct,
       products: response.data.product
@@ -230,7 +228,6 @@ const fetchUserAddress = async (addressId: string | undefined) => {
 };
 
 const getOrders = async () => {
-  console.log("from fetcher in get order");
   try {
     const response = await axios.get(
       `${BASE_URL}/api/v2/product/orderproducts`,
