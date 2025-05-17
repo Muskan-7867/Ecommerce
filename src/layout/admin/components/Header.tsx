@@ -1,31 +1,24 @@
-import { useState } from "react";
-
-import { FaBell } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import UserProfile from "../../../components/common/admin/UserProfile";
 
 const Header: React.FC = () => {
-  const [notifications] = useState(1);
-
   return (
-    <div className="relative flex items-center justify-end gap-4">
-      {/* Notification Icon with Red Dot */}
-      <div className="relative mr-40 top-5 cursor-pointer ">
-        <FaBell className="text-primary w-8 h-8" />
+    <div className=" h-18 ">
+      <div className="m-4 flex justify-end lg:gap-28">
+        <Link
+          to="/adminregister"
+          className="bg-primary text-white px-4 py-2 rounded-md"
+        >
+          Sign Up
+        </Link>
 
-        {notifications > 0 && (
-          <div className="absolute top-0 right-0 bg-white text-primary border  border-primary text-xs font-bold w-4 h-4 flex  items-center justify-center rounded-full">
-            {notifications}
-          </div>
-        )}
+        <UserProfile
+          name={"xyz"}
+          email={"xyz@gmail.com"}
+          role={"admin"}
+          imageUrl="/public/assets/user.png"
+        />
       </div>
-
-      {/* User Profile Component */}
-      <UserProfile
-        name="Jane Cooper"
-        email="cooper02@example.com"
-        role="Super admin"
-        imageUrl="../../../../public/assets/user.png"
-      />
     </div>
   );
 };

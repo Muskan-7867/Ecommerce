@@ -24,7 +24,7 @@ const OrderConfirmPopUp = ({
     setloading(true);
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/v2/product/order`,
+        `${BASE_URL}/api/v1/product/order`,
         {
           ...orderData,
           address: currentUserFromStore.address

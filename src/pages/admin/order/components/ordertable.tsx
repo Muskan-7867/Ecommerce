@@ -32,6 +32,7 @@ const OrderTable = () => {
     isLoading,
     error
   } = useQuery<Order[]>(fetchOrdersQuery());
+  console.log(" from oredrs", orders);
 
   const [localOrders, setLocalOrders] = useState<Order[]>([]);
 
@@ -40,6 +41,9 @@ const OrderTable = () => {
       setLocalOrders(orders);
     }
   }, [orders]);
+  if (orders.length === 0) {
+    return <p className="p-4 text-center">You have not placed any orders yet.</p>;
+  }
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -154,7 +158,6 @@ const OrderTable = () => {
             value={order.payment?.paymentStatus ?? ""}
             onChange={handleChange}
           >
-           
             <option value="pending">Pending</option>
             <option value="succeeded">Succeeded</option>
             <option value="failed">Failed</option>

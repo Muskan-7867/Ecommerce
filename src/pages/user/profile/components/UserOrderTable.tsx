@@ -16,7 +16,7 @@ const UserOrderTable = () => {
       {isLoading ? (
         <p className="text-gray-600">Loading orders...</p>
       ) : orders.length === 0 ? (
-        <p className="text-gray-500">You have no orders yet.</p>
+        <p className="text-gray-500 p-4 text-center text-lg">You have no orders yet.!!</p>
       ) : (
         <div className="overflow-x-auto  px-8">
           <table className="min-w-full rounded-lg bg-white border border-gray-200">

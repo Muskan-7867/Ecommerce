@@ -36,6 +36,7 @@ const NewFooter = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   })
+  
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="h-[30rem] flex items-end justify-center bg-gradient-to-b from-transparent to-red-100 ">

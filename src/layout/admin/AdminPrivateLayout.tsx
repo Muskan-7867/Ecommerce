@@ -1,30 +1,29 @@
 import React, { useEffect } from "react";
-
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-
-
 
 const AdminPrivateLayout: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-     navigate("dashboard")
-  },[])
+    navigate("dashboard");
+  }, []);
+
   return (
-    <div className="flex h-screen w-full bg-glamgo-base-red">
-       <Sidebar />
-      <div className="flex flex-col w-full overflow-y-scroll">
+    <div className="flex h-screen w-full">
+      {/* Sidebar (fixed height) */}
+      <Sidebar />
+
+      {/* Right panel with header and main content */}
+      <div className="flex flex-col flex-1 overflow-hidden">
         <Header />
-        <div className="flex-grow">
+        <main className="flex-1 overflow-y-auto  p-4">
           <Outlet />
-        </div>
- 
+        </main>
       </div>
     </div>
   );
 };
 
 export default AdminPrivateLayout;
-

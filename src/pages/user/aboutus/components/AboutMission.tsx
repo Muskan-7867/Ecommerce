@@ -4,14 +4,14 @@ import { motion} from "motion/react";
 
 const AboutMission = () => {
   return (
-    <div className="max-w-4xl mx-auto mb-24">
+    <div className="max-w-[75rem] mx-auto mb-24">
     <motion.div
       className="flex flex-col md:flex-row gap-8 items-center"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="md:w-1/2">
+      <div className="md:w-1/2 ">
         <Lottie animationData={missionAnimation} loop={true} />
       </div>
       <div className="md:w-1/2">

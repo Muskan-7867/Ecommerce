@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import DialogBox from "../../../../components/common/admin/ActionDialogbox";
-import { CiMenuKebab } from "react-icons/ci"; // Needed for action icon
+import { CiMenuKebab } from "react-icons/ci"; 
 import { useSingleOrderStore } from "../../../../store/product/Table.store";
 
 export interface Column<T> {

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 const AboutValue = () => {
   return (
-    <div className="bg-gray-50 py-16">
+    <div className="bg-gray-50 py-16  w-full">
       <div className="max-w-5xl mx-auto">
         <motion.h2
           className="text-2xl md:text-3xl font-light text-center mb-12 text-gray-800"
