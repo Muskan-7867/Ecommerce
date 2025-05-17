@@ -20,7 +20,7 @@ const ProductDisplay = () => {
   const fetchRelatedProducts = async (currentProductId: string, categoryId: string) => {
     try {
       const res = await axios.get(
-        `${Base_url}/api/v2/product/categoryid/${categoryId}`
+        `${Base_url}/api/v1/product/categoryid/${categoryId}`
       );
 
       const filtered = res.data.products.filter((p: Product) => p._id !== currentProductId);
@@ -34,7 +34,7 @@ const ProductDisplay = () => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${Base_url}/api/v2/product/single/${id}`);
+        const res = await axios.get(`${Base_url}/api/v1/product/single/${id}`);
         const data = res.data.product;
 
         if (!data) {

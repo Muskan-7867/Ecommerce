@@ -15,6 +15,7 @@ const Products = () => {
   const [limit] = useQueryState("limit", parseAsInteger.withDefault(9));
   const [minPrice] = useQueryState("minPrice",parseAsInteger.withDefault(0));
   const [maxPrice] = useQueryState("maxPrice",parseAsInteger.withDefault(100000));
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [products]);
@@ -33,6 +34,7 @@ const Products = () => {
       search
     );
     setProducts(data.products);
+    console.log(data.products)
   };
 
   // if (isLoading) {
