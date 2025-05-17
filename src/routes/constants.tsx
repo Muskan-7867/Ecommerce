@@ -1,6 +1,6 @@
 import React from "react";
-import Login from "../pages/admin/auth/Login";
-import Register from "../pages/admin/auth/Register";
+import Login from "../pages/admin/auth/LoginAdmin";
+import Register from "../pages/admin/auth/RegisterAdmin";
 import { Dashboard } from "../pages/admin/dashboard";
 import Product from "../pages/admin/products/Product";
 import Order from "../pages/admin/order/Order";
@@ -59,9 +59,6 @@ const Admin_Private_routes: RootDocument[] = [
     href: "editproduct",
     page: EditProduct
   }
-
-  
- 
 ];
 
 export { Admin_auth_routes, Admin_Private_routes };
