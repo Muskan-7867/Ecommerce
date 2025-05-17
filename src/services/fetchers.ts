@@ -9,7 +9,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const fetchUserCategories = async () => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/usercategories`,
+      `${BASE_URL}/api/v1/product/usercategories`,
       {
         headers: { "Content-Type": "application/json" }
       }
@@ -24,7 +24,7 @@ const fetchUserCategories = async () => {
 const fetchAdminCategories = async () => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/admincategories`,
+      `${BASE_URL}/api/v1/product/admincategories`,
       {
         headers: { "Content-Type": "application/json" }
       }
@@ -39,7 +39,7 @@ const fetchAdminCategories = async () => {
 const getProductsByCategory = async (name: string) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/category/name/${name}`,
+      `${BASE_URL}/api/v1/product/category/name/${name}`,
       {
         headers: { "Content-Type": "application/json" }
       }
@@ -55,7 +55,7 @@ const getProductsByCategory = async (name: string) => {
 const fetchProductIds = async (productIds: string[]): Promise<Product[]> => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/api/v2/product/cartproducts`,
+      `${BASE_URL}/api/v1/product/cartproducts`,
       { ids: productIds }
     );
     return response.data.products;
@@ -94,16 +94,17 @@ const getFilteredProducts = async (
 ) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/get/${limit}/${page}/${minPrice}/${maxPrice}/${category}/${
+      `${BASE_URL}/api/v1/product/get/${limit}/${page}/${minPrice}/${maxPrice}/${category}/${
         search || "-"
       }`,
       {
         headers: { "Content-Type": "application/json" }
       }
     );
+    console.log("from getfilterd" , response.data.products);
     return {
       ProductCount: response.data.totalProduct,
-      products: response.data.product
+      products: response.data.products
     };
   } catch (error) {
     console.error("failed to fetch products:", error);
@@ -114,7 +115,7 @@ const getFilteredProducts = async (
 //for admin
 const getAllProducts = async () => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/v2/product/all`);
+    const response = await axios.post(`${BASE_URL}/api/v1/product/all`);
     return response.data.products;
   } catch (error) {
     console.error("Failed to fetch all products:", error);
@@ -125,7 +126,7 @@ const getAllProducts = async () => {
 const deleteProduct = async (id: string | unknown) => {
   try {
     const response = await axios.delete(
-      `${BASE_URL}/api/v2/product/delete/${id}`
+      `${BASE_URL}/api/v1/product/delete/${id}`
     );
     return response.data;
   } catch (error) {
@@ -138,7 +139,7 @@ const deleteOrder = async (orderid: string | unknown) => {
   console.log("from deleteorder", orderid);
   try {
     const response = await axios.delete(
-      `${BASE_URL}/api/v2/product/order/delete/${orderid}`
+      `${BASE_URL}/api/v1/product/order/delete/${orderid}`
     );
     console.log();
     return response.data;
@@ -150,7 +151,7 @@ const deleteOrder = async (orderid: string | unknown) => {
 
 const updateProduct = async (id: string, data: EditProductData) => {
   const response = await axios.put(
-    `${BASE_URL}/api/v2/product/update/${id}`,
+    `${BASE_URL}/api/v1/product/update/${id}`,
     data,
     {
       headers: {
@@ -163,7 +164,7 @@ const updateProduct = async (id: string, data: EditProductData) => {
 
 const createProduct = async (formData: FormData) => {
   const response = await axios.post(
-    `${BASE_URL}/api/v2/product/create`,
+    `${BASE_URL}/api/v1/product/create`,
     formData,
     {
       headers: {
@@ -176,7 +177,7 @@ const createProduct = async (formData: FormData) => {
 
 const createCategory = async (data: FormData, token: string) => {
   const response = await axios.post(
-    `${BASE_URL}/api/v2/product/category`,
+    `${BASE_URL}/api/v1/product/category`,
     data,
     {
       headers: {
@@ -200,7 +201,7 @@ const CreateUserAddress = async (data: AddressFormData, token: string) => {
 
 const fetchCategory = async (categoryId: string) => {
   const response = await axios.get(
-    `${BASE_URL}/api/v2/product/category/${categoryId}`
+    `${BASE_URL}/api/v1/product/category/${categoryId}`
   );
   return response.data;
 };
@@ -230,7 +231,7 @@ const fetchUserAddress = async (addressId: string | undefined) => {
 const getOrders = async () => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/orderproducts`,
+      `${BASE_URL}/api/v1/product/orderproducts`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -239,9 +240,9 @@ const getOrders = async () => {
       }
     );
 
-    if (!response.data.order) return [];
-
-    return response.data.order;
+ 
+    console.log("from order fetcher" , response.data);
+    return response.data.orders;
   } catch {
     return [];
   }
@@ -249,7 +250,7 @@ const getOrders = async () => {
 const fetchProductById = async (id: string | undefined) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/single/${id}`,
+      `${BASE_URL}/api/v1/product/single/${id}`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -265,7 +266,7 @@ const fetchProductById = async (id: string | undefined) => {
 const getSingleProductById = async (singleproductid: string | undefined) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/v2/product/single/${singleproductid}`,
+      `${BASE_URL}/api/v1/product/single/${singleproductid}`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -289,6 +290,38 @@ const getUsers = async () => {
   }
 };
 
+const adminRegister = async (adminData: 
+  {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    phone: number
+  }
+) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/v1/admin/create`, adminData);
+    console.log("from admin register", response.data);
+    return response.data;
+  } catch {
+    console.log("error in admin register");
+  }
+}
+
+const adminLogin = async (adminData:{
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/v1/admin/login`, adminData);
+    console.log("from admin login", response.data);
+    return response.data;
+  } catch {
+    console.log("error in admin login");
+  }
+}
+
+
 export {
   fetchUserCategories,
   getProductsByCategory,
@@ -308,5 +341,7 @@ export {
   fetchProductById,
   getSingleProductById,
   deleteOrder,
-  getUsers
+  getUsers,
+  adminRegister,
+  adminLogin
 };
