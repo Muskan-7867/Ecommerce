@@ -103,10 +103,12 @@ const OrderTable = () => {
           setLocalOrders(updated);
         };
 
+        const selected = order.status
+          
         return (
           <select
-            className=" rounded px-2 py-1 text-sm"
-            value={order.status}
+            className={`px-3 py-1 rounded-md outline-none ${selected ? 'border-none' : ""}`}
+            value={selected}
             onChange={handleStatusChange}
           >
             <option value="pending">Pending</option>
@@ -137,34 +139,40 @@ const OrderTable = () => {
         );
       }
     },
-    {
-      label: "Payment Status",
-      render: (order) => {
-        const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-          const updated = localOrders.map((o) =>
-            o === order
-              ? {
-                  ...o,
-                  payment: { ...o.payment, paymentStatus: e.target.value }
-                }
-              : o
-          );
-          setLocalOrders(updated);
-        };
+{
+  label: "Payment Status",
+  render: (order) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const updated = localOrders.map((o) =>
+        o === order
+          ? {
+              ...o,
+              payment: { ...o.payment, paymentStatus: e.target.value },
+            }
+          : o
+      );
+      setLocalOrders(updated);
+    };
 
-        return (
-          <select
-            className=" rounded px-2 py-1 text-sm"
-            value={order.payment?.paymentStatus ?? ""}
-            onChange={handleChange}
-          >
-            <option value="pending">Pending</option>
-            <option value="succeeded">Succeeded</option>
-            <option value="failed">Failed</option>
-          </select>
-        );
-      }
-    },
+    const selected = order.payment?.paymentStatus;
+
+    return (
+      <select
+        value={selected}
+        onChange={handleChange}
+        className={`px-3 py-1 rounded-md outline-none ${
+          selected ? 'border-none' : ''
+        }`}
+      >
+   
+        <option value="paid">Paid</option>
+        <option value="pending">Pending</option>
+        <option value="failed">Failed</option>
+      </select>
+    );
+  },
+}
+,
     { label: "Action", key: "action" as const }
   ];
 
