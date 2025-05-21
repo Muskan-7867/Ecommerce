@@ -67,23 +67,30 @@ const ProductPriceAndButton = ({
 
   const handleBuy = () => {
     navigate(`/checkout/${product._id}`);
-    console.log("buy ")
+    console.log("buy ");
   };
 
   return (
     <div className="mt-8 w-full ">
-      <div className="flex">
-        <span className="text-3xl font-normal text-gray-900">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-1">
+          {/* Current Price */}
           <div className="flex items-center">
             <LiaRupeeSignSolid />
-            <h1 className="text-sm">{product.price.toFixed(2)} /-</h1>
+            <h1 className="text-xl">{product.price.toFixed(2)} /-</h1>
           </div>
+
+          {/* Original Price (if available) */}
           {product.originalPrice && (
-            <span className="text-sm line-through  text-gray-500 font-normal">
-              {product.originalPrice.toFixed(2)}
-            </span>
+            <div className="flex items-center">
+              <span className="text-sm line-through text-gray-500 font-normal ml-1">
+                {product.originalPrice.toFixed(2)}
+              </span>
+            </div>
           )}
-        </span>
+        </div>
+
+        <div></div>
       </div>
 
       <div className="mt-6 space-x-4 w-full flex justify-start">
