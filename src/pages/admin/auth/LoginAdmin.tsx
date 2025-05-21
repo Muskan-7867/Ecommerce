@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { adminLogin } from "../../../services/fetchers";
+import Cookies from "js-cookie";
 
 const LoginAdmin: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -26,10 +27,11 @@ const LoginAdmin: React.FC = () => {
       setError("");
       const response = await adminLogin({
         email: formData.email,
-
         password: formData.password
       });
-
+      if(response.token){
+        Cookies.set("admintoken", response.token);
+      }
       setTimeout(() => {
         navigate("/admin/dashboard");
       }, 2000);
