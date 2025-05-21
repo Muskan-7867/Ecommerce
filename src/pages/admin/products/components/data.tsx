@@ -24,5 +24,10 @@ export const fields = [
     label: "Category",
     placeholder: "Add Category of product",
     name: "category"
+  },
+    {
+    label: "Delivery Charges",
+    placeholder: "Add delivery charges of product",
+    name: "deliveryCharges"
   }
 ];

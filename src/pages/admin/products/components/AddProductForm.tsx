@@ -20,7 +20,8 @@ const AddProductForm = () => {
     features: "",
     price: "",
     originalPrice: "",
-    category: ""
+    category: "",
+    deliveryCharges: "",
   });
 
   const getInputType = (label: string): string => {
@@ -29,19 +30,24 @@ const AddProductForm = () => {
       return "number";
     return "text";
   };
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const target = e.target as HTMLInputElement;
-    const { name, value } = target;
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+) => {
+  const target = e.target as HTMLInputElement;
+  const { name, value, type, files } = target;
 
-    if (target.type === "file" && target.files) {
-      console.log("from form", target);
-      setFormData((prev) => ({ ...prev, images: target?.files }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+  if (type === "file" && files) {
+    console.log("from form", target);
+    setFormData((prev) => ({ ...prev, images: files }));
+  } else {
+   const parsedValue =
+  name.toLowerCase().includes("price") || name === "deliveryCharges"
+    ? parseFloat(value)
+    : value;
+
+    setFormData((prev) => ({ ...prev, [name]: parsedValue }));
+  }
+};
 
   useEffect(() => {
     console.log("from useffectr", productImages);
@@ -61,6 +67,7 @@ const AddProductForm = () => {
       data.append("originalPrice", formData.originalPrice);
       data.append("price", formData.price);
       data.append("category", category);
+      data.append("deliveryCharges", formData.deliveryCharges);
       productImages.forEach((file) => data.append("images", file));
 
       const response = await createProduct(data);
@@ -72,7 +79,8 @@ const AddProductForm = () => {
         features: "",
         price: "",
         originalPrice: "",
-        category: ""
+        category: "",
+        deliveryCharges: ""
       });
       setProductImages([]);
     } catch (err) {
@@ -83,12 +91,12 @@ const AddProductForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen mt-6 px-4">
-      <h1 className="text-3xl font-bold font-serif text-primary mb-6">
+    <div className="flex flex-col items-center min-h-screen mt-2 px-4">
+      <h1 className="text-3xl font-bold font-serif text-primary mb-2">
         Create Product
       </h1>
 
-      <div className="w-full max-w-full bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <div className="w-full max-w-full bg-white rounded-lg  p-6 ">
         <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           {submitSuccess && (
             <div className="bg-green-100 text-green-700 p-2 rounded">
@@ -113,6 +121,7 @@ const AddProductForm = () => {
                   placeholder={field.placeholder}
                   onChange={handleChange}
                   className="py-2 border-b-2 border-primary focus:outline-none"
+                   value={formData[field.name as keyof typeof formData]} 
                 />
               )}
             </div>

@@ -7,6 +7,7 @@ const ProductPrice = () => {
   return (
     <div className="mt-8 w-full ">
       <div className="flex">
+     
         <span className="text-3xl font-normal text-gray-900">
           Rs {selectedProduct?.price.toFixed(2)}/-
           {selectedProduct?.originalPrice && (
