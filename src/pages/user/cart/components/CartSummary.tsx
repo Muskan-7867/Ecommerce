@@ -3,7 +3,7 @@ import { Product } from "../../../../types/Product";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useCurrentUserStore from "../../../../store/User/user.store";
-import {  CurrentUser } from "../../../../types/auth";
+import { CurrentUser } from "../../../../types/auth";
 import PopupMessage from "../../../../components/common/OrderConfirmPopUp";
 import SummaryDetails from "./SummaryDetails";
 
@@ -13,7 +13,9 @@ interface CartSummaryProps {
 }
 const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const { isLoggined } = useCurrentUserStore();
-  const { currentUserFromStore } = useCurrentUserStore() as { currentUserFromStore: CurrentUser};
+  const { currentUserFromStore } = useCurrentUserStore() as {
+    currentUserFromStore: CurrentUser;
+  };
   const navigate = useNavigate();
   const [loginMsg, setLoginMsg] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -23,11 +25,21 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     return acc + product.price * qty;
   }, 0);
 
-  const deliveryCharge = subtotal > 2000 ? 0 : 100;
+const deliveryCharge = products
+  .map((product) => {
+    const charge = Number(product?.deliveryCharges);
+    return isNaN(charge) ? 0 : charge;
+  })
+  .reduce((acc, charge) => acc + charge, 0);
+
+
+
+
   const total = subtotal + deliveryCharge;
 
   const totalQuantity = Object.values(quantities).reduce(
-    (acc, qty) => acc + qty, 0
+    (acc, qty) => acc + qty,
+    0
   );
 
   const handleOrder = () => {
@@ -38,29 +50,29 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       }, 1000);
       return;
     }
-    
-   if (!currentUserFromStore.address) {
+
+    if (!currentUserFromStore.address) {
       navigate("/addressform");
     } else {
       setShowConfirmPopUp(true);
     }
   };
 
-const orderItems = products.map((product) => ({
-  product: product._id, // ✅ explicitly set the product ID
-  price: product.price,
-  quantity: quantities[product._id] || 1
-}));
+  const orderItems = products.map((product) => ({
+    product: product._id, // ✅ explicitly set the product ID
+    price: product.price,
+    quantity: quantities[product._id] || 1
+  }));
 
-
-const orderData = {
-  quantity: totalQuantity,
-  totalQuantity,
-  totalPrice: total,
-  address: currentUserFromStore?.address,
-  orderItems // ✅ now correctly formatted
-};
-
+  const orderData = {
+    quantity: totalQuantity,
+    totalQuantity,
+    totalPrice: total,
+    address: currentUserFromStore?.address,
+    orderItems,
+    status: "pending",
+    deliveryCharges: deliveryCharge
+  };
 
   return (
     <div className="w-full mx-auto">
@@ -74,7 +86,11 @@ const orderData = {
         </div>
       )}
 
-     <SummaryDetails subtotal={subtotal} total={total} deliveryCharge={deliveryCharge}/>
+      <SummaryDetails
+        subtotal={subtotal}
+        total={total}
+        deliveryCharge={deliveryCharge}
+      />
       <PaymentSummary
         paymentMethod={paymentMethod}
         setPaymentMethod={setPaymentMethod}
@@ -101,6 +117,8 @@ const orderData = {
           currentUserFromStore={currentUserFromStore}
           setShowConfirmPopUp={setShowConfirmPopUp}
           orderData={orderData}
+          products={products}
+          paymentmethod={paymentMethod}
         />
       )}
     </div>
