@@ -33,7 +33,7 @@ const useOrderHandler = ({
     try {
       const response = await placeOrder(orderData);
       if (response?.data.success) {
-        navigate("/ordersuccesspage");
+        console.log("Order placed successfully")
       } else {
         console.error("Failed to place order");
       }
