@@ -20,6 +20,8 @@ export interface Order {
   payment: Payment;
   orderItems: OrderItem[];
   action: string;
+  deliveryCharges: number;
+  createdAt : string;
 }
 
 const OrderTable = () => {
@@ -32,7 +34,9 @@ const OrderTable = () => {
     isLoading,
     error
   } = useQuery<Order[]>(fetchOrdersQuery());
+  
   console.log(" from oredrs", orders);
+ 
 
   const [localOrders, setLocalOrders] = useState<Order[]>([]);
 
@@ -119,6 +123,7 @@ const OrderTable = () => {
         );
       }
     },
+
     {
       label: "Is Paid",
       render: (order) => {
