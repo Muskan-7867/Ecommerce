@@ -14,7 +14,8 @@ const EditProduct = () => {
     price: "",
     features: "",
     category: "",
-    inStock: false
+    inStock: false,
+    deliveryCharges: 0,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,7 @@ const EditProduct = () => {
         price: selectedProduct.price?.toString() || "",
         features: selectedProduct.features || "",
         category: selectedProduct.category || "",
+        deliveryCharges: selectedProduct.deliveryCharges || 0,
         inStock: selectedProduct.inStock || false
       });
     }
@@ -60,7 +62,8 @@ const EditProduct = () => {
         price: "",
         features: "",
         category: "",
-        inStock: false
+        inStock: false,
+        deliveryCharges: 0
       });
     } catch (err) {
       console.error("Error updating product:", err);
@@ -114,6 +117,13 @@ const EditProduct = () => {
             setCategory={(cat: string) =>
               setFormData((prev) => ({ ...prev, category: cat }))
             }
+          />
+
+          <InputField
+            label="Delivery Charges"
+            name="deliveryCharges"
+            value={formData.deliveryCharges.toString()}
+            onChange={handleChange}
           />
 
           <div className="flex items-center gap-2">
