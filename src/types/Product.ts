@@ -68,6 +68,14 @@ export interface OrderItem {
   quantity: number;
 }
 
+
+export interface payment {
+  paymentMethod: string; 
+  paymentStatus: string;
+
+}
+
+
 export interface OrderData {
   quantity: number;
   totalQuantity: number;
@@ -75,6 +83,7 @@ export interface OrderData {
   address: AddressFormData | undefined;
   orderItems: OrderItem[];
   deliveryCharges: number;
+  payment: payment;
 }
 
 

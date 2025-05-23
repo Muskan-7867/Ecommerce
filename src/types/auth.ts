@@ -31,7 +31,7 @@ export interface RegisterResponse {
   };
 }
 export interface AddressFormData {
-  _id?: string; // optional if needed
+  _id?: string; 
   phone: string;
   street: string;
   address?: string;
@@ -49,8 +49,8 @@ export interface CurrentUser {
   password: string;
   contact: string;
   role: "admin" | "user";
-  address?: AddressFormData; // ✅ FIXED: Now it's an object
-  order?: OrderData[];  
+  address?: AddressFormData; 
+  order: OrderData[];  
   createdAt?: string;
   updatedAt?: string;
 }
