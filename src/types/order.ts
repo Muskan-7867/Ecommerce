@@ -11,6 +11,7 @@ export interface Product {
 export interface OrderItem {
   product: Product;
   price: number;
+  quantity: number;
 }
 
 export interface Payment {
@@ -26,9 +27,11 @@ export interface Order {
   totalPrice: number;
   status: string;
   isPaid: boolean;
+  deliveryCharges: number;
   payment: Payment;
   orderItems: OrderItem[];
   createdAt: string;
   updatedAt: string;
-  deliveredAt: string
+  deliveredAt: string;
+
 }
