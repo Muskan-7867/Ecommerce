@@ -12,12 +12,18 @@ const SingleOrderSummary = ({ selectedRow }: { selectedRow: Order }) => {
           <div className="flex justify-between">
             <span className="text-gray-600">Subtotal:</span>
             <span className="font-medium">
-              ₹{selectedRow.totalPrice.toFixed(2)}
+              ₹
+              {selectedRow.orderItems
+                .map((item) => item.price * item.quantity)
+                .reduce((a, b) => a + b, 0)
+                .toFixed(2) || "0.00"}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Shipping:</span>
-            <span className="font-medium">₹0.00</span>
+            <span className="text-gray-600">Delivery:</span>
+            <span className="font-medium">
+              ₹{selectedRow.deliveryCharges?.toFixed(2) || "0.00"}
+            </span>
           </div>
           <div className="flex justify-between border-t pt-2">
             <span className="text-gray-600">Total:</span>

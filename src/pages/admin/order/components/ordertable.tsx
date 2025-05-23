@@ -21,7 +21,7 @@ export interface Order {
   orderItems: OrderItem[];
   action: string;
   deliveryCharges: number;
-  createdAt : string;
+  createdAt: string;
 }
 
 const OrderTable = () => {
@@ -34,9 +34,6 @@ const OrderTable = () => {
     isLoading,
     error
   } = useQuery<Order[]>(fetchOrdersQuery());
-  
-  console.log(" from oredrs", orders);
- 
 
   const [localOrders, setLocalOrders] = useState<Order[]>([]);
 
@@ -46,7 +43,9 @@ const OrderTable = () => {
     }
   }, [orders]);
   if (orders.length === 0) {
-    return <p className="p-4 text-center">You have not placed any orders yet.</p>;
+    return (
+      <p className="p-4 text-center">You have not placed any orders yet.</p>
+    );
   }
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -107,11 +106,13 @@ const OrderTable = () => {
           setLocalOrders(updated);
         };
 
-        const selected = order.status
-          
+        const selected = order.status;
+
         return (
           <select
-            className={`px-3 py-1 rounded-md outline-none ${selected ? 'border-none' : ""}`}
+            className={`px-3 py-1 rounded-md outline-none ${
+              selected ? "border-none" : ""
+            }`}
             value={selected}
             onChange={handleStatusChange}
           >
@@ -144,40 +145,38 @@ const OrderTable = () => {
         );
       }
     },
-{
-  label: "Payment Status",
-  render: (order) => {
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const updated = localOrders.map((o) =>
-        o === order
-          ? {
-              ...o,
-              payment: { ...o.payment, paymentStatus: e.target.value },
-            }
-          : o
-      );
-      setLocalOrders(updated);
-    };
+    {
+      label: "Payment Status",
+      render: (order) => {
+        const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+          const updated = localOrders.map((o) =>
+            o === order
+              ? {
+                  ...o,
+                  payment: { ...o.payment, paymentStatus: e.target.value }
+                }
+              : o
+          );
+          setLocalOrders(updated);
+        };
 
-    const selected = order.payment?.paymentStatus;
+        const selected = order.payment?.paymentStatus;
 
-    return (
-      <select
-        value={selected}
-        onChange={handleChange}
-        className={`px-3 py-1 rounded-md outline-none ${
-          selected ? 'border-none' : ''
-        }`}
-      >
-   
-        <option value="paid">Paid</option>
-        <option value="pending">Pending</option>
-        <option value="failed">Failed</option>
-      </select>
-    );
-  },
-}
-,
+        return (
+          <select
+            value={selected}
+            onChange={handleChange}
+            className={`px-3 py-1 rounded-md outline-none ${
+              selected ? "border-none" : ""
+            }`}
+          >
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+          </select>
+        );
+      }
+    },
     { label: "Action", key: "action" as const }
   ];
 
