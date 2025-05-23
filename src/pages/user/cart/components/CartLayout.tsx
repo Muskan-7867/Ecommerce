@@ -7,8 +7,8 @@ import cartloader from "../../../../../public/animations/cartLoader.json";
 import emptyCart from "../../../../../public/animations/emptycart.json";
 import { ShoppingBag } from "lucide-react";
 import Lottie from "lottie-react";
-import CartSummary from "./CartSummary";
 import useCartStore from "../../../../store/Cart/Cart.store";
+import CartSummaryForBuy from "./CartSummaryForBuy";
 
 const CartLayout = () => {
   const [quantities, setQuantities] = useState<{ [id: string]: number }>({});
@@ -114,7 +114,7 @@ const CartLayout = () => {
 
       <div className="lg:col-span-4 col-span-12 p-6 mt-14">
         {products.length > 0 ? (
-          <CartSummary products={products} quantities={quantities} />
+          <CartSummaryForBuy products={products} quantities={quantities} />
         ) : (
           <div className=" p-6 ">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">

@@ -16,24 +16,23 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const { currentUserFromStore } = useCurrentUserStore() as {
     currentUserFromStore: CurrentUser;
   };
+
   const navigate = useNavigate();
   const [loginMsg, setLoginMsg] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [showConfirmPopUp, setShowConfirmPopUp] = useState(false);
+
   const subtotal = products.reduce((acc, product) => {
     const qty = quantities[product._id] || 1;
     return acc + product.price * qty;
   }, 0);
 
-const deliveryCharge = products
-  .map((product) => {
-    const charge = Number(product?.deliveryCharges);
-    return isNaN(charge) ? 0 : charge;
-  })
-  .reduce((acc, charge) => acc + charge, 0);
-
-
-
+  const deliveryCharge = products
+    .map((product) => {
+      const charge = Number(product?.deliveryCharges);
+      return isNaN(charge) ? 0 : charge;
+    })
+    .reduce((acc, charge) => acc + charge, 0);
 
   const total = subtotal + deliveryCharge;
 
@@ -59,7 +58,7 @@ const deliveryCharge = products
   };
 
   const orderItems = products.map((product) => ({
-    product: product._id, // ✅ explicitly set the product ID
+    product: product._id,
     price: product.price,
     quantity: quantities[product._id] || 1
   }));
