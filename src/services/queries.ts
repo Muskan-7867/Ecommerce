@@ -6,7 +6,9 @@ import {
   fetchProductIds,
   fetchUserAddress,
   fetchUserCategories,
+  getAdminInfo,
   getAllProducts,
+  getClientByOrderId,
   getFilteredProducts,
   getOrders,
   getProductsByCategory,
@@ -121,6 +123,19 @@ const fetchUsersQuery = () => {
   });
 }
 
+ const getAdminQuery = (enabled = true) => ({
+  queryKey: ["admin"],
+  queryFn: getAdminInfo,
+  enabled,
+});
+
+const getClientQuery = (orderId: string) => ({
+  queryKey: ["client", orderId],
+  queryFn:() => getClientByOrderId(orderId),
+  enabled: !!orderId
+})
+
+
 export {
   getCategoriesQuery,
   getProductsQuery,
@@ -133,5 +148,7 @@ export {
   fetchOrdersQuery,
   getProductByIdQuery,
   getSingleProductQuery,
-  fetchUsersQuery
+  fetchUsersQuery,
+  getAdminQuery,
+  getClientQuery
 };
