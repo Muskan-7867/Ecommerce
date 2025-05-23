@@ -7,21 +7,21 @@ const Header: React.FC = () => {
   const token = Cookies.get("admintoken");
   const { data, isLoading } = useQuery(getAdminQuery(!!token));
 
-
-
   const getFirstLetter = (email: string) =>
     email?.charAt(0).toUpperCase() || "";
 
   return (
     <div className="h-18">
       <div className="m-4 flex justify-end lg:gap-4 items-center">
-        {/* Sign Up Button */}
-        <Link
-          to="/adminregister"
-          className="bg-primary text-white px-4 py-2 rounded-md"
-        >
-          Sign Up
-        </Link>
+        {/* Sign Up Button - Only shown when no token exists */}
+        {!token && (
+          <Link
+            to="/adminregister"
+            className="bg-primary text-white px-4 py-2 rounded-md"
+          >
+            Sign Up
+          </Link>
+        )}
 
         {token && data?.admin && (
           <Link
