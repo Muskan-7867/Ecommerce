@@ -1,3 +1,4 @@
+import { PaymentType } from "../pages/user/cart/components/CartSummary";
 import { AddressFormData } from "./auth";
 
 export type ProductImage = {
@@ -83,7 +84,7 @@ export interface OrderData {
   address: AddressFormData | undefined;
   orderItems: OrderItem[];
   deliveryCharges: number;
-  payment: payment;
+  payment: PaymentType;
   status: string;
   isPaid: boolean;
  

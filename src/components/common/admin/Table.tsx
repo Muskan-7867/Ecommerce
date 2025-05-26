@@ -3,7 +3,11 @@ import { CiMenuKebab } from "react-icons/ci";
 import { useSingleProductStore } from "../../../store/product/Table.store";
 import TableImageRender from "./TableImageRednder";
 import DialogBoxWrapper from "./DialogBoxWrapper";
-import { getDialogPosition, DialogPosition } from "../../../utills/getDialogPosition"
+import {
+  getDialogPosition,
+  DialogPosition
+} from "../../../utills/getDialogPosition";
+import { ProductImage } from "../../../types/Product";
 
 interface Column<T> {
   label: string | React.ReactNode;
@@ -23,7 +27,8 @@ const Table = <T extends { [key: string]: unknown }>({
   data
 }: TableProps<T>) => {
   const [openDialog, setOpenDialog] = useState<number | null>(null);
-  const [dialogPosition, setDialogPosition] = useState<DialogPosition>("bottom");
+  const [dialogPosition, setDialogPosition] =
+    useState<DialogPosition>("bottom");
   const { setSelectedProduct } = useSingleProductStore();
   const tableRef = useRef<HTMLTableElement>(null);
 
@@ -62,7 +67,11 @@ const Table = <T extends { [key: string]: unknown }>({
                 key={index}
                 className={`py-3 px-4 text-center whitespace-nowrap ${
                   column.bg || ""
-                } ${column.key !== "action" ? "border-r-[3px] border-r-[#F1F1F1]" : ""}`}
+                } ${
+                  column.key !== "action"
+                    ? "border-r-[3px] border-r-[#F1F1F1]"
+                    : ""
+                }`}
               >
                 {column.render ? column.render() : column.label}
               </th>
@@ -82,15 +91,19 @@ const Table = <T extends { [key: string]: unknown }>({
                       ? "border-r-[3px] border-r-[#F1F1F1]"
                       : ""
                   } ${
-                    column.key !== "checkbox"
-                      ? "border-b border-b-[#000]"
-                      : ""
+                    column.key !== "checkbox" ? "border-b border-b-[#000]" : ""
                   }`}
                 >
                   {column.key === "images" ? (
-                    <TableImageRender images={row[column.key]} />
+                    <TableImageRender
+                      images={row[column.key] as ProductImage[]}
+                    />
                   ) : column.key === "inStock" ? (
-                    row[column.key] ? "In Stock" : "Out Of Stock"
+                    row[column.key] ? (
+                      "In Stock"
+                    ) : (
+                      "Out Of Stock"
+                    )
                   ) : column.key === "action" ? (
                     <button
                       className="p-2 text-[#000] font-extrabold text-2xl"
@@ -99,7 +112,7 @@ const Table = <T extends { [key: string]: unknown }>({
                       <CiMenuKebab />
                     </button>
                   ) : (
-                    row[column.key] as React.ReactNode
+                    (row[column.key] as React.ReactNode)
                   )}
                 </td>
               ))}

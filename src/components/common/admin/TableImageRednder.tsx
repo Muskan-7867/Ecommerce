@@ -1,6 +1,12 @@
-import { motion } from "motion/react";
-import {  Product} from "../../../types/Product";
-const TableImageRednder = ({ images }: Product) => {
+// In TableImageRender.tsx
+import { motion } from "framer-motion";
+import { ProductImage } from "../../../types/Product"; 
+
+interface TableImageRenderProps {
+  images: ProductImage[];
+}
+
+const TableImageRender: React.FC<TableImageRenderProps> = ({ images }) => {
   return (
     <motion.div
       layoutId={images[0].publicId}
@@ -11,4 +17,4 @@ const TableImageRednder = ({ images }: Product) => {
   );
 };
 
-export default TableImageRednder;
+export default TableImageRender;

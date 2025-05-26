@@ -7,6 +7,7 @@ import { CurrentUser } from "../../../../types/auth";
 import SummaryDetails from "./SummaryDetails";
 import Cookies from "js-cookie";
 import { RazorpayResponse } from "razorpay";
+import { PaymentType } from "./CartSummary";
 
 interface CartSummaryProps {
   products: Product[];
@@ -24,7 +25,7 @@ const CartSummaryForBuy: React.FC<CartSummaryProps> = ({
 
   const navigate = useNavigate();
   const [loginMsg, setLoginMsg] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentType>("online_payment");
   const [loading, setLoading] = useState(false);
 
   const subtotal = products.reduce((acc, product) => {
@@ -43,21 +44,21 @@ const CartSummaryForBuy: React.FC<CartSummaryProps> = ({
     0
   );
 
-  const orderItems = products.map((product) => ({
-    product: product._id,
-    price: product.price,
-    quantity: quantities[product._id] || 1
-  }));
+  // const orderItems = products.map((product) => ({
+  //   product: product._id,
+  //   price: product.price,
+  //   quantity: quantities[product._id] || 1
+  // }));
 
-  const orderData = {
-    quantity: totalQuantity,
-    totalQuantity,
-    totalPrice: total,
-    address: currentUserFromStore?.address?._id,
-    orderItems,
-    status: "pending",
-    deliveryCharges: deliveryCharge
-  };
+  // const orderData = {
+  //   quantity: totalQuantity,
+  //   totalQuantity,
+  //   totalPrice: total,
+  //   address: currentUserFromStore?.address?._id,
+  //   orderItems,
+  //   status: "pending",
+  //   deliveryCharges: deliveryCharge
+  // };
 
   const handleOrder = async () => {
     if (!isLoggined) {

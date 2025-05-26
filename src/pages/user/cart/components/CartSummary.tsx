@@ -11,6 +11,7 @@ interface CartSummaryProps {
   products: Product[];
   quantities: { [id: string]: number };
 }
+ export type PaymentType = "online_payment" | "cash_on_delivery";
 const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const { isLoggined } = useCurrentUserStore();
   const { currentUserFromStore } = useCurrentUserStore() as {
@@ -19,7 +20,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
 
   const navigate = useNavigate();
   const [loginMsg, setLoginMsg] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentType>("online_payment");
   const [showConfirmPopUp, setShowConfirmPopUp] = useState(false);
 
   const subtotal = products.reduce((acc, product) => {
@@ -62,7 +63,6 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     price: product.price,
     quantity: quantities[product._id] || 1
   }));
-
   const orderData = {
     quantity: totalQuantity,
     totalQuantity,
@@ -70,7 +70,9 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     address: currentUserFromStore?.address,
     orderItems,
     status: "pending",
-    deliveryCharges: deliveryCharge
+    deliveryCharges: deliveryCharge,
+    payment: paymentMethod,
+    isPaid: paymentMethod === "online_payment" ? true : false
   };
 
   return (
@@ -92,7 +94,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       />
       <PaymentSummary
         paymentMethod={paymentMethod}
-        setPaymentMethod={setPaymentMethod}
+         setPaymentMethod={(method) => setPaymentMethod(method as PaymentType)}
       />
 
       {isLoggined ? (

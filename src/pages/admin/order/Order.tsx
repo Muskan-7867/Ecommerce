@@ -2,6 +2,7 @@ import { useSingleOrderStore } from "../../../store/product/Table.store";
 
 import OrderSummary from "./components/orderSummary";
 import OrderTable from "./components/OrderTable";
+
 import SingleOrderProd from "./components/SingleOrderProd";
 
 const Order = () => {
