@@ -25,7 +25,7 @@ export interface Order {
   totalQuantity: number;
 }
 
-const OrderTable = () => {
+const OrderTableForAdmin = () => {
   const [page] = useQueryState("page", { defaultValue: "1" });
   const currentPage = Number(page);
   const itemsPerPage = 10;
@@ -198,4 +198,4 @@ const OrderTable = () => {
   );
 };
 
-export default OrderTable;
+export default OrderTableForAdmin;
