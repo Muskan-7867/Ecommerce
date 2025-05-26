@@ -1,7 +1,7 @@
 import { useSingleOrderStore } from "../../../store/product/Table.store";
 
 import OrderSummary from "./components/orderSummary";
-import OrderTable from "./components/OrderTable";
+import OrderTableForAdmin from "./components/OrderTableForAdmin";
 
 import SingleOrderProd from "./components/SingleOrderProd";
 
@@ -21,7 +21,7 @@ const Order = () => {
         </div>
         <OrderSummary />
 
-        <OrderTable />
+        <OrderTableForAdmin />
       </div>
       {showSingleOrder && <SingleOrderProd />}
     </div>
