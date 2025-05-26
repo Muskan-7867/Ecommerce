@@ -12,7 +12,7 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ paymentMethod, setPayme
       <div className="border border-gray-200 rounded-lg mt-2">
         <div className="flex flex-col px-4 py-2 gap-2">
           <div className="flex flex-col gap-4">
-            {["Cash On Delivery", "Online Payment", "Card Payment"].map((label) => {
+            {["Cash On Delivery", "Online Payment"].map((label) => {
               const value = label.toLowerCase().replace(/\s/g, "_");
               return (
                 <label

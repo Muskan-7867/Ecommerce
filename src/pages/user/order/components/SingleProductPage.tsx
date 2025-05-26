@@ -12,7 +12,7 @@ const SingleProductPage: React.FC<SingleProductPageProps> = ({ quantities, setQu
   const navigate = useNavigate();
 
   if (!singleProduct) {
-    return <div className="p-6 text-gray-500">Product not loaded.</div>;
+    return <div className="p-6 text-gray-500">Product not loaded.</div>
   }
 
   const quantity = quantities[singleProduct._id] || 1;

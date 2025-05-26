@@ -11,7 +11,6 @@ const BeautyProducts = () => {
   const [showLeftBtn, setShowLeftBtn] = useState(false);
   const [showRightBtn, setShowRightBtn] = useState(false);
 
-  
   useEffect(() => {
     const fetchElectronics = async () => {
       try {

@@ -30,10 +30,15 @@ const useOrderHandler = ({
   const placeOrderHandler = async () => {
     setShowConfirmPopUp(false);
     setLoading(true);
+
+      const dataForCod = {
+    ...orderData,
+    paymentMethod: paymentmethod
+  };
     try {
-      const response = await placeOrder(orderData);
+      const response = await placeOrder(dataForCod);
       if (response?.data.success) {
-        console.log("Order placed successfully")
+        console.log("Order placed successfully", response?.data);
       } else {
         console.error("Failed to place order");
       }
@@ -50,7 +55,7 @@ const useOrderHandler = ({
       return;
     }
 
-    if (paymentmethod === "cod") {
+    if (paymentmethod === "cash_on_delivery") {
       await placeOrderHandler();
     } else {
       await initiateRazorpayPayment({
@@ -59,7 +64,8 @@ const useOrderHandler = ({
         currentUser,
         authHeader,
         navigate,
-        setLoading
+        setLoading,
+        paymentmethod
       });
     }
   };

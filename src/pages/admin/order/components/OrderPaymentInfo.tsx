@@ -1,6 +1,7 @@
 import { Order } from "../../../../types/order";
 
 const OrderPaymentInfo = ({ selectedRow }: { selectedRow: Order }) => {
+  console.log("from orderpayment", selectedRow);
   return (
     <div className="bg-gray-50 p-4 rounded-lg">
       <h3 className="font-semibold text-lg text-gray-700 border-b pb-2 mb-3">
@@ -8,27 +9,27 @@ const OrderPaymentInfo = ({ selectedRow }: { selectedRow: Order }) => {
       </h3>
       <div className="space-y-3">
         <div>
-          <p className="text-sm text-gray-500">Payment Method</p>
-          <p className="font-medium">
-            {selectedRow.payment?.paymentMethod || "N/A"}
+          <p className="text-sm text-gray-500 font-bold">Payment Method</p>
+          <p className="text-sm capitalize text-gray-500">
+            {selectedRow?.paymentMethod?.replace(/_/g, " ")}
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Payment Status</p>
+          <p className="text-sm text-gray-500 font-bold">Payment Status</p>
           <p
-            className={`font-medium ${
-              selectedRow.payment?.paymentStatus === "completed"
+            className={`text-sm ${
+              selectedRow.payment?.status === "Success"
                 ? "text-green-600"
                 : "text-yellow-600"
             }`}
           >
-            {selectedRow.payment?.paymentStatus || "N/A"}
+            {selectedRow.payment.status || "N/A"}
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Order Status</p>
+          <p className="text-sm text-gray-500 font-bold">Order Status</p>
           <p
-            className={`font-medium ${
+            className={`text-sm ${
               selectedRow.status === "delivered"
                 ? "text-green-600"
                 : selectedRow.status === "cancelled"
@@ -40,9 +41,9 @@ const OrderPaymentInfo = ({ selectedRow }: { selectedRow: Order }) => {
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Paid</p>
+          <p className="text-sm text-gray-500 font-bold">Paid</p>
           <p
-            className={`font-medium ${
+            className={`text-sm ${
               selectedRow.isPaid ? "text-green-600" : "text-red-600"
             }`}
           >

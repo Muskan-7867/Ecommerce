@@ -9,6 +9,7 @@ interface RazorpayParams {
   orderData: OrderData;
   products: Product[];
   currentUser: CurrentUser;
+  paymentmethod: string;
   authHeader: string;
   navigate: (path: string) => void;
   setLoading: (val: boolean) => void;
@@ -19,7 +20,7 @@ export const initiateRazorpayPayment = async ({
   products,
   currentUser,
   authHeader,
- 
+  paymentmethod,
   setLoading
 }: RazorpayParams) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -37,7 +38,7 @@ export const initiateRazorpayPayment = async ({
         productid: firstProduct.product,
         address: orderData.address,
         quantity: firstProduct.quantity,
-        deliveryCharges: orderData.deliveryCharges,
+        deliveryCharges: orderData.deliveryCharges
       },
       {
         headers: { Authorization: authHeader }
@@ -45,6 +46,7 @@ export const initiateRazorpayPayment = async ({
     );
 
     const { id, amount } = data.razorpayOrder;
+    const orderId = data.orderId;
 
     const options = {
       key: RAZORPAY_KEY,
@@ -56,11 +58,17 @@ export const initiateRazorpayPayment = async ({
       handler: async (response: RazorpayResponse) => {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
           response;
-
+        const paymentMethod = paymentmethod;
         try {
           const verification = await axios.post(
             `${BASE_URL}/api/v1/order/paymentverify`,
-            { razorpay_order_id, razorpay_payment_id, razorpay_signature },
+            {
+              razorpay_order_id,
+              razorpay_payment_id,
+              razorpay_signature,
+              orderId,
+              paymentMethod
+            },
             {
               headers: { Authorization: authHeader }
             }
@@ -68,7 +76,6 @@ export const initiateRazorpayPayment = async ({
 
           if (verification.data.success) {
             console.log("Payment verified");
-      
           } else {
             console.error("Payment verification failed");
           }

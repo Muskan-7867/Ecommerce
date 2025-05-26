@@ -2,6 +2,7 @@ import { Order } from "../../../../types/order";
 import OrderPaymentInfo from "./OrderPaymentInfo";
 
 const SingleOrderSummary = ({ selectedRow }: { selectedRow: Order }) => {
+  console.log("from selected", selectedRow);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="bg-gray-50 p-4 rounded-lg">

@@ -32,6 +32,12 @@
     accent-color:'#ca8888'
 }
 
+/* Force the checkmark to appear white */
+.custom-checkbox:checked {
+  filter: brightness(1) invert(0);
+}
+
+
 .slider {
     -webkit-appearance: none;
     width: 100%;

@@ -1,35 +1,46 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchOrdersQuery } from "../../../../services/queries";
-import { Order } from "../../../admin/order/components/OrderTable";
 import { useEffect } from "react";
+import useCurrentUser from "../../../../hooks/useCurrentUser";
+import { CurrentUser } from "../../../../types/auth";
+import { OrderData } from "../../../../types/Product";
 
 const UserOrderTable = () => {
-  const { data: orders, isLoading } = useQuery(fetchOrdersQuery());
+  const { currentUser } = useCurrentUser() as {
+    currentUser: CurrentUser | null;
+  };
+  console.log("from profile", currentUser);
 
   useEffect(() => {
-    window.scrollTo(0, 0); 
-  })
+    window.scrollTo(0, 0);
+  });
+  if (!currentUser) {
+    return <p className="text-gray-600">Loading user data...</p>;
+  }
+
   return (
     <div className="w-full mt-18">
-      <h2 className="text-2xl font-bold text-primary mb-4 px-8">Order History</h2>
+      <h2 className="text-2xl font-bold text-primary mb-4 px-8">
+        Order History
+      </h2>
 
-      {isLoading ? (
+      {currentUser?.order?.length === undefined ? (
         <p className="text-gray-600">Loading orders...</p>
-      ) : orders.length === 0 ? (
-        <p className="text-gray-500 p-4 text-center text-lg">You have no orders yet.!!</p>
+      ) : currentUser.order?.length === 0 ? (
+        <p className="text-gray-500 p-4 text-center text-lg">
+          You have no orders yet.!!
+        </p>
       ) : (
         <div className="overflow-x-auto  px-8">
           <table className="min-w-full rounded-lg bg-white border border-gray-200">
             <thead className="bg-primary text-white">
               <tr>
                 <th className="px-6 py-3 text-left text-sm font-medium">
-                  Order ID
+                  Quantity
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium">
                   Total Price
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium">
-                  Payment Method
+                  Order Status
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium">
                   Paid
@@ -37,14 +48,20 @@ const UserOrderTable = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {orders.map((order: Order, index: number) => (
+              {currentUser?.order.map((order: OrderData, index: number) => (
                 <tr key={index} className="border-t">
                   <td className="px-6 py-4">{order.quantity}</td>
                   <td className="px-6 py-4">₹{order.totalPrice}</td>
+                  <td className="px-6 py-4">{order?.status}</td>
                   <td className="px-6 py-4">
-                    {order.payment?.paymentMethod || "N/A"}
+                    <span
+                      className={`font-semibold ${
+                        order.isPaid ? "text-green-600" : "text-red-500"
+                      }`}
+                    >
+                      {order.isPaid ? "Paid" : "Unpaid"}
+                    </span>
                   </td>
-                  <td className="px-6 py-4">{order.isPaid ? "Yes" : "No"}</td>
                 </tr>
               ))}
             </tbody>

@@ -3,7 +3,7 @@ import { EditProductData, Product } from "../types/Product";
 import Cookies from "js-cookie";
 import { AddressFormData, CurrentUser } from "../types/auth";
 const token = Cookies.get("authToken");
-const admintoken = Cookies.get("admintoken")
+const admintoken = Cookies.get("admintoken");
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 //for user
@@ -15,7 +15,7 @@ const fetchUserCategories = async () => {
         headers: { "Content-Type": "application/json" }
       }
     );
-  
+
     return response.data.categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -30,7 +30,7 @@ const fetchAdminCategories = async () => {
         headers: { "Content-Type": "application/json" }
       }
     );
- 
+
     return response.data.categories;
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -102,7 +102,7 @@ const getFilteredProducts = async (
         headers: { "Content-Type": "application/json" }
       }
     );
-    console.log("from getfilterd" , response.data.products);
+    console.log("from getfilterd", response.data.products);
     return {
       ProductCount: response.data.totalProduct,
       products: response.data.products
@@ -231,17 +231,13 @@ const fetchUserAddress = async (addressId: string | undefined) => {
 
 const getOrders = async () => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/api/v1/order/products`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+    const response = await axios.get(`${BASE_URL}/api/v1/order/products`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
- 
     return response.data.orders;
   } catch {
     return [];
@@ -282,68 +278,72 @@ const getSingleProductById = async (singleproductid: string | undefined) => {
 const getUsers = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/user/allusers`);
+    console.log("form userfetcger", response.data);
     return response.data.users;
   } catch {
     console.log("error in fetching users");
   }
 };
 
-const adminRegister = async (adminData: 
-  {
-    name: string;
-    email: string;
-    password: string;
-    role: string;
-   
-  }
-) => {
+const adminRegister = async (adminData: {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/v1/admin/create`, adminData);
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/admin/create`,
+      adminData
+    );
     return response.data;
   } catch {
     console.log("error in admin register");
   }
-}
+};
 
-const adminLogin = async (adminData:{
-  email: string;
-  password: string;
-}) => {
+const adminLogin = async (adminData: { email: string; password: string }) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/v1/admin/login`, adminData);
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/admin/login`,
+      adminData
+    );
 
     return response.data;
   } catch {
     console.log("error in admin login");
   }
-}
+};
 
-const getAdminInfo = async() => {
+const getAdminInfo = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/admin/all`, {
       headers: {
-        Authorization: `Bearer ${admintoken}`,
-      },
+        Authorization: `Bearer ${admintoken}`
+      }
     });
-   
+
     return response.data;
   } catch {
     console.log("error in get admin info");
   }
-}
+};
 
 const getClientByOrderId = async (orderId: string) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/v1/order/client/${orderId}`, {
-      headers: {
-        Authorization: `Bearer ${admintoken}`,
-      },
-    });
+    const response = await axios.get(
+      `${BASE_URL}/api/v1/order/client/${orderId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${admintoken}`
+        }
+      }
+    );
     return response.data;
   } catch {
     console.log("error in get client by order id");
-}
-}
+  }
+};
 
 export {
   fetchUserCategories,

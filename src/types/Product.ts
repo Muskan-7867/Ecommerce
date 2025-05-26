@@ -1,6 +1,5 @@
 import { AddressFormData } from "./auth";
 
-
 export type ProductImage = {
   url: string;
   publicId: string;
@@ -70,6 +69,7 @@ export interface OrderItem {
 
 
 export interface payment {
+  status: string;
   paymentMethod: string; 
   paymentStatus: string;
 
@@ -84,6 +84,9 @@ export interface OrderData {
   orderItems: OrderItem[];
   deliveryCharges: number;
   payment: payment;
+  status: string;
+  isPaid: boolean;
+ 
 }
 
 

@@ -22,6 +22,7 @@ export interface Order {
   action: string;
   deliveryCharges: number;
   createdAt: string;
+  totalQuantity: number;
 }
 
 const OrderTable = () => {
@@ -34,6 +35,7 @@ const OrderTable = () => {
     isLoading,
     error
   } = useQuery<Order[]>(fetchOrdersQuery());
+  console.log("from ordertableee", orders);
 
   const [localOrders, setLocalOrders] = useState<Order[]>([]);
 
@@ -92,10 +94,15 @@ const OrderTable = () => {
         </div>
       )
     },
-    { label: "Quantity", key: "quantity" },
+    {
+      label: "Quantity",
+      render: (order) => {
+        return order.totalQuantity;
+      }
+    },
     { label: "Total Price", key: "totalPrice" },
     {
-      label: "Status",
+      label: "Order Status",
       render: (order) => {
         const handleStatusChange = (
           e: React.ChangeEvent<HTMLSelectElement>
@@ -140,7 +147,7 @@ const OrderTable = () => {
             type="checkbox"
             checked={order.isPaid}
             onChange={handleTogglePaid}
-            className="w-5 h-5 cursor-pointer accent-primary"
+            className="w-5 h-5 cursor-pointer accent-primary text-white"
           />
         );
       }
@@ -170,7 +177,7 @@ const OrderTable = () => {
               selected ? "border-none" : ""
             }`}
           >
-            <option value="paid">Paid</option>
+            <option value="success">Success</option>
             <option value="pending">Pending</option>
             <option value="failed">Failed</option>
           </select>

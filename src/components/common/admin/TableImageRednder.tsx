@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-const TableImageRednder = ({ images }: any) => {
+import {  Product} from "../../../types/Product";
+const TableImageRednder = ({ images }: Product) => {
   return (
     <motion.div
       layoutId={images[0].publicId}

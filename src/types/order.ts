@@ -15,10 +15,11 @@ export interface OrderItem {
 }
 
 export interface Payment {
+  status: string;
   amount: number;
   paymentMethod: string;
   paymentStatus: string;
-   paidAt?: string;
+  paidAt?: string;
 }
 
 export interface Order {
@@ -33,5 +34,6 @@ export interface Order {
   createdAt: string;
   updatedAt: string;
   deliveredAt: string;
+  paymentMethod: string;
 
 }
