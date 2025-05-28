@@ -6,12 +6,15 @@ import useCurrentUserStore from "../../../../store/User/user.store";
 import { CurrentUser } from "../../../../types/auth";
 import PopupMessage from "../../../../components/common/OrderConfirmPopUp";
 import SummaryDetails from "./SummaryDetails";
+import useOrderHandler from "../../../../hooks/useOrderHandler";
+
+export type PaymentType = "online_payment" | "cash_on_delivery";
 
 interface CartSummaryProps {
   products: Product[];
   quantities: { [id: string]: number };
 }
- export type PaymentType = "online_payment" | "cash_on_delivery";
+
 const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const { isLoggined } = useCurrentUserStore();
   const { currentUserFromStore } = useCurrentUserStore() as {
@@ -22,25 +25,49 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const [loginMsg, setLoginMsg] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentType>("online_payment");
   const [showConfirmPopUp, setShowConfirmPopUp] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const subtotal = products.reduce((acc, product) => {
     const qty = quantities[product._id] || 1;
     return acc + product.price * qty;
   }, 0);
 
-  const deliveryCharge = products
-    .map((product) => {
-      const charge = Number(product?.deliveryCharges);
-      return isNaN(charge) ? 0 : charge;
-    })
-    .reduce((acc, charge) => acc + charge, 0);
+const deliveryCharge = products.reduce((acc, product) => {
+  const charge = Number(product?.deliveryCharges || 0);
+  return acc + (isNaN(charge) ? 0 : charge);
+}, 0);
 
   const total = subtotal + deliveryCharge;
-
   const totalQuantity = Object.values(quantities).reduce(
     (acc, qty) => acc + qty,
     0
   );
+
+  const orderItems = products.map((product) => ({
+    product: product._id,
+    price: product.price,
+    quantity: quantities[product._id] || 1
+  }));
+
+  const orderData = {
+    quantity: totalQuantity,
+    totalQuantity,
+    totalPrice: total,
+    address: currentUserFromStore?.address,
+    orderItems,
+    status: "pending",
+    deliveryCharges: deliveryCharge,
+    payment: paymentMethod,
+    isPaid: paymentMethod === "online_payment"
+  };
+
+  const { handlePlaceOrder } = useOrderHandler({
+    orderData,
+    products,
+    paymentmethod: paymentMethod,
+    setLoading,
+    setShowConfirmPopUp
+  });
 
   const handleOrder = () => {
     if (!isLoggined) {
@@ -53,26 +80,14 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
 
     if (!currentUserFromStore.address) {
       navigate("/addressform");
-    } else {
-      setShowConfirmPopUp(true);
+      return;
     }
-  };
 
-  const orderItems = products.map((product) => ({
-    product: product._id,
-    price: product.price,
-    quantity: quantities[product._id] || 1
-  }));
-  const orderData = {
-    quantity: totalQuantity,
-    totalQuantity,
-    totalPrice: total,
-    address: currentUserFromStore?.address,
-    orderItems,
-    status: "pending",
-    deliveryCharges: deliveryCharge,
-    payment: paymentMethod,
-    isPaid: paymentMethod === "online_payment" ? true : false
+    if (paymentMethod === "cash_on_delivery") {
+      handlePlaceOrder(); 
+    } else {
+      setShowConfirmPopUp(true); 
+    }
   };
 
   return (
@@ -92,26 +107,23 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
         total={total}
         deliveryCharge={deliveryCharge}
       />
+
       <PaymentSummary
         paymentMethod={paymentMethod}
-         setPaymentMethod={(method) => setPaymentMethod(method as PaymentType)}
+        setPaymentMethod={(method) => setPaymentMethod(method as PaymentType)}
       />
 
-      {isLoggined ? (
-        <button
-          onClick={handleOrder}
-          className="bg-primary text-white py-2 px-4 rounded-full mt-6 w-full"
-        >
-          Place Order
-        </button>
-      ) : (
-        <button
-          onClick={handleOrder}
-          className="bg-primary text-white py-2 px-4 rounded-full mt-6 w-full"
-        >
-          Please Login to Place Order
-        </button>
-      )}
+      <button
+        onClick={handleOrder}
+        className="bg-primary text-white py-2 px-4 rounded-full mt-6 w-full"
+        disabled={loading}
+      >
+        {loading
+          ? "Processing..."
+          : isLoggined
+          ? "Place Order"
+          : "Please Login to Place Order"}
+      </button>
 
       {showConfirmPopUp && (
         <PopupMessage
