@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import SingleProductPage from "./SingleProductPage";
-import CartSummary from "../../cart/components/CartSummary";
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "../../../../types/Product";
 import { getProductByIdQuery } from "../../../../services/queries";
 import { useParams } from "react-router-dom";
 import useCurrentUserStore from "../../../../store/User/user.store";
+import PaymentSummaryForBuy from "../../cart/components/PaymentSummaryForBuy";
 
 const CheckOut = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -38,7 +38,7 @@ const CheckOut = () => {
       </div>
 
       <div className="lg:col-span-4 col-span-12">
-        <CartSummary products={products} quantities={quantities} />
+        <PaymentSummaryForBuy products={products} quantities={quantities} />
       </div>
    
     </div>
