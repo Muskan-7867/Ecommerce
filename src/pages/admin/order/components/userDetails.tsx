@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { getClientQuery } from "../../../../services/queries";
 import { useQuery } from "@tanstack/react-query";
+import { AddressFormData } from "../../../../types/auth";
 
 interface UserData {
   order: {
@@ -10,7 +11,7 @@ interface UserData {
       contact: string;
     };
     address: {
-      address: string;
+      address: AddressFormData;
       address1?: string;
       street: string;
       city: string;
