@@ -8,7 +8,7 @@ export type ProductImage = {
 };
 
 export interface Product {
-  _id: string ;
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -25,7 +25,7 @@ export interface Product {
   deliveryCharges: number;
 }
 
-export  interface Category {
+export interface Category {
   _id: string;
   name: string;
   description: string;
@@ -40,14 +40,14 @@ export interface ProductFormData {
   price: number | string;
   rating: number | string;
   inStock: string | number | readonly string[] | undefined;
-category: string;
+  category: string;
   images?: FileList;
 }
 
 export interface CategoryFormData {
   name: string;
   description: string;
-  image? : FileList;
+  image?: FileList;
   products: string[];
 }
 
@@ -59,36 +59,32 @@ export interface EditProductData {
   inStock: boolean;
   category: string;
   deliveryCharges: number;
-
 }
 
 export interface OrderItem {
-  product: string | Product; 
+  product: string | Product;
   price: number;
   quantity: number;
 }
 
-
 export interface payment {
   status: string;
-  paymentMethod: string; 
+  paymentMethod: string;
   paymentStatus: string;
-
 }
-
 
 export interface OrderData {
   quantity: number;
   totalQuantity: number;
   totalPrice: number;
   address: AddressFormData | undefined;
-  orderItems: OrderItem[];
+  orderItems: {
+    product: string;
+    price: number;
+    quantity: number;
+  }[];
+  status: string;
   deliveryCharges: number;
   payment: PaymentType;
-  status: string;
   isPaid: boolean;
- 
 }
-
-
-

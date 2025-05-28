@@ -1,8 +1,6 @@
 import axios from "axios";
 import { OrderData, Product } from "../types/Product";
 import { CurrentUser } from "../types/auth";
-
-// Add this import
 import { RazorpayResponse } from "razorpay";
 
 interface RazorpayParams {
@@ -25,20 +23,24 @@ export const initiateRazorpayPayment = async ({
 }: RazorpayParams) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const RAZORPAY_KEY = import.meta.env.VITE_PUBLIC_RAZORPAY_ID;
-  console.log("orderData", RAZORPAY_KEY);
 
   setLoading(true);
 
   try {
-    const firstProduct = orderData.orderItems[0];
+    // Prepare cart data for the API
+    const cartProductIds = orderData.orderItems.map(item => item.product);
+    const quantities = orderData.orderItems.reduce((acc, item) => {
+      acc[item.product] = item.quantity;
+      return acc;
+    }, {} as Record<string, number>);
 
     const { data } = await axios.post(
-      `${BASE_URL}/api/v1/order/razorpayorder`,
+      `${BASE_URL}/api/v1/order/cartrazorpayorder`,
       {
-        productid: firstProduct.product,
+        cartProductIds,
         address: orderData.address,
-        quantity: firstProduct.quantity,
-        deliveryCharges: orderData.deliveryCharges
+        quantities,
+        paymentMethod: paymentmethod
       },
       {
         headers: { Authorization: authHeader }
@@ -46,19 +48,18 @@ export const initiateRazorpayPayment = async ({
     );
 
     const { id, amount } = data.razorpayOrder;
-    const orderId = data.orderId;
+    const orderId = data.order._id; // Assuming the order ID is in data.order._id
 
     const options = {
       key: RAZORPAY_KEY,
       amount,
       currency: "INR",
       order_id: id,
-      name: products[0]?.name || "Product",
-      description: "Payment for product",
+      name: "Your Store Name", // You can customize this
+      description: `Payment for ${products.length} items`, // More descriptive
       handler: async (response: RazorpayResponse) => {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
           response;
-        const paymentMethod = paymentmethod;
         try {
           const verification = await axios.post(
             `${BASE_URL}/api/v1/order/paymentverify`,
@@ -67,7 +68,7 @@ export const initiateRazorpayPayment = async ({
               razorpay_payment_id,
               razorpay_signature,
               orderId,
-              paymentMethod
+              paymentMethod: paymentmethod
             },
             {
               headers: { Authorization: authHeader }
@@ -76,8 +77,11 @@ export const initiateRazorpayPayment = async ({
 
           if (verification.data.success) {
             console.log("Payment verified");
+            // You might want to navigate to a success page here
+            // navigate('/order-success');
           } else {
             console.error("Payment verification failed");
+            // Handle failed verification
           }
         } catch (err) {
           console.error("Error during verification:", err);
@@ -88,16 +92,21 @@ export const initiateRazorpayPayment = async ({
         email: currentUser?.email,
         contact: currentUser?.contact
       },
+      notes: {
+        orderId: orderId, // Add order ID to notes for reference
+        userId: currentUser?._id
+      },
       theme: {
         color: "#5239E9"
       }
     };
 
-    // Use the imported Razorpay directly
     const razorpay = new window.Razorpay(options);
+    
     razorpay.open();
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
+    // Handle error appropriately
   } finally {
     setLoading(false);
   }

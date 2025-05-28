@@ -1,12 +1,15 @@
+import { Product } from "./Product";
+
 export interface ProductImage {
   url: string;
 }
 
-export interface Product {
-  name: string;
-  images: ProductImage[];
-  // Add more fields as needed
-}
+// export interface Product {
+//   name: string;
+//   deliveryCharges: number;
+//   images: ProductImage[];
+//   // Add more fields as needed
+// }
 
 export interface OrderItem {
   product: Product;
