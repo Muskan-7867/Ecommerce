@@ -27,7 +27,7 @@ const useOrderHandler = ({
 
   const { currentUser } = useCurrentUser() as { currentUser: CurrentUser };
 
-  const placeOrderHandler = async () => {
+ const placeOrderHandler = async () => {
     setShowConfirmPopUp(false);
     setLoading(true);
 
@@ -39,6 +39,7 @@ const useOrderHandler = ({
       const response = await placeOrder(dataForCod);
       if (response?.data.success) {
         console.log("Order placed successfully", response?.data);
+        navigate("/products");
       } else {
         console.error("Failed to place order");
       }
