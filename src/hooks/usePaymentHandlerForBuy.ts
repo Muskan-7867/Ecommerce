@@ -186,7 +186,7 @@ export const usePaymentHandlerForBuy = () => {
         contact: currentUserFromStore.contact || "",
       },
       theme: {
-        color: "#3399cc",
+        color: "#ca8888",
       },
     };
 

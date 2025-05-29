@@ -107,7 +107,7 @@ export const initiateRazorpayPayment = async ({
         userId: currentUser?._id
       },
       theme: {
-        color: "#5239E9"
+        color: "#ca8888"
       }
     };
 
