@@ -5,9 +5,8 @@ import { Product } from "../../../../types/Product";
 import ProductDetails from "./ProductDetails";
 import ProductImage from "./ProductImage";
 import ProductCard from "./ProductCard";
-import Lottie from "lottie-react";
-import ProductLoader from "../../../../../public/animations/loader.json";
 import { useSingleProduct } from "../../../../store/product/Product.store";
+import ProductDetailShimmer from "./ProductDetailShimmer";
 
 const ProductDisplay = () => {
   const Base_url = import.meta.env.VITE_BASE_URL;
@@ -64,14 +63,7 @@ const ProductDisplay = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="w-full flex items-center justify-center mt-20">
-        <Lottie
-          animationData={ProductLoader}
-          className="w-[18rem] h-[18rem] lg:w-[25rem] lg:h-[25rem]"
-        />
-      </div>
-    );
+    return <ProductDetailShimmer />
   }
 
   if (!product) {
