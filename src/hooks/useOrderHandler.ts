@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import placeOrder from "../services/order";
 import { OrderData, Product } from "../types/Product";
 import useCurrentUser from "./useCurrentUser";
-import { initiateRazorpayPayment } from "../services/razorpay";
+import { initiateRazorpayPayment } from "../services/razorpayforcartorder";
 import { CurrentUser } from "../types/auth";
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
   paymentmethod: string;
   setLoading: (val: boolean) => void;
   setShowConfirmPopUp: (val: boolean) => void;
+  setShowSuccessPopup: (value: boolean) => void;
 }
 
 const useOrderHandler = ({
@@ -19,7 +20,8 @@ const useOrderHandler = ({
   products,
   paymentmethod,
   setLoading,
-  setShowConfirmPopUp
+  setShowConfirmPopUp,
+  setShowSuccessPopup
 }: Props) => {
   const navigate = useNavigate();
   const token = Cookies.get("authToken");
@@ -27,19 +29,22 @@ const useOrderHandler = ({
 
   const { currentUser } = useCurrentUser() as { currentUser: CurrentUser };
 
- const placeOrderHandler = async () => {
+  const placeOrderHandler = async () => {
     setShowConfirmPopUp(false);
     setLoading(true);
 
-      const dataForCod = {
-    ...orderData,
-    paymentMethod: paymentmethod
-  };
+    const dataForCod = {
+      ...orderData,
+      paymentMethod: paymentmethod
+    };
+    
     try {
       const response = await placeOrder(dataForCod);
       if (response?.data.success) {
-        console.log("Order placed successfully", response?.data);
-        navigate("/products");
+        setShowSuccessPopup(true);
+        setTimeout(() => {
+          navigate("/products");
+        }, 2000);
       } else {
         console.error("Failed to place order");
       }
@@ -66,8 +71,10 @@ const useOrderHandler = ({
         authHeader,
         navigate,
         setLoading,
-        paymentmethod
+        paymentmethod,
+        setShowSuccessPopup
       });
+      setShowConfirmPopUp(false);
     }
   };
 

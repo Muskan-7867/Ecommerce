@@ -10,6 +10,7 @@ interface Props {
   orderData: OrderData;
   products: Product[];
   paymentmethod: string;
+  setShowSuccessPopup: (value: boolean) => void;
 }
 
 const OrderConfirmPopUp = ({
@@ -17,7 +18,8 @@ const OrderConfirmPopUp = ({
   setShowConfirmPopUp,
   orderData,
   products,
-  paymentmethod
+  paymentmethod,
+  setShowSuccessPopup
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -27,15 +29,29 @@ const OrderConfirmPopUp = ({
     products,
     paymentmethod,
     setLoading,
-    setShowConfirmPopUp
+    setShowConfirmPopUp,
+    setShowSuccessPopup
   });
+
   const handleCross = () => {
     setShowConfirmPopUp(false);
   };
+
+   const handleConfirmOrder = async () => {
+    try {
+      setLoading(true);
+      await handlePlaceOrder();
+      // The popup will be closed by the parent component
+    } catch (error) {
+      console.error("Error confirming order:", error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       onClick={handleCross}
-      className="fixed inset-0 backdrop-blur-sm  bg-opacity-30 flex justify-center items-center z-50 p-4"
+      className="fixed inset-0 backdrop-blur-sm bg-opacity-30 flex justify-center items-center z-50 p-4"
     >
       {loading ? (
         <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center">
@@ -50,7 +66,10 @@ const OrderConfirmPopUp = ({
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden w-full max-w-md">
+        <div 
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white rounded-xl shadow-xl overflow-hidden w-full max-w-md"
+        >
           <div className="bg-primary p-5 text-white">
             <h2 className="text-xl font-semibold">Confirm Your Order</h2>
             <p className="text-sm opacity-90 mt-1">
@@ -105,7 +124,7 @@ const OrderConfirmPopUp = ({
               </button>
               <button
                 className="px-5 py-2.5 bg-gradient-to-r from-primary to-red-100 rounded-lg text-white font-medium hover:opacity-90 transition-opacity flex-1 flex items-center justify-center"
-                onClick={handlePlaceOrder}
+                onClick={handleConfirmOrder}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
