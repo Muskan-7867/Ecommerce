@@ -24,7 +24,7 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentType>("online_payment");
   
-  const { loading, loginMsg, handleOrder } = usePaymentHandlerForBuy();
+  const { loading, loginMsg, handleOrder, popup } = usePaymentHandlerForBuy();
 
   // Calculate order summary
   const subtotal = products.reduce((acc, product) => {
@@ -64,7 +64,7 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto relative">
       <h1 className="text-2xl sm:text-3xl font-bold mb-4 font-serif text-primary">
         Cart Summary
       </h1>
@@ -72,6 +72,33 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
       {loginMsg && (
         <div className="mb-4 p-4 bg-yellow-100 text-yellow-700 rounded">
           Please log in to place your order. Redirecting...
+        </div>
+      )}
+
+      {popup.show && (
+        <div className={`fixed inset-0 flex items-center justify-center z-50 backdrop-blur-xl bg-opacity-50`}>
+          <div className={`p-6 rounded-lg shadow-xl max-w-md w-full mx-4 ${
+            popup.type === "success" 
+              ? "bg-green-50 border border-green-200" 
+              : "bg-red-50 border border-red-200"
+          }`}>
+            <div className="flex items-center">
+              {popup.type === "success" ? (
+                <svg className="w-6 h-6 text-green-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6 text-red-500 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+              <h3 className={`text-lg font-medium ${
+                popup.type === "success" ? "text-green-800" : "text-red-800"
+              }`}>
+                {popup.message}
+              </h3>
+            </div>
+          </div>
         </div>
       )}
 

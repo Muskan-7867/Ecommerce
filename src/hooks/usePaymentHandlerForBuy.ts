@@ -27,7 +27,22 @@ interface OrderData {
 export const usePaymentHandlerForBuy = () => {
   const [loading, setLoading] = useState(false);
   const [loginMsg, setLoginMsg] = useState(false);
+  const [popup, setPopup] = useState({
+    show: false,
+    message: "",
+    type: "success" as "success" | "error"
+  });
   const navigate = useNavigate();
+
+  const showPopup = (message: string, type: "success" | "error" = "success") => {
+    setPopup({ show: true, message, type });
+    setTimeout(() => {
+      setPopup({ show: false, message: "", type: "success" });
+      if (type === "success") {
+        navigate("/products");
+      }
+    }, 3000);
+  };
 
   const handleOrder = async (
     orderData: OrderData,
@@ -68,14 +83,13 @@ export const usePaymentHandlerForBuy = () => {
       const response = await placeOrder(orderData);
 
       if (response?.data?.success) {
-        alert("Order placed successfully with Cash on Delivery.");
-        navigate("/products");
+        showPopup("Order placed successfully with Cash on Delivery.");
       } else {
-        alert("Failed to place order: " + response?.data?.message);
+        showPopup("Failed to place order: " + response?.data?.message, "error");
       }
     } catch (error) {
       console.error("COD order error:", error);
-      alert("Failed to place COD order.");
+      showPopup("Failed to place COD order.", "error");
     } finally {
       setLoading(false);
     }
@@ -99,7 +113,7 @@ export const usePaymentHandlerForBuy = () => {
         
         const data = await createRazorpayOrder(
           product._id,
-          currentUserFromStore.address._id, // Now properly typed as string
+          currentUserFromStore.address._id,
           quantity,
           paymentMethod
         );
@@ -115,12 +129,12 @@ export const usePaymentHandlerForBuy = () => {
           );
           break;
         } else {
-          alert("Failed to create Razorpay order: " + data.message);
+          showPopup("Failed to create Razorpay order: " + data.message, "error");
         }
       }
     } catch (error) {
       console.error("Online payment order error:", error);
-      alert(error instanceof Error ? error.message : "Failed to place online order.");
+      showPopup(error instanceof Error ? error.message : "Failed to place online order.", "error");
     } finally {
       setLoading(false);
     }
@@ -157,14 +171,13 @@ export const usePaymentHandlerForBuy = () => {
           );
 
           if (verifyData.success) {
-            alert("Payment verified and order placed successfully!");
-            navigate("/products");
+            showPopup("Payment verified and order placed successfully!");
           } else {
-            alert("Payment verification failed.");
+            showPopup("Payment verification failed.", "error");
           }
         } catch (err) {
           console.error("Verification error:", err);
-          alert(err instanceof Error ? err.message : "Payment verification error.");
+          showPopup(err instanceof Error ? err.message : "Payment verification error.", "error");
         }
       },
       prefill: {
@@ -181,5 +194,5 @@ export const usePaymentHandlerForBuy = () => {
     razorpay.open();
   };
 
-  return { loading, loginMsg, handleOrder };
+  return { loading, loginMsg, handleOrder, popup };
 };
