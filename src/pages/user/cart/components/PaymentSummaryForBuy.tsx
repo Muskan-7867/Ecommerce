@@ -4,7 +4,7 @@ import { Product } from "../../../../types/Product";
 import SummaryDetails from "./SummaryDetails";
 import { PaymentType } from "./CartSummary";
 import useCurrentUserStore from "../../../../store/User/user.store";
-import { CurrentUser } from "../../../../types/auth";
+import { CurrentUser, AddressFormData } from "../../../../types/auth";
 import { usePaymentHandlerForBuy } from "../../../../hooks/usePaymentHandlerForBuy";
 
 interface CartSummaryProps {
@@ -34,7 +34,7 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
 
   const deliveryCharge = products.reduce((acc, product) => {
     const charge = Number(product?.deliveryCharges || 0);
-    return acc + (isNaN(charge) ? 0 : charge)
+    return acc + (isNaN(charge) ? 0 : charge);
   }, 0);
 
   const total = subtotal + deliveryCharge;
@@ -49,17 +49,34 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
     price: product.price,
     quantity: quantities[product._id] || 1
   }));
-  
+
+  // Get address with proper type checking
+  const getAddress = (): AddressFormData => {
+    const address = currentUserFromStore?.address;
+    if (!address || typeof address !== 'object') {
+      // Return a default address object when none exists
+      return {
+        phone: '',
+        street: '',
+        city: '',
+        state: '',
+        country: '',
+        pincode: ''
+      };
+    }
+    return address;
+  };
+
   const orderData = {
     quantity: totalQuantity,
     totalQuantity,
     totalPrice: total,
-    address: currentUserFromStore?.address, 
+    address: getAddress(), // Now guaranteed to return AddressFormData
     orderItems,
     status: "pending",
     deliveryCharges: deliveryCharge,
     payment: paymentMethod,
-    isPaid: paymentMethod === "online_payment" ? false : true,
+    isPaid: paymentMethod === "online_payment",
     paymentMethod: paymentMethod
   };
 

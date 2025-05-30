@@ -1,12 +1,13 @@
 import PaymentSummary from "./PaymentSummary";
 import { Product } from "../../../../types/Product";
 import { useNavigate } from "react-router-dom";
-import {  useState } from "react";
+import { useState } from "react";
 import useCurrentUserStore from "../../../../store/User/user.store";
 import { CurrentUser } from "../../../../types/auth";
 import PopupMessage from "../../../../components/common/OrderConfirmPopUp";
 import SummaryDetails from "./SummaryDetails";
 import useOrderHandler from "../../../../hooks/useOrderHandler";
+import { AddressFormData } from "../../../../types/auth"; 
 
 export type PaymentType = "online_payment" | "cash_on_delivery";
 
@@ -51,11 +52,16 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     quantity: quantities[product._id] || 1
   }));
 
+  // Fix: Ensure address is either AddressFormData or undefined
+  const address = typeof currentUserFromStore?.address === 'object' 
+    ? currentUserFromStore.address as AddressFormData 
+    : undefined;
+
   const orderData = {
     quantity: totalQuantity,
     totalQuantity,
     totalPrice: total,
-    address: currentUserFromStore?.address,
+    address, // Now properly typed
     orderItems,
     status: "pending",
     deliveryCharges: deliveryCharge,
@@ -63,17 +69,14 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     isPaid: paymentMethod === "online_payment"
   };
 
-  const { handlePlaceOrder } =
-    useOrderHandler({
-      orderData,
-      products,
-      paymentmethod: paymentMethod,
-      setLoading,
-      setShowConfirmPopUp,
-      setShowSuccessPopup
-    });
-
-
+  const { handlePlaceOrder } = useOrderHandler({
+    orderData,
+    products,
+    paymentmethod: paymentMethod,
+    setLoading,
+    setShowConfirmPopUp,
+    setShowSuccessPopup
+  });
 
   const handleOrder = () => {
     if (!isLoggined) {
@@ -81,10 +84,11 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       setTimeout(() => {
         navigate("/login");
       }, 1000);
+      navigate(-1);
       return;
     }
 
-    if (!currentUserFromStore.address) {
+    if (!address) { // Now properly checking for address
       navigate("/addressform");
       return;
     }
@@ -120,22 +124,23 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       />
 
       {showSuccessPopup && (
-      <div className="fixed inset-0 backdrop-blur-2xl bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg max-w-sm">
-          <h3 className="text-lg font-bold text-green-600 mb-2">
-            {paymentMethod === "cash_on_delivery" 
-              ? "Order Confirmed!" 
-              : "Payment Successful!"}
-          </h3>
-          <p>
-            {paymentMethod === "cash_on_delivery"
-              ? "Your order has been placed successfully!"
-              : "Your payment was verified and order has been placed."}
-          </p>
-          <p className="mt-2">Redirecting to products page...</p>
+        <div className="fixed inset-0 backdrop-blur-2xl bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-sm">
+            <h3 className="text-lg font-bold text-green-600 mb-2">
+              {paymentMethod === "cash_on_delivery" 
+                ? "Order Confirmed!" 
+                : "Payment Successful!"}
+            </h3>
+            <p>
+              {paymentMethod === "cash_on_delivery"
+                ? "Your order has been placed successfully!"
+                : "Your payment was verified and order has been placed."}
+            </p>
+            <p className="mt-2">Redirecting to products page...</p>
+          </div>
         </div>
-      </div>
-    )}
+      )}
+
       <button
         onClick={handleOrder}
         className="bg-primary text-white py-2 px-4 rounded-full mt-6 w-full"

@@ -36,8 +36,10 @@ const registerUser = async (
   try {
     const response = await axios.post<RegisterResponse>(
       `${BASE_URL}/api/v1/user/register`,
-      userData
+      userData,
+      
     );
+    console.log("from auth", response.data)
     return response.data;
   } catch {
     const message = "Registration failed";

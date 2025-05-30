@@ -1,14 +1,11 @@
 import Lottie from "lottie-react";
 import confirmAnimation from "../../../../../public/animations/confirm.json";
 import useCurrentUser from "../../../../hooks/useCurrentUser";
-import { CurrentUser } from "../../../../types/auth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const OrderSuccessPopUp = () => {
-  const { currentUser } = useCurrentUser() as {
-    currentUser: CurrentUser | null;
-  };
+  const { currentUserFromStore } = useCurrentUser() 
 
   const navigate = useNavigate();
 
@@ -20,7 +17,7 @@ const OrderSuccessPopUp = () => {
 
     return () => clearTimeout(timer);
   });
-  if (!currentUser || !currentUser.address) return null;
+  if (!currentUserFromStore || !currentUserFromStore.address) return null;
 
   return (
     <div className="flex justify-center items-center min-h-screen ">

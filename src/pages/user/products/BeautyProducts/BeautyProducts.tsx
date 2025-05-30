@@ -84,7 +84,7 @@ const BeautyProducts = () => {
           style={{ scrollbarWidth: "none" }}
         >
           {Products.map((product) => (
-            <div className="flex-shrink-0 w-[300px] ">
+            <div key={product._id} className="flex-shrink-0 w-[300px] ">
             <ProductCard key={product._id} product={product} />
           </div>
           ))}

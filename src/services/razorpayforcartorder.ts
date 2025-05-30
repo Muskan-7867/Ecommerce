@@ -6,39 +6,55 @@ import { RazorpayResponse } from "razorpay";
 interface RazorpayParams {
   orderData: OrderData;
   products: Product[];
-  currentUser: CurrentUser;
+  currentUserFromStore: CurrentUser | null;
   paymentmethod: string;
   authHeader: string;
   navigate: (path: string) => void;
   setLoading: (val: boolean) => void;
-  setShowSuccessPopup: (val: boolean) => void; 
+  setShowSuccessPopup: (val: boolean) => void;
+  setError?: (error: string) => void; // Added optional error handler
 }
 
 export const initiateRazorpayPayment = async ({
   orderData,
   products,
-  currentUser,
+  currentUserFromStore,
   authHeader,
   paymentmethod,
   setLoading,
   setShowSuccessPopup,
-  navigate
-
+  navigate,
+  setError
 }: RazorpayParams) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const RAZORPAY_KEY = import.meta.env.VITE_PUBLIC_RAZORPAY_ID;
 
+  // Validate required environment variables
+  if (!BASE_URL || !RAZORPAY_KEY) {
+    const errorMsg = "Missing required environment variables";
+    console.error(errorMsg);
+    setError?.(errorMsg);
+    return;
+  }
+
+  // Validate current user
+  if (!currentUserFromStore) {
+    const errorMsg = "User not authenticated";
+    console.error(errorMsg);
+    setError?.(errorMsg);
+    navigate("/login");
+    return;
+  }
 
   setLoading(true);
 
   try {
     // Prepare cart data for the API
-    const cartProductIds = orderData.orderItems.map(item => item.product);
+    const cartProductIds = orderData.orderItems.map((item) => item.product);
     const quantities = orderData.orderItems.reduce((acc, item) => {
       acc[item.product] = item.quantity;
       return acc;
     }, {} as Record<string, number>);
-    
 
     const { data } = await axios.post(
       `${BASE_URL}/api/v1/order/cartrazorpayorder`,
@@ -53,20 +69,24 @@ export const initiateRazorpayPayment = async ({
       }
     );
 
+    if (!data?.razorpayOrder?.id || !data?.order?._id) {
+      throw new Error("Invalid response from server");
+    }
+
     const { id, amount } = data.razorpayOrder;
-    const orderId = data.order._id; // Assuming the order ID is in data.order._id
-     
+    const orderId = data.order._id;
+
     const options = {
       key: RAZORPAY_KEY,
       amount,
       currency: "INR",
       order_id: id,
-      name: "Your Store Name", // You can customize this
-      description: `Payment for ${products.length} items`, // More descriptive
+      name: "OMEG-BAZAAR",
+      description: `Payment for ${products.length} item${products.length > 1 ? 's' : ''}`,
       handler: async (response: RazorpayResponse) => {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
           response;
-          
+
         try {
           const verification = await axios.post(
             `${BASE_URL}/api/v1/order/paymentverify`,
@@ -83,28 +103,31 @@ export const initiateRazorpayPayment = async ({
           );
 
           if (verification.data.success) {
-             setShowSuccessPopup(true); 
-              setTimeout(() => {
-                navigate("/products")
-              }, 2000)
-          
-            
+            setShowSuccessPopup(true);
+            setTimeout(() => {
+              navigate("/products");
+            }, 2000);
           } else {
-            console.error("Payment verification failed");
-            // Handle failed verification
+            const errorMsg = verification.data.message || "Payment verification failed";
+            console.error(errorMsg);
+            setError?.(errorMsg);
           }
         } catch (err) {
-          console.error("Error during verification:", err);
+          const errorMsg = axios.isAxiosError(err) 
+            ? err.response?.data?.message || "Error during verification"
+            : "Error during verification";
+          console.error("Error during verification:", errorMsg);
+          setError?.(errorMsg);
         }
       },
       prefill: {
-        name: currentUser?.username,
-        email: currentUser?.email,
-        contact: currentUser?.contact
+        name: currentUserFromStore.username || "",
+        email: currentUserFromStore.email || "",
+        contact: currentUserFromStore.contact || ""
       },
       notes: {
-        orderId: orderId, // Add order ID to notes for reference
-        userId: currentUser?._id
+        orderId: orderId,
+        userId: currentUserFromStore._id
       },
       theme: {
         color: "#ca8888"
@@ -112,11 +135,16 @@ export const initiateRazorpayPayment = async ({
     };
 
     const razorpay = new window.Razorpay(options);
-    
     razorpay.open();
   } catch (error) {
-    console.error("Error creating Razorpay order:", error);
-    // Handle error appropriately
+    const errorMsg = axios.isAxiosError(error)
+      ? error.response?.data?.message || "Error creating Razorpay order"
+      : error instanceof Error
+      ? error.message
+      : "Error creating Razorpay order";
+    
+    console.error("Error creating Razorpay order:", errorMsg);
+    setError?.(errorMsg);
   } finally {
     setLoading(false);
   }

@@ -50,12 +50,12 @@ const ProductCard = ({ product }: { product: Product }) => {
         </p>
       </div>
       <div className="flex justify-between products-center mt-2">
-        <p className="text-amber-600 font-bold text-sm">
+        <div className="text-amber-600 font-bold text-sm">
           <div className="flex items-center">
             <LiaRupeeSignSolid className="font-semibold text-xl" />
-            <h1 className="text-sm"> {product.price}</h1>
+            <p className="text-sm"> {product.price}</p>
           </div>
-        </p>
+        </div>
         <button
           onClick={(e) => {
             e.stopPropagation();

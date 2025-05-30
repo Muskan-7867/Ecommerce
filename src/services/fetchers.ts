@@ -66,7 +66,9 @@ const fetchProductIds = async (productIds: string[]): Promise<Product[]> => {
   }
 };
 
-const fetchCurrentUser = async (): Promise<CurrentUser | unknown> => {
+const fetchCurrentUser = async (
+  token?: string
+): Promise<CurrentUser | unknown> => {
   if (!token) {
     console.warn("No token found");
     return null;
@@ -74,7 +76,7 @@ const fetchCurrentUser = async (): Promise<CurrentUser | unknown> => {
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/user/current`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token }`
       }
     });
     return response.data.user;

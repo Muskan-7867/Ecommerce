@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import {
   deleteProduct,
   fetchAdminCategories,
+  fetchCurrentUser,
   fetchProductById,
   fetchProductIds,
   fetchUserAddress,
@@ -134,6 +135,11 @@ const getClientQuery = (orderId: string) => ({
   queryFn:() => getClientByOrderId(orderId),
   enabled: !!orderId
 })
+const getCurrentUser = () => ({
+  queryKey: ["currentUser"],
+  queryFn:() => fetchCurrentUser(),
+  enabled: true
+})
 
 
 export {
@@ -150,5 +156,6 @@ export {
   getSingleProductQuery,
   fetchUsersQuery,
   getAdminQuery,
-  getClientQuery
+  getClientQuery,
+  getCurrentUser
 };
