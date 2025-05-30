@@ -42,56 +42,61 @@ const Navbar = () => {
       <div
         className={`h-14 w-full flex justify-between items-center fixed top-0 left-0 right-0 z-[100] backdrop-blur-lg ${
           isHomePage ? "bg-primary text-white" : "bg-transparent text-primary"
-        } md:px-12 px-4`}
+        } px-4 sm:px-6 md:px-8 lg:px-12`}
       >
-        <Link to="/" className="font-serif lg:text-3xl sm:text-2xl">
+        {/* Logo/Brand */}
+        <Link to="/" className="font-serif text-xl sm:text-2xl lg:text-3xl">
           OMEG BAZAAR
         </Link>
 
-        <NavLinks />
-        <div>
-          <div className="lg:gap-6 gap-4 flex ml-34 sm:ml-[24rem] md:ml-[32rem]">
-            <button
-              className="hover:opacity-80 transition-opacity relative"
-              aria-label="Cart"
-              onClick={() => navigate("/cart")}
-            >
-              <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
-                {cartCount}
-              </p>
-              <BsCartPlus size={28} />
-            </button>
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex">
+          <NavLinks />
+        </div>
 
-            {currentUserFromStore ? (
+        {/* Right side icons */}
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Cart Icon */}
+          <button
+            className="hover:opacity-80 transition-opacity relative"
+            aria-label="Cart"
+            onClick={() => navigate("/cart")}
+          >
+            <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
+              {cartCount}
+            </p>
+            <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
+          </button>
+
+          {/* User Icon */}
+          {currentUserFromStore ? (
+            <div className="relative">
               <button
                 onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-white text-primary font-semibold text-sm border border-primary"
+                className="w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-white text-primary font-semibold text-sm border border-primary"
                 title="Profile"
                 aria-label="User Profile"
               >
                 {getFirstLetter(currentUserFromStore.email)}
               </button>
-            ) : (
-              <Link
-                to="/login"
-                className="hover:opacity-80 transition-opacity"
-                aria-label="Login"
-              >
-                <FaUserPlus size={32} />
-              </Link>
-            )}
-          </div>
-          {currentUserFromStore ? (
-            <ProfileDropdown
-              isDropdownVisible={isDropdownVisible}
-              setIsDropdownVisible={setIsDropdownVisible}
-              userEmail={currentUserFromStore.email}
-              handleLogOut={handleLogOut}
-            />
+              <ProfileDropdown
+                isDropdownVisible={isDropdownVisible}
+                setIsDropdownVisible={setIsDropdownVisible}
+                userEmail={currentUserFromStore.email}
+                handleLogOut={handleLogOut}
+              />
+            </div>
           ) : (
-            <div></div>
+            <Link
+              to="/login"
+              className="hover:opacity-80 transition-opacity"
+              aria-label="Login"
+            >
+              <FaUserPlus size={24} className="sm:w-8 sm:h-8" />
+            </Link>
           )}
-          {/* Mobile menu button */}
+
+          {/* Mobile menu button - hidden on desktop */}
           <button
             onClick={() => setIsCardVisible(true)}
             className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-gray-100"
@@ -102,6 +107,7 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       <MobileMenu
         isCardVisible={isCardVisible}
         setIsCardVisible={setIsCardVisible}
