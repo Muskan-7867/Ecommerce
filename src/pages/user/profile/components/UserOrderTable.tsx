@@ -1,18 +1,15 @@
 import { useEffect } from "react";
 import useCurrentUser from "../../../../hooks/useCurrentUser";
-import { CurrentUser } from "../../../../types/auth";
 import { OrderData } from "../../../../types/Product";
 
 const UserOrderTable = () => {
-  const { currentUser } = useCurrentUser() as {
-    currentUser: CurrentUser | null;
-  };
-  console.log("from profile", currentUser);
+  const { currentUserFromStore } = useCurrentUser()
+  
 
   useEffect(() => {
     window.scrollTo(0, 0);
   });
-  if (!currentUser) {
+  if (!currentUserFromStore) {
     return <p className="text-gray-600">Loading user data...</p>;
   }
 
@@ -22,9 +19,9 @@ const UserOrderTable = () => {
         Order History
       </h2>
 
-      {currentUser?.order?.length === undefined ? (
+      {currentUserFromStore?.order?.length === undefined ? (
         <p className="text-gray-600">Loading orders...</p>
-      ) : currentUser.order?.length === 0 ? (
+      ) : currentUserFromStore.order?.length === 0 ? (
         <p className="text-gray-500 p-4 text-center text-lg">
           You have no orders yet.!!
         </p>
@@ -48,7 +45,7 @@ const UserOrderTable = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {currentUser?.order.map((order: OrderData, index: number) => (
+              {currentUserFromStore?.order.map((order: OrderData, index: number) => (
                 <tr key={index} className="border-t">
                   <td className="px-6 py-4">{order.quantity}</td>
                   <td className="px-6 py-4">₹{order.totalPrice}</td>

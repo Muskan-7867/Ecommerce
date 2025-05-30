@@ -23,12 +23,14 @@ export interface RegisterData {
   password: string;
 }
 export interface RegisterResponse {
+  token: string;
   message: string;
   user: {
     id: string;
     username: string;
     email: string;
   };
+
 }
 export interface AddressFormData {
   _id?: string; 
@@ -42,15 +44,15 @@ export interface AddressFormData {
   pincode: string;
 }
 
+
 export interface CurrentUser {
   _id: string;
   username: string;
   email: string;
-  password: string;
   contact: string;
   role: "admin" | "user";
-  address?: AddressFormData; 
-  order: OrderData[];  
+  address?: AddressFormData | ""; 
+  order: OrderData[]  | [];  
   createdAt?: string;
   updatedAt?: string;
 }

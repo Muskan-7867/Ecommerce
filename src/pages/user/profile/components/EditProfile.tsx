@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useCurrentUser from "../../../../hooks/useCurrentUser";
-import { CurrentUser } from "../../../../types/auth";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
-  const { currentUser } = useCurrentUser() as {currentUser: CurrentUser | null};
+  const { currentUserFromStore } = useCurrentUser() 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -16,12 +15,12 @@ const EditProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) {
-      setUsername(currentUser.username || "");
-      setEmail(currentUser.email || "");
-      setContact(currentUser.contact || "");
+    if (currentUserFromStore) {
+      setUsername(currentUserFromStore.username || "");
+      setEmail(currentUserFromStore.email || "");
+      setContact(currentUserFromStore.contact || "");
     }
-  }, [currentUser]);
+  }, [currentUserFromStore]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

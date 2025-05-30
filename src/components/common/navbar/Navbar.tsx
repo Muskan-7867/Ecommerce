@@ -8,7 +8,6 @@ import MobileMenu from "./MobileMenu";
 import useCartStore from "../../../store/Cart/Cart.store";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import ProfileDropdown from "./ProfileDropdown";
-import { CurrentUser } from "../../../types/auth";
 import Cookies from "js-cookie";
 
 const Navbar = () => {
@@ -19,13 +18,8 @@ const Navbar = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { cartCountValue } = useCartStore();
-  const { currentUser, setCurrentUser } = useCurrentUser() as {
-    currentUser: CurrentUser | null;
-    setCurrentUser: (user: CurrentUser | null) => void;
-  };
 
-  // const { email, password } = useUserStore();
-  // console.log("from navbar", email, password);
+  const { currentUserFromStore, allocateCurrentUser } = useCurrentUser();
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
@@ -36,11 +30,11 @@ const Navbar = () => {
   const getFirstLetter = (email: string) =>
     email?.charAt(0).toUpperCase() || "m";
 
-  const handleLLogOut = () => {
+  const handleLogOut = () => {
     Cookies.remove("authToken");
-    setCurrentUser(null);
+    allocateCurrentUser(null);
     setIsDropdownVisible(false);
-    navigate("/login")
+    navigate("/login");
   };
 
   return (
@@ -55,54 +49,57 @@ const Navbar = () => {
         </Link>
 
         <NavLinks />
-
-        <div className="lg:gap-6 gap-4 flex ml-34 sm:ml-[24rem] md:ml-[32rem]">
-          <button
-            className="hover:opacity-80 transition-opacity relative"
-            aria-label="Cart"
-            onClick={() => navigate("/cart")}
-          >
-            <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
-              {cartCount}
-            </p>
-            <BsCartPlus size={28} />
-          </button>
-
-          {currentUser ? (
+        <div>
+          <div className="lg:gap-6 gap-4 flex ml-34 sm:ml-[24rem] md:ml-[32rem]">
             <button
-              onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-white text-primary font-semibold text-sm border border-primary"
-              title="Profile"
-              aria-label="User Profile"
+              className="hover:opacity-80 transition-opacity relative"
+              aria-label="Cart"
+              onClick={() => navigate("/cart")}
             >
-              {getFirstLetter(currentUser.email)}
+              <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
+                {cartCount}
+              </p>
+              <BsCartPlus size={28} />
             </button>
+
+            {currentUserFromStore ? (
+              <button
+                onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white text-primary font-semibold text-sm border border-primary"
+                title="Profile"
+                aria-label="User Profile"
+              >
+                {getFirstLetter(currentUserFromStore.email)}
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="hover:opacity-80 transition-opacity"
+                aria-label="Login"
+              >
+                <FaUserPlus size={32} />
+              </Link>
+            )}
+          </div>
+          {currentUserFromStore ? (
+            <ProfileDropdown
+              isDropdownVisible={isDropdownVisible}
+              setIsDropdownVisible={setIsDropdownVisible}
+              userEmail={currentUserFromStore.email}
+              handleLogOut={handleLogOut}
+            />
           ) : (
-            <Link
-              to="/login"
-              className="hover:opacity-80 transition-opacity"
-              aria-label="Login"
-            >
-              <FaUserPlus size={32} />
-            </Link>
+            <div></div>
           )}
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsCardVisible(true)}
+            className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-gray-100"
+            aria-label="Open Mobile Menu"
+          >
+            <IoMenu size={20} />
+          </button>
         </div>
-        {currentUser && (
-          <ProfileDropdown
-            isDropdownVisible={isDropdownVisible}
-            setIsDropdownVisible={setIsDropdownVisible}
-            userEmail={currentUser.email}
-            handleLogOut={handleLLogOut}
-          />
-        )}
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setIsCardVisible(true)}
-          className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-gray-100"
-          aria-label="Open Mobile Menu"
-        >
-          <IoMenu size={20} />
-        </button>
       </div>
 
       <MobileMenu

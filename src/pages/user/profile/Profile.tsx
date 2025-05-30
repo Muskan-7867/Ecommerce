@@ -1,20 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import useCurrentUser from "../../../hooks/useCurrentUser";
-import { CurrentUser } from "../../../types/auth";
 
 import UserAddress from "./components/UserAddress";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { currentUser } = useCurrentUser() as {
-    currentUser: CurrentUser | null;
-  };
+const { currentUserFromStore } = useCurrentUser() ;
 
   const handleEdit = () => {
-    navigate(`/edit/${currentUser?._id}`);
+    navigate(`/edit/${currentUserFromStore?._id}`);
   };
 
-  if (!currentUser) return null;
+  if (!currentUserFromStore) return null;
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-28 p-6 bg-white rounded-3xl space-y-10">
@@ -29,10 +26,10 @@ const Profile = () => {
             />
           </div>
           <h1 className="text-xl font-semibold text-primary">
-            {currentUser.username}
+            {currentUserFromStore.username}
           </h1>
-          <p className="text-gray-600">{currentUser.email}</p>
-          <p className="text-gray-700">{currentUser.contact}</p>
+          <p className="text-gray-600">{currentUserFromStore.email}</p>
+          <p className="text-gray-700">{currentUserFromStore.contact}</p>
 
           <div className="mt-4 flex flex-col gap-2 w-full">
             <button
@@ -51,7 +48,7 @@ const Profile = () => {
         </div>
 
         {/* Address Card */}
-        <UserAddress currentUser={currentUser} />
+        <UserAddress currentUserFromStore={currentUserFromStore} />
       </div>
     </div>
   );
