@@ -7,13 +7,14 @@ import SuccessMessage from "../../components/common/SuccessMessage";
 import { loginUser } from "../../services/authServices";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import useCurrentUserStore from "../../store/User/user.store";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Login = () => {
-  const { reFetch } = useCurrentUserStore();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  // const { setRefetchCurrentUser } = useCurrentUser();
+  const queryClient = useQueryClient();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,13 +30,11 @@ const Login = () => {
       setSuccessMessage("Login successful! Redirecting...");
 
       if (data.token) {
-
         Cookies.set("authToken", data.token);
-
       }
-      reFetch();
-     navigate("/")
-
+      // reFetch();
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -44,8 +43,6 @@ const Login = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-
 
   return (
     <ScreenHandler>
@@ -58,7 +55,7 @@ const Login = () => {
           <div className="hidden md:block md:w-1/2 bg-red-50 rounded-l-lg p-8 lg:flex items-center justify-center">
             <div className="text-black text-center">
               <h2 className="text-3xl font-bold mb-4">Welcome Back</h2>
-            
+
               <p className="mb-6">
                 Login to access your account and continue your journey with us.
               </p>
@@ -103,8 +100,6 @@ const Login = () => {
                 />
               </div>
 
-       
-
               <button
                 type="submit"
                 className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-md transition duration-300 flex justify-center items-center"
@@ -113,7 +108,7 @@ const Login = () => {
                 {isLoading ? <>Processing...</> : "Login"}
               </button>
             </form>
-       
+
             <div className="mt-8 text-center">
               <p className="text-gray-600">
                 Don't have an account?{" "}

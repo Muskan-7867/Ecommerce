@@ -4,13 +4,14 @@ import LoginAnimation from "../../../public/animations/animation.json";
 import { useEffect, useState } from "react";
 import { registerUser } from "../../services/authServices";
 import SuccessMessage from "../../components/common/SuccessMessage";
-import { MdLocalPhone} from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Register = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,7 +19,6 @@ const Register = () => {
     setError(null);
     const formData = new FormData(e.currentTarget);
     const userData = {
-      contact: formData.get("contact") as string,
       username: formData.get("username") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string
@@ -26,21 +26,23 @@ const Register = () => {
 
     try {
       const data = await registerUser(userData);
+      if (data) {
+        const { token } = data;
+        Cookies.set("token", token);
+      }
       setSuccessMessage("User registered successfully! Redirecting...");
       console.log("Registration successful:", data);
-
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
+      navigate("/login")
+     
     } catch (error) {
       console.error("Registration error:", error);
     }
   };
 
-   useEffect(() => {
-      window.scrollTo(0, 0);
-    },[])
-    
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen flex justify-center items-center ">
       <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row">
@@ -77,19 +79,7 @@ const Register = () => {
                 required
               />
             </div>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <MdLocalPhone className="text-gray-400" size={20} />
-              </div>
-              <input
-                name="contact"
-                type="number"
-                placeholder="Contact"
-                className="w-full pl-10 pr-4 py-2 border-b-2 border-primary focus:outline-none focus:border-primary"
-                required
-                minLength={6}
-              />
-            </div>
+
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <FaUserAlt className="text-gray-400" />
