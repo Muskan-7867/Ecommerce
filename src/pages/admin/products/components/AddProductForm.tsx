@@ -7,7 +7,7 @@ import UploadProdImage from "./UploadProdImage";
 
 const AddProductForm = () => {
   const [category, setCategory] = useQueryState("category", {
-    defaultValue: "all"
+    defaultValue: ""
   });
   const [disabled, setDisabled] = useState(false);
   const [productImages, setProductImages] = useState<File[]>([]);
@@ -23,6 +23,10 @@ const AddProductForm = () => {
     category: "",
     deliveryCharges: "",
   });
+
+    useEffect(() => {
+    setFormData(prev => ({...prev, category}));
+  }, [category]);
 
   const getInputType = (label: string): string => {
     const lower = label.toLowerCase();
@@ -66,7 +70,10 @@ const handleChange = (
       data.append("features", formData.features);
       data.append("originalPrice", formData.originalPrice);
       data.append("price", formData.price);
-      data.append("category", category);
+       if (formData.category && formData.category !== "all") {
+        data.append("category", formData.category);
+      }
+      
       data.append("deliveryCharges", formData.deliveryCharges);
       productImages.forEach((file) => data.append("images", file));
 
