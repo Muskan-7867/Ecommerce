@@ -4,7 +4,6 @@ import placeOrder from "../services/order";
 import { OrderData, Product } from "../types/Product";
 import useCurrentUser from "./useCurrentUser";
 import { initiateRazorpayPayment } from "../services/razorpayforcartorder";
-import { CurrentUser } from "../types/auth";
 
 interface Props {
   orderData: OrderData;
@@ -27,7 +26,7 @@ const useOrderHandler = ({
   const token = Cookies.get("authToken");
   const authHeader = token ? `Bearer ${token}` : null;
 
-  const { currentUser } = useCurrentUser() as { currentUser: CurrentUser };
+  const { currentUserFromStore } = useCurrentUser() 
 
   const placeOrderHandler = async () => {
     setShowConfirmPopUp(false);
@@ -67,7 +66,7 @@ const useOrderHandler = ({
       await initiateRazorpayPayment({
         orderData,
         products,
-        currentUser,
+        currentUserFromStore,
         authHeader,
         navigate,
         setLoading,

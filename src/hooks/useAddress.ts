@@ -1,27 +1,23 @@
 import { useEffect, useState } from "react";
 import useCurrentUser from "./useCurrentUser";
-import { CurrentUser } from "../types/auth";
 import Cookies from "js-cookie";
 
 const useAddress = () => {
   const [isAddressAvailable, setIsAddressAvailable] = useState<boolean>(false);
 
   const token = Cookies.get("authToken");
-  const { currentUser } = useCurrentUser() as {
-    currentUser: CurrentUser | null;
-  };
-
+  const { currentUserFromStore } = useCurrentUser() 
   useEffect(() => {
-    if (!currentUser) return;
-    if (currentUser?.address) {
+    if (!currentUserFromStore) return;
+    if (currentUserFromStore?.address) {
       setIsAddressAvailable(true);
     } else {
       setIsAddressAvailable(false);
     }
-  }, [currentUser]);
+  }, [currentUserFromStore]);
 
   const fetchUserAndAddress = async () => {
-    if (!token || !currentUser?.address) return;
+    if (!token || !currentUserFromStore?.address) return;
   };
 
   return { isAddressAvailable, fetchUserAndAddress };

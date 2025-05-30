@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { RazorpayResponse } from "razorpay";
 import placeOrder from "../services/order";
 import { Product } from "../types/Product";
-import { CurrentUser } from "../types/auth";
-import { createRazorpayOrder, verifyPayment } from "../services/paymentforbuy"
+import { AddressFormData, CurrentUser } from "../types/auth";
+import { createRazorpayOrder, verifyPayment } from "../services/paymentforbuy";
 import { PaymentType } from "../pages/user/cart/components/CartSummary";
 
 interface OrderData {
   quantity: number;
   totalQuantity: number;
   totalPrice: number;
-  address: CurrentUser['address'];
+  address: AddressFormData;
   orderItems: Array<{
     product: string;
     price: number;
@@ -34,7 +34,10 @@ export const usePaymentHandlerForBuy = () => {
   });
   const navigate = useNavigate();
 
-  const showPopup = (message: string, type: "success" | "error" = "success") => {
+  const showPopup = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
     setPopup({ show: true, message, type });
     setTimeout(() => {
       setPopup({ show: false, message: "", type: "success" });
@@ -54,19 +57,23 @@ export const usePaymentHandlerForBuy = () => {
   ) => {
     if (!isLoggined) {
       setLoginMsg(true);
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
+      setTimeout(() => navigate("/login"), 1000);
       return;
     }
 
-    if (!currentUserFromStore.address || !currentUserFromStore.address._id) {
+    const address = currentUserFromStore.address;
+    if (!address || typeof address === "string" || !address._id) {
       navigate("/addressform");
       return;
     }
 
+    const orderWithTypedAddress: OrderData = {
+      ...orderData,
+      address: address as AddressFormData // Explicitly type the address
+    };
+
     if (paymentMethod === "cash_on_delivery") {
-      return handleCODOrder(orderData);
+      return handleCODOrder(orderWithTypedAddress);
     }
 
     return handleOnlinePayment(
@@ -104,16 +111,17 @@ export const usePaymentHandlerForBuy = () => {
     try {
       setLoading(true);
 
-      if (!currentUserFromStore.address?._id) {
-        throw new Error("Address ID is required");
+      const address = currentUserFromStore.address;
+      if (!address || typeof address === "string" || !address._id) {
+        throw new Error("Valid address with ID is required");
       }
 
       for (const product of products) {
         const quantity = quantities[product._id] || 1;
-        
+
         const data = await createRazorpayOrder(
           product._id,
-          currentUserFromStore.address._id,
+          address._id,
           quantity,
           paymentMethod
         );
@@ -129,12 +137,20 @@ export const usePaymentHandlerForBuy = () => {
           );
           break;
         } else {
-          showPopup("Failed to create Razorpay order: " + data.message, "error");
+          showPopup(
+            "Failed to create Razorpay order: " + data.message,
+            "error"
+          );
         }
       }
     } catch (error) {
       console.error("Online payment order error:", error);
-      showPopup(error instanceof Error ? error.message : "Failed to place online order.", "error");
+      showPopup(
+        error instanceof Error
+          ? error.message
+          : "Failed to place online order.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -164,7 +180,7 @@ export const usePaymentHandlerForBuy = () => {
             {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
+              razorpay_signature: response.razorpay_signature
             },
             orderId,
             paymentMethod
@@ -177,17 +193,20 @@ export const usePaymentHandlerForBuy = () => {
           }
         } catch (err) {
           console.error("Verification error:", err);
-          showPopup(err instanceof Error ? err.message : "Payment verification error.", "error");
+          showPopup(
+            err instanceof Error ? err.message : "Payment verification error.",
+            "error"
+          );
         }
       },
       prefill: {
         name: currentUserFromStore.username || "",
         email: currentUserFromStore.email || "",
-        contact: currentUserFromStore.contact || "",
+        contact: currentUserFromStore.contact || ""
       },
       theme: {
-        color: "#ca8888",
-      },
+        color: "#ca8888"
+      }
     };
 
     const razorpay = new window.Razorpay(options);
