@@ -11,18 +11,28 @@ const Register = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setPasswordError(null); // Reset previous error
+
     const formData = new FormData(e.currentTarget);
-    const userData = {
-      username: formData.get("username") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string
-    };
+    const username = formData.get("username") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters.");
+      setIsLoading(false);
+      return;
+    }
+
+    const userData = { username, email, password };
 
     try {
       const data = await registerUser(userData);
@@ -32,10 +42,12 @@ const Register = () => {
       }
       setSuccessMessage("User registered successfully! Redirecting...");
       console.log("Registration successful:", data);
-      navigate("/login")
-     
+      navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);
+      setError("Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -105,6 +117,9 @@ const Register = () => {
                 required
                 minLength={6}
               />
+              {passwordError && (
+                <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+              )}
             </div>
 
             <button
