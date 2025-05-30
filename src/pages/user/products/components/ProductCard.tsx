@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useCartStore from "../../../../store/Cart/Cart.store";
 import { Product } from "../../../../types/Product";
 import { LiaRupeeSignSolid } from "react-icons/lia";
+import { FaCartPlus } from "react-icons/fa";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const [isPresentInCart, setIsPresentInCart] = useState<boolean>(false);
@@ -34,26 +35,33 @@ const ProductCard = ({ product }: { product: Product }) => {
     <div
       key={product.name}
       onClick={() => navigate(`/products/${product._id}`)}
-      className="bg-white p-3 rounded-md flex flex-col w-[15rem]  hover:shadow-sm transition-shadow duration-300 mx-4   "
+      className="bg-white p-3 rounded-md flex flex-col w-full sm:w-[15rem] hover:shadow-sm transition-shadow duration-300 mx-auto sm:mx-4 cursor-pointer"
     >
-      <div className="aspect-square w-full flex products-center justify-center h-[140px]">
+      {/* Image Container */}
+      <div className="aspect-square w-full overflow-hidden flex items-center justify-center ">
         <img
           src={product.images?.[0]?.url}
           alt={product.name}
-          className="w-[14rem] h-[10rem] object-contain cursor-pointer p-2"
+          className="w-full h-full object-cover  p-2"
         />
       </div>
-      <div className="mt-12 flex-grow overflow-hidden">
-        <h2 className="text-sm font-semibold line-clamp-1">{product.name}</h2>
-        <p className="text-gray-600 text-xs line-clamp-2 mt-1">
+
+      {/* Product Info */}
+      <div className="mt-4 sm:mt-6 flex-grow overflow-hidden">
+        <h2 className="text-sm sm:text-base font-semibold line-clamp-1">
+          {product.name}
+        </h2>
+        <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 mt-1">
           {product.description}
         </p>
       </div>
-      <div className="flex justify-between products-center mt-2">
-        <div className="text-amber-600 font-bold text-sm">
+
+      {/* Price and Add to Cart */}
+      <div className="flex justify-between items-center mt-3 sm:mt-4">
+        <div className="text-amber-600 font-bold text-sm sm:text-base">
           <div className="flex items-center">
-            <LiaRupeeSignSolid className="font-semibold text-xl" />
-            <p className="text-sm"> {product.price}</p>
+            <LiaRupeeSignSolid className="font-semibold text-lg sm:text-xl" />
+            <p>{product.price}</p>
           </div>
         </div>
         <button
@@ -69,9 +77,18 @@ const ProductCard = ({ product }: { product: Product }) => {
               setIsPresentInCart(true);
             }
           }}
-          className="bg-primary text-white text-xs rounded px-2 py-2 hover:bg-primary-dark transition-colors cursor-pointer"
+          className={`flex items-center justify-center rounded-full p-2 transition-colors cursor-pointer ${
+            isPresentInCart
+              ? "bg-gray-400 text-white  "
+              : "bg-primary text-white border "
+          }`}
+          aria-label={isPresentInCart ? "Remove from cart" : "Add to cart"}
         >
-          {isPresentInCart ? "Remove From Cart" : "Add To Cart"}
+          {isPresentInCart ? (
+            <FaCartPlus className="text-sm sm:text-base " />
+          ) : (
+            <FaCartPlus className="text-sm sm:text-base" />
+          )}
         </button>
       </div>
     </div>
