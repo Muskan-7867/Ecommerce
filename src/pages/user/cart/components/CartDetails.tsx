@@ -52,14 +52,14 @@ const CartDetails = ({
             onClick={() => handleChangeQuantity(product._id, quantity + 1)}
             className="p-2 border border-gray-200 w-14 rounded-sm"
           >
-            +
+            -
           </button>
           <p className="mt-2">{quantity}</p>
           <button
             onClick={() => handleChangeQuantity(product._id, quantity - 1)}
             className="p-2 border border-gray-200 w-14 rounded-sm"
           >
-            -
+            +
           </button>
         </div>
       </div>

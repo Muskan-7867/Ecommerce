@@ -49,14 +49,14 @@ const SingleProductPage: React.FC<SingleProductPageProps> = ({ quantities, setQu
                 onClick={() => handleChangeQuantity(singleProduct._id, quantity + 1)}
                 className="p-2 border border-gray-200 w-10 sm:w-12 rounded-sm"
               >
-                +
+                -
               </button>
               <p className="flex items-center justify-center w-6">{quantity}</p>
               <button
                 onClick={() => handleChangeQuantity(singleProduct._id, quantity - 1)}
                 className="p-2 border border-gray-200 w-10 sm:w-12 rounded-sm"
               >
-                -
+                +
               </button>
             </div>
           </div>
