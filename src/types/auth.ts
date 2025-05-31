@@ -34,7 +34,7 @@ export interface RegisterResponse {
 }
 export interface AddressFormData {
   _id?: string; 
-  phone: string;
+  phone?: string;
   street: string;
   address?: string;
   address1?: string;
@@ -50,6 +50,7 @@ export interface CurrentUser {
   username: string;
   email: string;
   contact: string;
+ 
   role: "admin" | "user";
   address?: AddressFormData | ""; 
   order: OrderData[]  | [];  
