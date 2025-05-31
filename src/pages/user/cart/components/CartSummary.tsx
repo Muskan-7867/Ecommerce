@@ -61,7 +61,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     quantity: totalQuantity,
     totalQuantity,
     totalPrice: total,
-    address, // Now properly typed
+    address,
     orderItems,
     status: "pending",
     deliveryCharges: deliveryCharge,

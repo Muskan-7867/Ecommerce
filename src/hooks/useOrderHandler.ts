@@ -24,7 +24,7 @@ const useOrderHandler = ({
 }: Props) => {
   const navigate = useNavigate();
   const token = Cookies.get("authToken");
-  const authHeader = token ? `Bearer ${token}` : null;
+
 
   const { currentUserFromStore } = useCurrentUser() 
 
@@ -55,7 +55,7 @@ const useOrderHandler = ({
   };
 
   const handlePlaceOrder = async () => {
-    if (!authHeader) {
+    if (!token) {
       console.error("No auth token found");
       return;
     }
@@ -67,7 +67,7 @@ const useOrderHandler = ({
         orderData,
         products,
         currentUserFromStore,
-        authHeader,
+        token ,
         navigate,
         setLoading,
         paymentmethod,

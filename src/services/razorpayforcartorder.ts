@@ -8,7 +8,7 @@ interface RazorpayParams {
   products: Product[];
   currentUserFromStore: CurrentUser | null;
   paymentmethod: string;
-  authHeader: string;
+  token: string;
   navigate: (path: string) => void;
   setLoading: (val: boolean) => void;
   setShowSuccessPopup: (val: boolean) => void;
@@ -19,7 +19,7 @@ export const initiateRazorpayPayment = async ({
   orderData,
   products,
   currentUserFromStore,
-  authHeader,
+  token,
   paymentmethod,
   setLoading,
   setShowSuccessPopup,
@@ -65,7 +65,7 @@ export const initiateRazorpayPayment = async ({
         paymentMethod: paymentmethod
       },
       {
-        headers: { Authorization: authHeader }
+        headers: { Authorization: `Bearer ${token}` }
       }
     );
 
@@ -98,7 +98,7 @@ export const initiateRazorpayPayment = async ({
               paymentMethod: paymentmethod
             },
             {
-              headers: { Authorization: authHeader }
+              headers: { Authorization: `Bearer ${token}`}
             }
           );
 

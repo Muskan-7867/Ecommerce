@@ -12,7 +12,7 @@ const CartDetails = ({
   product,
   onDelete,
   quantity,
-  handleChangeQuantity,
+  handleChangeQuantity
 }: CartDetailsProps) => {
   return (
     <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white rounded-lg ">
@@ -49,14 +49,14 @@ const CartDetails = ({
         <p className="text-sm font-medium">Qty</p>
         <div className="flex gap-8">
           <button
-            onClick={() => handleChangeQuantity(product._id, quantity + 1)}
+            onClick={() => handleChangeQuantity(product._id, quantity - 1)}
             className="p-2 border border-gray-200 w-14 rounded-sm"
           >
             -
           </button>
           <p className="mt-2">{quantity}</p>
           <button
-            onClick={() => handleChangeQuantity(product._id, quantity - 1)}
+            onClick={() => handleChangeQuantity(product._id, quantity + 1)}
             className="p-2 border border-gray-200 w-14 rounded-sm"
           >
             +
