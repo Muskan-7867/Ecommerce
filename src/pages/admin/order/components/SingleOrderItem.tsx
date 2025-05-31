@@ -5,7 +5,6 @@ interface Props {
 }
 
 const SingleOrderItem = ({ selectedRow }: Props) => {
-
   return (
     <div className="space-y-4">
       <h3 className="font-semibold text-lg text-gray-700 border-b pb-2">
@@ -41,7 +40,9 @@ const SingleOrderItem = ({ selectedRow }: Props) => {
             </div>
 
             <div className="col-span-3 text-right">
-              <span>₹{(item.price * item.quantity).toFixed(2)}</span>
+              <span>
+                ₹{(item.price * item.quantity + item.product?.deliveryCharges).toFixed(2)}
+              </span>
             </div>
           </div>
         ))}

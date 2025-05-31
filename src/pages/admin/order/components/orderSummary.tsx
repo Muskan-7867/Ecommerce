@@ -8,7 +8,7 @@ import { fetchOrdersQuery } from "../../../../services/queries";
 
 interface Order {
   createdAt: string;
-   totalPrice: number;
+  totalPrice: number;
   payment?: {
     amount: number;
   };
@@ -21,7 +21,7 @@ const OrderSummary: React.FC = () => {
   const today = new Date();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
-  const todayString = today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+  const todayString = today.toISOString().split("T")[0];
 
   // Calculate summary data
   const todaysOrders = orders.filter((order) => {
