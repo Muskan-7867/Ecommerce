@@ -108,7 +108,7 @@ export const initiateRazorpayPayment = async ({
               navigate("/products");
             }, 2000);
           } else {
-            const errorMsg = verification.data.message || "Payment verification failed";
+            const errorMsg = verification.data.message ;
             console.error(errorMsg);
             setError?.(errorMsg);
           }
