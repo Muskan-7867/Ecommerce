@@ -12,28 +12,52 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showPasswordHint, setShowPasswordHint] = useState(false);
+  const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setPasswordError(null);
+    setError(null);
+    setShowPasswordHint(newPassword.length > 0);
+  };
+
+  const validatePassword = (password: string) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^+=])[A-Za-z\d@$!%*?&#^+=]{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    setPasswordError(null); // Reset previous error
+    setPasswordError(null);
 
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
 
-    if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters.");
+    // Frontend validation matching backend rules
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords don't match");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setPasswordError("Password doesn't meet requirements");
+      setShowPasswordHint(true);
       setIsLoading(false);
       return;
     }
 
     const userData = { username, email, password };
-
     try {
       const data = await registerUser(userData);
       if (data) {
@@ -41,11 +65,16 @@ const Register = () => {
         Cookies.set("token", token);
       }
       setSuccessMessage("User registered successfully! Redirecting...");
-      console.log("Registration successful:", data);
-      navigate("/login");
-    } catch (error) {
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (error: any) {
       console.error("Registration error:", error);
-      setError("Registration failed. Please try again.");
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -56,11 +85,13 @@ const Register = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex justify-center items-center ">
-      <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row">
+    <div className="min-h-screen flex justify-center items-center bg-gray-50">
+      <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row shadow-lg rounded-lg overflow-hidden">
         {/* Success message */}
         {successMessage && <SuccessMessage successMessage={successMessage} />}
-        <div className="hidden md:block md:w-1/2 bg-red-50 rounded-l-lg p-8 lg:flex items-center justify-center">
+
+        {/* Left side - Animation */}
+        <div className="hidden md:block md:w-1/2 bg-red-50 p-8 lg:flex items-center justify-center">
           <div className="text-black text-center">
             <h2 className="text-3xl font-bold mb-4">Welcome Back</h2>
             <p className="mb-6">
@@ -72,13 +103,22 @@ const Register = () => {
           </div>
         </div>
 
+        {/* Right side - Form */}
         <div className="w-full md:w-1/2 p-8 flex flex-col items-center">
           <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mb-4">
             <FaUserAlt className="text-gray-500 text-3xl" />
           </div>
           <h3 className="text-primary text-2xl font-semibold mb-8">WELCOME</h3>
 
-          <form onSubmit={handleRegister} className="w-full space-y-6">
+          {/* Error messages */}
+          {error && (
+            <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleRegister} className="w-full space-y-4">
+            {/* Username field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <FaUserAlt className="text-gray-400" />
@@ -92,6 +132,7 @@ const Register = () => {
               />
             </div>
 
+            {/* Email field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <FaUserAlt className="text-gray-400" />
@@ -105,6 +146,7 @@ const Register = () => {
               />
             </div>
 
+            {/* Password field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <FaLock className="text-gray-400" />
@@ -113,25 +155,96 @@ const Register = () => {
                 name="password"
                 type="password"
                 placeholder="Password"
-                className="w-full pl-10 pr-4 py-2 border-b-2 border-primary focus:outline-none focus:border-primary"
+                value={password}
+                className={`w-full pl-10 pr-4 py-2 border-b-2 ${
+                  passwordError ? "border-red-500" : "border-primary"
+                } focus:outline-none focus:border-primary`}
                 required
-                minLength={6}
+                onChange={handlePasswordChange}
+                onFocus={() => setShowPasswordHint(true)}
+                onBlur={() =>
+                  setShowPasswordHint(
+                    passwordError !== null || password.length > 0
+                  )
+                }
               />
-              {passwordError && (
-                <p className="text-red-500 text-sm mt-1">{passwordError}</p>
-              )}
             </div>
 
+            {/* Password requirements hint - only shows when relevant */}
+            {(showPasswordHint || passwordError) && (
+              <div
+                className={`w-full p-3 text-sm rounded ${
+                  passwordError
+                    ? "bg-red-50 text-red-600"
+                    : "bg-blue-50 text-gray-600"
+                }`}
+              >
+                <p className="font-medium">Password must contain:</p>
+                <ul className="list-disc pl-5">
+                  <li className={password.length >= 8 ? "text-green-500" : ""}>
+                    At least 8 characters {password.length >= 8 && "✓"}
+                  </li>
+                  <li
+                    className={/[A-Z]/.test(password) ? "text-green-500" : ""}
+                  >
+                    1 uppercase letter {/[A-Z]/.test(password) && "✓"}
+                  </li>
+                  <li
+                    className={/[a-z]/.test(password) ? "text-green-500" : ""}
+                  >
+                    1 lowercase letter {/[a-z]/.test(password) && "✓"}
+                  </li>
+                  <li className={/\d/.test(password) ? "text-green-500" : ""}>
+                    1 number {/\d/.test(password) && "✓"}
+                  </li>
+                  <li
+                    className={
+                      /[@$!%*?&#^+=]/.test(password) ? "text-green-500" : ""
+                    }
+                  >
+                    1 special character (@$!%*?&#^+=){" "}
+                    {/[@$!%*?&#^+=]/.test(password) && "✓"}
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            {/* Confirm Password field */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <FaLock className="text-gray-400" />
+              </div>
+              <input
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                className={`w-full pl-10 pr-4 py-2 border-b-2 ${
+                  passwordError ? "border-red-500" : "border-primary"
+                } focus:outline-none focus:border-primary`}
+                required
+                onChange={() => {
+                  setPasswordError(null);
+                  setError(null);
+                }}
+              />
+            </div>
+
+            {/* Password error message */}
+            {passwordError && (
+              <div className="text-red-500 text-sm -mt-2">{passwordError}</div>
+            )}
+
+            {/* Submit button */}
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary text-white font-medium py-2 px-4 rounded-md transition duration-300"
+              disabled={isLoading}
+              className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-md transition duration-300 disabled:opacity-70"
             >
-              {isLoading ? <>Processing...</> : "Register"}
+              {isLoading ? "Processing..." : "Register"}
             </button>
           </form>
 
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-
+          {/* Login link */}
           <div className="mt-8 text-center">
             <p className="text-gray-600">
               Already have an account?{" "}
