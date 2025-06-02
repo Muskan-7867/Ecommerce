@@ -3,14 +3,23 @@ import useCurrentUser from "../../../../hooks/useCurrentUser";
 import { OrderData } from "../../../../types/Product";
 
 const UserOrderTable = () => {
-  const { currentUserFromStore } = useCurrentUser()
-  
+  const { currentUserFromStore } = useCurrentUser();
+  console.log("from userordertable----", currentUserFromStore);
+  useEffect(() => {
+    if (currentUserFromStore) {
+      console.log("from userordertable", currentUserFromStore?.order);
+    }
+  }, [currentUserFromStore]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   });
   if (!currentUserFromStore) {
     return <p className="text-gray-600">Loading user data...</p>;
+  }
+
+  if (!currentUserFromStore.order) {
+    return <p className="text-gray-600">Loading order data...</p>;
   }
 
   return (
@@ -45,22 +54,24 @@ const UserOrderTable = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {currentUserFromStore?.order.map((order: OrderData, index: number) => (
-                <tr key={index} className="border-t">
-                  <td className="px-6 py-4">{order.quantity}</td>
-                  <td className="px-6 py-4">₹{order.totalPrice}</td>
-                  <td className="px-6 py-4">{order?.status}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`font-semibold ${
-                        order.isPaid ? "text-green-600" : "text-red-500"
-                      }`}
-                    >
-                      {order.isPaid ? "Paid" : "Unpaid"}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {currentUserFromStore?.order.map(
+                (order: OrderData, index: number) => (
+                  <tr key={index} className="border-t">
+                    <td className="px-6 py-4">{order.quantity}</td>
+                    <td className="px-6 py-4">₹{order.totalPrice}</td>
+                    <td className="px-6 py-4">{order?.status}</td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`font-semibold ${
+                          order.isPaid ? "text-green-600" : "text-red-500"
+                        }`}
+                      >
+                        {order.isPaid ? "Paid" : "Unpaid"}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
