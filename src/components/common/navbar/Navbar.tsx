@@ -28,7 +28,7 @@ const Navbar = () => {
   }, [cartCountValue]);
 
   const getFirstLetter = (email: string) =>
-    email?.charAt(0).toUpperCase() || "m";
+    email?.charAt(0).toUpperCase() ;
 
   const handleLogOut = () => {
     Cookies.remove("authToken");

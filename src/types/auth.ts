@@ -53,7 +53,7 @@ export interface CurrentUser {
  
   role: "admin" | "user";
   address?: AddressFormData | ""; 
-  order: OrderData[]  | [];  
+  order?: OrderData[];  
   createdAt?: string;
   updatedAt?: string;
 }

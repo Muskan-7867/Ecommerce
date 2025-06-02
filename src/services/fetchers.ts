@@ -2,6 +2,7 @@ import axios from "axios";
 import { EditProductData, Product } from "../types/Product";
 import Cookies from "js-cookie";
 import { AddressFormData, CurrentUser } from "../types/auth";
+import { Order } from "../types/order";
 const token = Cookies.get("authToken");
 const admintoken = Cookies.get("admintoken");
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -59,6 +60,7 @@ const fetchProductIds = async (productIds: string[]): Promise<Product[]> => {
       `${BASE_URL}/api/v1/product/cartproducts`,
       { ids: productIds }
     );
+    console.log("from fetch products", response.data.products);
     return response.data.products;
   } catch (error) {
     console.error("Failed to fetch cart product ids:", error);
@@ -79,6 +81,7 @@ const fetchCurrentUser = async (
         Authorization: `Bearer ${token }`
       }
     });
+    console.log("from fetch current user", response.data.user);
     return response.data.user;
   } catch (err) {
     // setError("Failed to fetch user");
@@ -239,7 +242,7 @@ const getOrders = async () => {
         Authorization: `Bearer ${token}`
       }
     });
-
+    console.log("from orders fetchers" , response.data);
     return response.data.orders;
   } catch {
     return [];
@@ -347,6 +350,12 @@ const getClientByOrderId = async (orderId: string) => {
   }
 };
 
+ const updateOrder = async (id: string, data: Partial<Order>) => {
+  const response = await axios.patch(`/api/orders/${id}`, data);
+  return response.data;
+};
+
+
 export {
   fetchUserCategories,
   getProductsByCategory,
@@ -370,5 +379,6 @@ export {
   adminRegister,
   adminLogin,
   getAdminInfo,
-  getClientByOrderId
+  getClientByOrderId,
+  updateOrder
 };

@@ -44,17 +44,6 @@ const fetchFilterProducts = async () => {
     setLoading(false);
   }
 };
-
-
-  // if (isError) {
-  //   return (
-  //     <div className="min-h-screen flex justify-center items-center">
-  //       <div className="text-red-500">
-  //         Error loading products. Please try again later.
-  //       </div>
-  //     </div>
-  //   );
-  // }
   return (
   <div className="">
     {loading ? (
