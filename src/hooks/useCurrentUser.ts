@@ -5,52 +5,60 @@ import useCurrentUserStore from "../store/User/user.store";
 import Cookies from "js-cookie";
 
 const useCurrentUser = () => {
-  const { setCurrentUserForStore, currentUserFromStore, setIsLoggined, reFetch, fetch} =  useCurrentUserStore();
+  const { 
+    setCurrentUserForStore, 
+    currentUserFromStore, 
+    setIsLoggined, 
+    reFetch, 
+    fetch 
+  } = useCurrentUserStore();
 
-  
   const allocateCurrentUser = (user: CurrentUser | null) => {
-    setCurrentUserForStore(user)
-  }
- 
+    setCurrentUserForStore(user);
+    setIsLoggined(!!user); 
+  };
+
   const fetchUser = async () => {
-    console.log("fetch user func");
     try {
-      const user = await fetchCurrentUser(Cookies.get("authToken"));
+      const token = Cookies.get("authToken");
+      if (!token) {
+        // No token means user is logged out
+        setIsLoggined(false);
+        allocateCurrentUser(null);
+        return;
+      }
+
+      const user = await fetchCurrentUser(token);
       if (user) {
         setIsLoggined(true);
-        // setCurrentUser(user);
         allocateCurrentUser(user as CurrentUser);
+      } else {
+        // Invalid token or no user returned
+        setIsLoggined(false);
+        allocateCurrentUser(null);
       }
-      // console.log("from hook", user);
-    } catch {
-      console.log("something went wrong");
-     setIsLoggined(false);
+    } catch (error) {
+      console.log("Error fetching user:", error);
+      setIsLoggined(false);
+      allocateCurrentUser(null);
     }
   };
 
   useEffect(() => {
-    console.log("first render of hook");
     fetchUser();
   }, []);
 
   useEffect(() => {
-    console.log("refetch");
-    fetchUser();
-  }, [fetch])
-
-  // useEffect(() => {
-  //   setCurrentUserForStore(currentUser);
-  //   // console.log("from hook", currentUser);
-  // }, [currentUser]);
- 
-
+    if (fetch) {
+      fetchUser();
+    }
+  }, [fetch]);
 
   return {
     currentUserFromStore,
     fetchUser,
     allocateCurrentUser,
     reFetch,
-    
   };
 };
 

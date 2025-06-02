@@ -38,7 +38,7 @@ const useOrderHandler = ({
     };
     
     try {
-      const response = await placeOrder(dataForCod);
+      const response = await placeOrder(dataForCod, Cookies.get("authToken")!);
       if (response?.data.success) {
         setShowSuccessPopup(true);
         setTimeout(() => {

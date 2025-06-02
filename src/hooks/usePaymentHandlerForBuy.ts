@@ -6,6 +6,7 @@ import { Product } from "../types/Product";
 import { AddressFormData, CurrentUser } from "../types/auth";
 import { createRazorpayOrder, verifyPayment } from "../services/paymentforbuy";
 import { PaymentType } from "../pages/user/cart/components/CartSummary";
+import Cookies from "js-cookie";
 
 interface OrderData {
   quantity: number;
@@ -57,8 +58,11 @@ export const usePaymentHandlerForBuy = () => {
   ) => {
     if (!isLoggined) {
       setLoginMsg(true);
-     navigate("/login");
-    
+      sessionStorage.setItem('prevPath', window.location.pathname);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+      
       return;
     }
 
@@ -70,7 +74,7 @@ export const usePaymentHandlerForBuy = () => {
 
     const orderWithTypedAddress: OrderData = {
       ...orderData,
-      address: address as AddressFormData 
+      address: address as AddressFormData
     };
 
     if (paymentMethod === "cash_on_delivery") {
@@ -88,7 +92,7 @@ export const usePaymentHandlerForBuy = () => {
   const handleCODOrder = async (orderData: OrderData) => {
     try {
       setLoading(true);
-      const response = await placeOrder(orderData);
+      const response = await placeOrder(orderData, Cookies.get("authToken")!);
 
       if (response?.data?.success) {
         showPopup("Order placed successfully with Cash on Delivery.");

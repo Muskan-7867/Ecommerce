@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import PaymentSummary from "./PaymentSummary";
 import { Product } from "../../../../types/Product";
 import SummaryDetails from "./SummaryDetails";
@@ -25,7 +25,10 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
     useState<PaymentType>("online_payment");
 
   const { loading, loginMsg, handleOrder, popup } = usePaymentHandlerForBuy();
-
+ 
+   useEffect(() => {
+    // This will run when the component mounts and when isLoggined changes
+  }, [isLoggined, currentUserFromStore]);
   // Calculate order summary
   const subtotal = products.reduce((acc, product) => {
     const qty = quantities[product._id] || 1;
@@ -42,6 +45,8 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
     (acc, qty) => acc + qty,
     0
   );
+
+
 
   // Prepare order data
   const orderItems = products.map((product) => ({
