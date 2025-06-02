@@ -31,49 +31,54 @@ const Login = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^+=])[A-Za-z\d@$!%*?&#^+=]{8,}$/;
     return passwordRegex.test(password);
   };
-
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const userData = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string
-    };
-
-    // Basic frontend validation
-    if (!validatePassword(userData.password)) {
-      setErrorMessage("Invalid password format");
-      setShowPasswordHint(true);
-      setIsLoading(false);
-      return;
-    }
 
     try {
+      const formData = new FormData(e.currentTarget);
+      const userData = {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string
+      };
+
+      if (!validatePassword(userData.password)) {
+        setErrorMessage("Invalid password format");
+        setShowPasswordHint(true);
+        return;
+      }
+
       const data = await loginUser(userData);
+
+      // 1. Set token first
+      if (data.token) {
+        Cookies.set("authToken", data.token, { expires: 7 }); // Add expiration
+      }
+
+      // 2. Force refresh user data and WAIT for it to complete
+      await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      await queryClient.refetchQueries({ queryKey: ["currentUser"] });
+
+      // 3. Show success message
       setSuccessMessage("Login successful! Redirecting...");
       setErrorMessage(null);
 
-      if (data.token) {
-        Cookies.set("authToken", data.token);
-      }
-
-      // Check for redirect path from either location state or sessionStorage
-      const locationState = location.state as { from?: string };
+      // 4. Get redirect path (simplified)
       const redirectPath =
-        locationState?.from || sessionStorage.getItem("prevPath") || "/";
+        location.state?.from ||
+        sessionStorage.getItem("prevPath") ||
+        "/products";
 
-      // Clear the stored path if it exists
-      if (sessionStorage.getItem("prevPath")) {
-        sessionStorage.removeItem("prevPath");
-      }
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      setTimeout(() => navigate(redirectPath), 1000);
+      // 5. Clear stored path if it exists
+      sessionStorage.removeItem("prevPath");
+
+      // 6. Navigate after a brief delay to ensure UI updates
+      setTimeout(() => navigate(redirectPath), 500);
     } catch (error: any) {
       console.error("Login error:", error);
-      const message =
-        error?.response?.data?.message || "Login failed. Please try again.";
-      setErrorMessage(message);
+      setErrorMessage(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
       setShowPasswordHint(true);
     } finally {
       setIsLoading(false);
