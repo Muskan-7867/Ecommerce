@@ -57,11 +57,12 @@ export const usePaymentHandlerForBuy = () => {
   ) => {
     if (!isLoggined) {
       setLoginMsg(true);
-      setTimeout(() => navigate("/login"), 1000);
+     navigate("/login");
+    
       return;
     }
 
-    const address = currentUserFromStore.address;
+    const address = currentUserFromStore?.address;
     if (!address || typeof address === "string" || !address._id) {
       navigate("/addressform");
       return;
@@ -69,7 +70,7 @@ export const usePaymentHandlerForBuy = () => {
 
     const orderWithTypedAddress: OrderData = {
       ...orderData,
-      address: address as AddressFormData // Explicitly type the address
+      address: address as AddressFormData 
     };
 
     if (paymentMethod === "cash_on_delivery") {

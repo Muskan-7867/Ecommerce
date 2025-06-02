@@ -88,8 +88,10 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       quantities,
       paymentMethod
     }));
-    navigate("/login", { state: { from: 'cart' } });
-    
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+      navigate(-1);
       return;
     }
 
