@@ -6,7 +6,7 @@ import ScreenHandler from "../../components/wrappers/ScreenHandler";
 import SuccessMessage from "../../components/common/SuccessMessage";
 import { loginUser } from "../../services/authServices";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Login = () => {
@@ -15,8 +15,8 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
