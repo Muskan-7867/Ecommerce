@@ -1,21 +1,20 @@
+// services/order.ts
 import axios from "axios";
 import { OrderData } from "../types/Product";
-import Cookies from "js-cookie";
 const baseurl = import.meta.env.VITE_BASE_URL;
-const token = Cookies.get("authToken");
 
-async function placeOrder(orderData: OrderData) {
-  let response;
+async function placeOrder(orderData: OrderData, token: string) {
   try {
-    response = await axios.post(`${baseurl}/api/v1/order/create`, orderData, {
+    const response = await axios.post(`${baseurl}/api/v1/order/create`, orderData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-  } catch {
-    console.log("something went wrong");
+    return response;
+  } catch (error) {
+    console.error("Error placing order:", error);
+    throw error; // Re-throw the error to handle it in the calling function
   }
-  return response;
 }
 
 export default placeOrder;

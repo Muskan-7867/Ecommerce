@@ -69,9 +69,9 @@ const ProfileDropdown = ({
                 <MdOutlineSettings size={20}/>
                   <Link to="/settings">Go To Settings</Link>
                 </li>
-                <li className="hover:bg-white/10 rounded-md p-2 flex justify-start gap-2">
+                <li onClick={handleLogOut} className="hover:bg-white/10 rounded-md p-2 flex justify-start gap-2">
                 <PiSignOutBold size={20} />
-                  <button onClick={handleLogOut}>Log Out</button>
+                  <button>Log Out</button>
                 </li>
               </ul>
             </div>

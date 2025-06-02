@@ -91,7 +91,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       setTimeout(() => {
         navigate("/login");
       }, 1000);
-      navigate(-1);
+    
       return;
     }
 

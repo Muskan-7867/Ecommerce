@@ -28,11 +28,12 @@ const Navbar = () => {
   }, [cartCountValue]);
 
   const getFirstLetter = (email: string) =>
-    email?.charAt(0).toUpperCase() ;
+    email?.charAt(0).toUpperCase();
 
   const handleLogOut = () => {
     Cookies.remove("authToken");
-    allocateCurrentUser(null);
+    allocateCurrentUser(null); 
+    localStorage.removeItem("user"); 
     setIsDropdownVisible(false);
     navigate("/login");
   };
@@ -68,7 +69,7 @@ const Navbar = () => {
             <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
           </button>
 
-          {/* User Icon */}
+          {/* Conditional rendering based on user authentication */}
           {currentUserFromStore ? (
             <div className="relative">
               <button
@@ -96,7 +97,7 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* Mobile menu button - hidden on desktop */}
+          {/* Mobile menu button */}
           <button
             onClick={() => setIsCardVisible(true)}
             className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-gray-100"
