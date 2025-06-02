@@ -81,10 +81,15 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const handleOrder = () => {
     if (!isLoggined) {
       setLoginMsg(true);
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-      navigate(-1);
+      sessionStorage.setItem('prevPath', window.location.pathname);
+    sessionStorage.setItem('pendingOrder', JSON.stringify({
+      orderData,
+      products,
+      quantities,
+      paymentMethod
+    }));
+    navigate("/login", { state: { from: 'cart' } });
+    
       return;
     }
 

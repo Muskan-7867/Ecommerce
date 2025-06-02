@@ -85,8 +85,8 @@ const Register = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50">
-      <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row shadow-lg rounded-lg overflow-hidden">
+    <div className="min-h-screen flex justify-center items-center ">
+      <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row rounded-lg overflow-hidden">
         {/* Success message */}
         {successMessage && <SuccessMessage successMessage={successMessage} />}
 

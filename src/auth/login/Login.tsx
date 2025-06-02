@@ -58,8 +58,17 @@ const Login = () => {
         Cookies.set("authToken", data.token);
       }
 
+      // Check for redirect path from either location state or sessionStorage
+      const locationState = location.state as { from?: string };
+      const redirectPath =
+        locationState?.from || sessionStorage.getItem("prevPath") || "/";
+
+      // Clear the stored path if it exists
+      if (sessionStorage.getItem("prevPath")) {
+        sessionStorage.removeItem("prevPath");
+      }
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      setTimeout(() => navigate("/"), 1500);
+      setTimeout(() => navigate(redirectPath), 1000);
     } catch (error: any) {
       console.error("Login error:", error);
       const message =
@@ -78,7 +87,7 @@ const Login = () => {
   return (
     <ScreenHandler>
       <div className="min-h-screen flex justify-center items-center">
-        <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row relative shadow-lg rounded-lg overflow-hidden">
+        <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row relative  rounded-lg overflow-hidden">
           {/* Success message */}
           {successMessage && <SuccessMessage successMessage={successMessage} />}
 
