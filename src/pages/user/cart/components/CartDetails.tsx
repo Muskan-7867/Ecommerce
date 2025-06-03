@@ -37,7 +37,7 @@ const CartDetails = ({
 
       {/* ℹ Product Info */}
       <div className="flex-1 sm:px-4 space-y-1">
-        <h3 className="text-lg sm:text-xl font-semibold">{product.name}</h3>
+        <h3 className="text-md">{product.name}</h3>
         <div className="text-gray-700 text-sm sm:text-base font-medium flex items-center">
           <LiaRupeeSignSolid />
           {product.price.toFixed(2)}
