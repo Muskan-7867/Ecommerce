@@ -73,28 +73,34 @@ export const initiateRazorpayPayment = async ({
       throw new Error("Invalid response from server");
     }
 
-    const { id, amount } = data.razorpayOrder;
+    const { id:razorpayOrderId, amount } = data.razorpayOrder;
     const orderId = data.order._id;
+
+    // Store these values for later use in the handler
+    const backendRazorpayOrderId = razorpayOrderId;
+    const backendOrderId = orderId;
 
     const options = {
       key: RAZORPAY_KEY,
       amount,
       currency: "INR",
-      order_id: id,
+      order_id: razorpayOrderId,
       name: "OMEG-BAZAAR",
       description: `Payment for ${products.length} item${products.length > 1 ? 's' : ''}`,
       handler: async (response: RazorpayResponse) => {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
           response;
-        console.log("from frontend payment " , response);
+        console.log("Razorpay payment response:", response);
+        console.log("Backend Order ID: backendOrderId and razorpay_order_id", backendOrderId, razorpay_order_id);
+        console.log("Backend Razorpay Order ID:", backendRazorpayOrderId);
         try {
           const verification = await axios.post(
             `${BASE_URL}/api/v1/order/paymentverify`,
             {
-              razorpay_order_id,
+              razorpay_order_id: backendRazorpayOrderId,
               razorpay_payment_id,
               razorpay_signature,
-              orderId,
+              orderId : backendOrderId,
               paymentMethod: paymentmethod
             },
             {

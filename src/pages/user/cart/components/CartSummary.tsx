@@ -35,12 +35,15 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     return acc + product.price * qty;
   }, 0);
 
-  const deliveryCharge = products.reduce((acc, product) => {
-    const charge = Number(product?.deliveryCharges || 0);
-    return acc + (isNaN(charge) ? 0 : charge);
-  }, 0);
+ const deliveryCharges = products.length > 0 
+    ? products.reduce((acc, product) => acc + (product.deliveryCharges || 0), 0) / products.length
+    : 0;
 
-  const total = subtotal + deliveryCharge;
+  // Round to 2 decimal places if needed
+  const roundedDeliveryCharges = Math.round(deliveryCharges * 100) / 100;
+
+  const total = subtotal + roundedDeliveryCharges;
+
   const totalQuantity = Object.values(quantities).reduce(
     (acc, qty) => acc + qty,
     0
@@ -64,7 +67,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     address,
     orderItems,
     status: "pending",
-    deliveryCharges: deliveryCharge,
+    deliveryCharges: roundedDeliveryCharges,
     payment: paymentMethod,
     isPaid: paymentMethod === "online_payment"
   };
@@ -95,7 +98,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       return;
     }
 
-    if (!address) { // Now properly checking for address
+    if (!address) { 
       navigate("/addressform");
       return;
     }
@@ -122,7 +125,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
       <SummaryDetails
         subtotal={subtotal}
         total={total}
-        deliveryCharge={deliveryCharge}
+        deliveryCharge={roundedDeliveryCharges}
       />
 
       <PaymentSummary
