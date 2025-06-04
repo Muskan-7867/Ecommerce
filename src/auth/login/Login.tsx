@@ -52,7 +52,7 @@ const Login = () => {
 
       // 1. Set token first
       if (data.token) {
-        Cookies.set("authToken", data.token, { expires: 7 }); // Add expiration
+        Cookies.set("authToken", data.token, { expires: 7 });
       }
 
       // 2. Force refresh user data and WAIT for it to complete
@@ -63,16 +63,18 @@ const Login = () => {
       setSuccessMessage("Login successful! Redirecting...");
       setErrorMessage(null);
 
-      // 4. Get redirect path (simplified)
-      const redirectPath =
-        location.state?.from ||
-        sessionStorage.getItem("prevPath") ||
-        "/products";
+      // 4. Get redirect path (modified logic)
+      let redirectPath = "/"; // Default to dashboard
 
-      // 5. Clear stored path if it exists
-      sessionStorage.removeItem("prevPath");
+      // Check if coming from product page specifically
+      const prevPath = sessionStorage.getItem("prevPath");
+      if (prevPath) {
+        // Only redirect to product page if that's where they came from
+        redirectPath = prevPath;
+        sessionStorage.removeItem("prevPath");
+      }
 
-      // 6. Navigate after a brief delay to ensure UI updates
+      // 5. Navigate after a brief delay to ensure UI updates
       setTimeout(() => navigate(redirectPath), 500);
     } catch (error: any) {
       console.error("Login error:", error);

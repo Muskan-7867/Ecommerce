@@ -49,32 +49,28 @@ export const usePaymentHandlerForBuy = () => {
   };
 
   const handleOrder = async (
-    orderData: OrderData,
-    products: Product[],
-    quantities: { [id: string]: number },
-    paymentMethod: PaymentType,
-    isLoggined: boolean,
-    currentUserFromStore: CurrentUser
-  ) => {
-    if (!isLoggined) {
-      setLoginMsg(true);
+  orderData: OrderData,
+  products: Product[],
+  quantities: { [id: string]: number },
+  paymentMethod: PaymentType,
+  isLoggined: boolean,
+  currentUserFromStore: CurrentUser
+) => {
+  if (!isLoggined) {
+    setLoginMsg(true);
+    // Only set prevPath if we're on a product page
+    if (window.location.pathname.startsWith("/checkout")) {
       sessionStorage.setItem('prevPath', window.location.pathname);
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-      
-      return;
     }
-
-    const address = currentUserFromStore?.address;
-    if (!address || typeof address === "string" || !address._id) {
-      navigate("/addressform");
-      return;
-    }
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
+    return;
+  }
 
     const orderWithTypedAddress: OrderData = {
       ...orderData,
-      address: address as AddressFormData
+      address: currentUserFromStore.address as AddressFormData
     };
 
     if (paymentMethod === "cash_on_delivery") {
