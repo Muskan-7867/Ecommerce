@@ -57,17 +57,19 @@ const Navbar = () => {
 
         {/* Right side icons */}
         <div className="flex items-center gap-4 sm:gap-6">
-          {/* Cart Icon */}
-          <button
-            className="hover:opacity-80 transition-opacity relative"
-            aria-label="Cart"
-            onClick={() => navigate("/cart")}
-          >
-            <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
-              {cartCount}
-            </p>
-            <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
-          </button>
+          {/* Show cart only if user is logged in */}
+          {currentUserFromStore && (
+            <button
+              className="hover:opacity-80 transition-opacity relative"
+              aria-label="Cart"
+              onClick={() => navigate("/cart")}
+            >
+              <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
+                {cartCount}
+              </p>
+              <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
+            </button>
+          )}
 
           {/* Conditional rendering based on user authentication */}
           {currentUserFromStore ? (
@@ -100,7 +102,7 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsCardVisible(true)}
-            className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-gray-100"
+            className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-white hover:text-primary"
             aria-label="Open Mobile Menu"
           >
             <IoMenu size={20} />
