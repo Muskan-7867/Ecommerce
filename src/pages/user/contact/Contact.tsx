@@ -39,15 +39,13 @@ const Contact = () => {
             Our Location
           </h2>
           <div className="h-96 w-full bg-gray-200 rounded-lg overflow-hidden">
-            {/* Replace with your actual map component */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215573291661!2d-73.98784492423967!3d40.74844097138959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1689876423584!5m2!1sen!2sus"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d426.128021629306!2d75.583209!3d31.303077!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391a5b3b79997171%3A0x2a17d9f210b903a!2sOm%20Enterprises%20Group!5e0!3m2!1sen!2sin!4v1749018727184!5m2!1sen!2sin"
+              width="600"
+              height="450"
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="rounded-lg"
+              allowFullScreen
+              className="w-full h-full border-0"
             ></iframe>
           </div>
         </div>

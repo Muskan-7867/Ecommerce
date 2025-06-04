@@ -19,9 +19,9 @@ const ContactInfo = () => {
             <div>
               <h4 className="font-medium text-gray-800">Our Location</h4>
               <p className="text-sm text-gray-600 mt-1">
-                123 Business Ave, Suite 456
-                <br />
-                New York, NY 10001, USA
+             23-A, near Lal Chand Shoe Maker, 
+             <br />
+              Prakash Nagar, Shankar Garden Colony, <br /> Model Town, Jalandhar, Punjab 144003
               </p>
             </div>
           </div>
@@ -33,10 +33,10 @@ const ContactInfo = () => {
             <div>
               <h4 className="font-medium text-gray-800">Phone Number</h4>
               <a
-                href="tel:+14578986546"
+               
                 className="text-sm text-gray-600 hover:text-primary transition mt-1 block"
               >
-                +1 (457) 898-6546
+                09872144408
               </a>
             </div>
           </div>
@@ -48,10 +48,10 @@ const ContactInfo = () => {
             <div>
               <h4 className="font-medium text-gray-800">Email Address</h4>
               <a
-                href="mailto:info@example.com"
+                href="mailto:omegbazaar@gmail.com"
                 className="text-sm text-gray-600 hover:text-primary transition mt-1 block"
               >
-                info@example.com
+                omegbazaar@gmail.com
               </a>
             </div>
           </div>
