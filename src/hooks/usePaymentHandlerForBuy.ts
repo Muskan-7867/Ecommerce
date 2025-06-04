@@ -68,9 +68,15 @@ export const usePaymentHandlerForBuy = () => {
     return;
   }
 
+ const address = currentUserFromStore?.address;
+    if (!address || typeof address === "string" || !address._id) {
+      navigate("/addressform");
+      return;
+    }
+
     const orderWithTypedAddress: OrderData = {
       ...orderData,
-      address: currentUserFromStore.address as AddressFormData
+      address: address as AddressFormData
     };
 
     if (paymentMethod === "cash_on_delivery") {
