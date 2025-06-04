@@ -16,7 +16,7 @@ const AboutUs = () => {
     <div className="min-h-screen bg-white">
      
 
-      <div className="py-16 px-6 md:px-12 max-w-full mt-20 mx-aut o">
+      <div className="py-16   max-w-full mt-20 mx-auto">
        <AboutImageSection />
          
         {/* Mission section */}
