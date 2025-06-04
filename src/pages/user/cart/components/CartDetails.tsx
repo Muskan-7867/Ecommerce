@@ -28,7 +28,7 @@ const CartDetails = ({
 
       {/* Product Image */}
       <div className="flex justify-center items-center sm:w-[80px]">
-        <img
+        <img 
           src={product.images[0]?.url}
           alt={product.name}
           className="w-20 h-20 object-cover rounded-md"
