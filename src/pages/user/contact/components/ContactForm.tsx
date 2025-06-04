@@ -5,7 +5,7 @@ import { MdLocalPhone } from "react-icons/md"
 
 const ContactForm = () => {
   return (
-    <div className="w-full lg:w-1/2 p-4 md:p-8 bg-white rounded-lg shadow-lg ">
+    <div className="w-full  p-4 md:p-8  ">
     <h1 className="text-2xl md:text-3xl text-center font-bold text-primary mb-8">
       CONTACT US
     </h1>

@@ -1,57 +1,74 @@
 import { IoIosMail } from "react-icons/io";
 import { MdLocalPhone, MdLocationOn } from "react-icons/md";
-import ContactMap from "./ContactMap";
+import { BsClock } from "react-icons/bs";
 
 const ContactInfo = () => {
   return (
-    <div className="w-full lg:w-1/2 flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-6">
       {/* Contact Info */}
-      <div className="bg-primary p-6 md:p-8 rounded-lg shadow-lg text-white">
-        <h1 className="text-2xl md:text-3xl text-center font-bold mb-8">
-          OUR ADDRESS
+      <div className=" p-6 md:p-8 rounded-lg  mt-10">
+        <h1 className="text-2xl md:text-3xl text-center font-bold  text-gray-800 mb-2">
+          Contact Information
         </h1>
-        <div className="space-y-6">
-          <h3 className="text-lg font-semibold uppercase tracking-wider">
-            Contact Us
-          </h3>
-          <p className="text-sm leading-relaxed">
-            Have questions or need help? Reach out to our customer support team
-            anytime.
-          </p>
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <MdLocationOn className="mt-1 flex-shrink-0" size={18} />
-              <span className="text-sm">
+
+        <div className="space-y-2">
+          <div className="flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition">
+            <div className="bg-primary/10 p-3 rounded-full">
+              <MdLocationOn className="text-primary" size={18} />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-800">Our Location</h4>
+              <p className="text-sm text-gray-600 mt-1">
                 123 Business Ave, Suite 456
                 <br />
-                New York, NY 10001
-              </span>
+                New York, NY 10001, USA
+              </p>
             </div>
-            <div className="flex items-center space-x-3">
-              <MdLocalPhone size={18} />
+          </div>
+
+          <div className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition">
+            <div className="bg-primary/10 p-3 rounded-full">
+              <MdLocalPhone className="text-primary" size={18} />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-800">Phone Number</h4>
               <a
                 href="tel:+14578986546"
-                className="hover:text-gray-300 transition text-sm"
+                className="text-sm text-gray-600 hover:text-primary transition mt-1 block"
               >
                 +1 (457) 898-6546
               </a>
             </div>
-            <div className="flex items-center space-x-3">
-              <IoIosMail size={18} />
+          </div>
+
+          <div className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition">
+            <div className="bg-primary/10 p-3 rounded-full">
+              <IoIosMail className="text-primary" size={18} />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-800">Email Address</h4>
               <a
                 href="mailto:info@example.com"
-                className="hover:text-gray-300 transition text-sm"
+                className="text-sm text-gray-600 hover:text-primary transition mt-1 block"
               >
                 info@example.com
               </a>
             </div>
           </div>
+
+          <div className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition">
+            <div className="bg-primary/10 p-3 rounded-full">
+              <BsClock className="text-primary" size={18} />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-800">Working Hours</h4>
+              <p className="text-sm text-gray-600 mt-1">
+                Mon-Sat: 9:30 AM - 6:30 PM
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-
-         <div>
-          <ContactMap  />
-         </div>
     </div>
   );
 };
