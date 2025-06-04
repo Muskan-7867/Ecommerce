@@ -26,7 +26,7 @@ const SingleProductPage: React.FC<SingleProductPageProps> = ({ quantities, setQu
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-white rounded-lg shadow-lg w-full">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-white rounded-lg  w-full">
       {/* Left: Image + Name + Qty */}
       <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 flex-wrap w-full sm:w-auto">
         {/* Image */}

@@ -11,7 +11,7 @@ const CheckOut = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [quantities, setQuantities] = useState<{ [id: string]: number }>({});
   const { reFetch } = useCurrentUserStore();
-  
+
   const { id } = useParams<{ id: string }>();
   const { data: singleproduct } = useQuery<Product>(getProductByIdQuery(id));
 
@@ -31,16 +31,30 @@ const CheckOut = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-6 lg:px-8 py-8 min-h-screen  mt-18 ">
-      <div className="lg:col-span-8 col-span-12">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-2">Checkout</h2>
-        <SingleProductPage quantities={quantities} setQuantities={setQuantities} />
-      </div>
+    <div className="min-h-screen  py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-full mx-auto mt-18">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+          Checkout
+        </h2>
 
-      <div className="lg:col-span-4 col-span-12">
-        <PaymentSummaryForBuy products={products} quantities={quantities} />
+        <div className="flex flex-col gap-6">
+          {/* Product Section */}
+          <div className="bg-white rounded-lg shadow  p-6">
+            <SingleProductPage
+              quantities={quantities}
+              setQuantities={setQuantities}
+            />
+          </div>
+
+          {/* Payment Summary Section */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <PaymentSummaryForBuy
+              products={products}
+              quantities={quantities}
+            />
+          </div>
+        </div>
       </div>
-   
     </div>
   );
 };

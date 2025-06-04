@@ -87,10 +87,6 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
 
   return (
     <div className="w-full mx-auto relative">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4 font-serif text-primary">
-        Cart Summary
-      </h1>
-
       {loginMsg && (
         <div className="mb-4 p-4 bg-yellow-100 text-yellow-700 rounded">
           Please log in to place your order. Redirecting...
