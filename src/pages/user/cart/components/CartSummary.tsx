@@ -7,7 +7,7 @@ import { CurrentUser } from "../../../../types/auth";
 import PopupMessage from "../../../../components/common/OrderConfirmPopUp";
 import SummaryDetails from "./SummaryDetails";
 import useOrderHandler from "../../../../hooks/useOrderHandler";
-import { AddressFormData } from "../../../../types/auth"; 
+import { AddressFormData } from "../../../../types/auth";
 
 export type PaymentType = "online_payment" | "cash_on_delivery";
 
@@ -35,9 +35,13 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     return acc + product.price * qty;
   }, 0);
 
- const deliveryCharges = products.length > 0 
-    ? products.reduce((acc, product) => acc + (product.deliveryCharges || 0), 0) / products.length
-    : 0;
+  const deliveryCharges =
+    products.length > 0
+      ? products.reduce(
+          (acc, product) => acc + (product.deliveryCharges || 0),
+          0
+        ) / products.length
+      : 0;
 
   // Round to 2 decimal places if needed
   const roundedDeliveryCharges = Math.round(deliveryCharges * 100) / 100;
@@ -56,9 +60,10 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   }));
 
   // Fix: Ensure address is either AddressFormData or undefined
-  const address = typeof currentUserFromStore?.address === 'object' 
-    ? currentUserFromStore.address as AddressFormData 
-    : undefined;
+  const address =
+    typeof currentUserFromStore?.address === "object"
+      ? (currentUserFromStore.address as AddressFormData)
+      : undefined;
 
   const orderData = {
     quantity: totalQuantity,
@@ -84,21 +89,24 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
   const handleOrder = () => {
     if (!isLoggined) {
       setLoginMsg(true);
-      sessionStorage.setItem('prevPath', window.location.pathname);
-    sessionStorage.setItem('pendingOrder', JSON.stringify({
-      orderData,
-      products,
-      quantities,
-      paymentMethod
-    }));
+      sessionStorage.setItem("prevPath", window.location.pathname);
+      sessionStorage.setItem(
+        "pendingOrder",
+        JSON.stringify({
+          orderData,
+          products,
+          quantities,
+          paymentMethod
+        })
+      );
       setTimeout(() => {
         navigate("/login");
       }, 1000);
-    
+
       return;
     }
 
-    if (!address) { 
+    if (!address) {
       navigate("/addressform");
       return;
     }
@@ -137,8 +145,8 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
         <div className="fixed inset-0 backdrop-blur-2xl bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-sm">
             <h3 className="text-lg font-bold text-green-600 mb-2">
-              {paymentMethod === "cash_on_delivery" 
-                ? "Order Confirmed!" 
+              {paymentMethod === "cash_on_delivery"
+                ? "Order Confirmed!"
                 : "Payment Successful!"}
             </h3>
             <p>
