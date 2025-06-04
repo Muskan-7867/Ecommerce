@@ -12,7 +12,7 @@ interface RazorpayParams {
   navigate: (path: string) => void;
   setLoading: (val: boolean) => void;
   setShowSuccessPopup: (val: boolean) => void;
-  setError?: (error: string) => void; // Added optional error handler
+  setError?: (error: string) => void; 
 }
 
 export const initiateRazorpayPayment = async ({

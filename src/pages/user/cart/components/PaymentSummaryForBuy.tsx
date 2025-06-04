@@ -27,9 +27,8 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
   const { loading, loginMsg, handleOrder, popup } = usePaymentHandlerForBuy();
  
    useEffect(() => {
-    // This will run when the component mounts and when isLoggined changes
   }, [isLoggined, currentUserFromStore]);
-  // Calculate order summary
+
   const subtotal = products.reduce((acc, product) => {
     const qty = quantities[product._id] || 1;
     return acc + product.price * qty;
@@ -46,10 +45,7 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
     0
   );
 
-
-
-  // Prepare order data
-  const orderItems = products.map((product) => ({
+ const orderItems = products.map((product) => ({
     product: product._id,
     price: product.price,
     quantity: quantities[product._id] || 1
