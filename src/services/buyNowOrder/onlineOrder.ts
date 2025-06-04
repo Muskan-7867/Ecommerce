@@ -1,33 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RazorpayResponse } from "razorpay";
-import placeOrder from "../services/order";
-import { Product } from "../types/Product";
-import { AddressFormData, CurrentUser } from "../types/auth";
-import { createRazorpayOrder, verifyPayment } from "../services/paymentforbuy";
-import { PaymentType } from "../pages/user/cart/components/CartSummary";
-import Cookies from "js-cookie";
+import { Product } from "../../types/Product";
+import { CurrentUser } from "../../types/auth";
+import { createRazorpayOrder } from "./paymentforbuy";
+import { verifyPayment } from "./paymentforbuy";
+import { PaymentType } from "../../pages/user/cart/components/CartSummary";
 
-interface OrderData {
-  quantity: number;
-  totalQuantity: number;
-  totalPrice: number;
-  address: AddressFormData;
-  orderItems: Array<{
-    product: string;
-    price: number;
-    quantity: number;
-  }>;
-  status: string;
-  deliveryCharges: number;
-  payment: PaymentType;
-  isPaid: boolean;
-  paymentMethod: PaymentType;
-}
-
-export const usePaymentHandlerForBuy = () => {
+export const useOnlinePaymentHandler = () => {
   const [loading, setLoading] = useState(false);
-  const [loginMsg, setLoginMsg] = useState(false);
   const [popup, setPopup] = useState({
     show: false,
     message: "",
@@ -46,67 +27,6 @@ export const usePaymentHandlerForBuy = () => {
         navigate("/products");
       }
     }, 3000);
-  };
-
-  const handleOrder = async (
-  orderData: OrderData,
-  products: Product[],
-  quantities: { [id: string]: number },
-  paymentMethod: PaymentType,
-  isLoggined: boolean,
-  currentUserFromStore: CurrentUser
-) => {
-  if (!isLoggined) {
-    setLoginMsg(true);
-    // Only set prevPath if we're on a product page
-    if (window.location.pathname.startsWith("/checkout")) {
-      sessionStorage.setItem('prevPath', window.location.pathname);
-    }
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
-    return;
-  }
-
- const address = currentUserFromStore?.address;
-    if (!address || typeof address === "string" || !address._id) {
-      navigate("/addressform");
-      return;
-    }
-
-    const orderWithTypedAddress: OrderData = {
-      ...orderData,
-      address: address as AddressFormData
-    };
-
-    if (paymentMethod === "cash_on_delivery") {
-      return handleCODOrder(orderWithTypedAddress);
-    }
-
-    return handleOnlinePayment(
-      products,
-      quantities,
-      paymentMethod,
-      currentUserFromStore
-    );
-  };
-
-  const handleCODOrder = async (orderData: OrderData) => {
-    try {
-      setLoading(true);
-      const response = await placeOrder(orderData, Cookies.get("authToken")!);
-
-      if (response?.data?.success) {
-        showPopup("Order placed successfully with Cash on Delivery.");
-      } else {
-        showPopup("Failed to place order: " + response?.data?.message, "error");
-      }
-    } catch (error) {
-      console.error("COD order error:", error);
-      showPopup("Failed to place COD order.", "error");
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleOnlinePayment = async (
@@ -220,5 +140,5 @@ export const usePaymentHandlerForBuy = () => {
     razorpay.open();
   };
 
-  return { loading, loginMsg, handleOrder, popup };
+  return { loading, handleOnlinePayment, popup };
 };

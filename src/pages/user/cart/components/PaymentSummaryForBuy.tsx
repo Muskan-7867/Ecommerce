@@ -5,7 +5,7 @@ import SummaryDetails from "./SummaryDetails";
 import { PaymentType } from "./CartSummary";
 import useCurrentUserStore from "../../../../store/User/user.store";
 import { CurrentUser, AddressFormData } from "../../../../types/auth";
-import { usePaymentHandlerForBuy } from "../../../../hooks/usePaymentHandlerForBuy";
+import { usePaymentHandlerForBuy } from "../../../../hooks/buynoworder/usePaymentHandlerForBuy";
 import PaymentLoader from "./PaymentLoader";
 import PaymentPopUp from "./PaymentPopUp";
 
@@ -97,9 +97,7 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
         </div>
       )}
 
-      {popup.show && (
-      <PaymentPopUp popup={popup}/>
-      )}
+      {popup.show && <PaymentPopUp popup={popup} />}
 
       <SummaryDetails
         subtotal={subtotal}
@@ -127,7 +125,7 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
         disabled={loading}
       >
         {loading ? (
-        <PaymentLoader />
+          <PaymentLoader />
         ) : isLoggined ? (
           "Place Order"
         ) : (

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import placeOrder from "../services/order";
-import { OrderData, Product } from "../types/Product";
-import useCurrentUser from "./useCurrentUser";
-import { initiateRazorpayPayment } from "../services/cart/razorpayforcartorder";
+import placeOrder from "../../services/order";
+import { OrderData, Product } from "../../types/Product";
+import useCurrentUser from "../useCurrentUser";
+import { initiateRazorpayPayment } from "../../services/cart/razorpayforcartorder";
 
 interface Props {
   orderData: OrderData;

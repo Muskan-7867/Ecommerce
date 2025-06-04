@@ -1,6 +1,6 @@
 import axios from "axios";
-import { OrderData, Product } from "../types/Product";
-import { CurrentUser } from "../types/auth";
+import { OrderData, Product } from "../../types/Product";
+import { CurrentUser } from "../../types/auth";
 import { RazorpayResponse } from "razorpay";
 
 interface RazorpayParams {
@@ -12,7 +12,7 @@ interface RazorpayParams {
   navigate: (path: string) => void;
   setLoading: (val: boolean) => void;
   setShowSuccessPopup: (val: boolean) => void;
-  setError?: (error: string) => void; 
+  setError?: (error: string) => void;
 }
 
 export const initiateRazorpayPayment = async ({
@@ -82,11 +82,13 @@ export const initiateRazorpayPayment = async ({
       currency: "INR",
       order_id: id,
       name: "OMEG-BAZAAR",
-      description: `Payment for ${products.length} item${products.length > 1 ? 's' : ''}`,
+      description: `Payment for ${products.length} item${
+        products.length > 1 ? "s" : ""
+      }`,
       handler: async (response: RazorpayResponse) => {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
           response;
-        console.log("from frontend payment " , response)
+        console.log("from frontend payment ", response);
         try {
           const verification = await axios.post(
             `${BASE_URL}/api/v1/order/paymentverify`,
@@ -98,7 +100,7 @@ export const initiateRazorpayPayment = async ({
               paymentMethod: paymentmethod
             },
             {
-              headers: { Authorization: `Bearer ${token}`}
+              headers: { Authorization: `Bearer ${token}` }
             }
           );
 
@@ -108,12 +110,12 @@ export const initiateRazorpayPayment = async ({
               navigate("/products");
             }, 2000);
           } else {
-            const errorMsg = verification.data.message ;
+            const errorMsg = verification.data.message;
             console.error(errorMsg);
             setError?.(errorMsg);
           }
         } catch (err) {
-          const errorMsg = axios.isAxiosError(err) 
+          const errorMsg = axios.isAxiosError(err)
             ? err.response?.data?.message || "Error during verification"
             : "Error during verification";
           console.error("Error during verification:", errorMsg);
@@ -142,7 +144,7 @@ export const initiateRazorpayPayment = async ({
       : error instanceof Error
       ? error.message
       : "Error creating Razorpay order";
-    
+
     console.error("Error creating Razorpay order:", errorMsg);
     setError?.(errorMsg);
   } finally {

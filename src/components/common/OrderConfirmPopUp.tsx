@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { CurrentUser } from "../../types/auth";
 import { OrderData, Product } from "../../types/Product";
 import { useState } from "react";
-import useOrderHandler from "../../hooks/useOrderHandler";
+import useOrderHandler from "../../hooks/cartorder/useOrderHandler";
 
 interface Props {
   currentUserFromStore: CurrentUser;
@@ -48,8 +48,8 @@ const OrderConfirmPopUp = ({
     } catch (err) {
       console.error("Error confirming order:", err);
       setError(
-        err instanceof Error 
-          ? err.message 
+        err instanceof Error
+          ? err.message
           : "Failed to place order. Please try again."
       );
     } finally {
@@ -61,7 +61,7 @@ const OrderConfirmPopUp = ({
 
   // Safely access address properties
   const address = currentUserFromStore?.address;
-  const isAddressValid = address && typeof address === 'object';
+  const isAddressValid = address && typeof address === "object";
 
   return (
     <div
@@ -81,7 +81,7 @@ const OrderConfirmPopUp = ({
           </p>
         </div>
       ) : (
-        <div 
+        <div
           onClick={(e) => e.stopPropagation()}
           className="bg-white rounded-xl shadow-xl overflow-hidden w-full max-w-md animate-fade-in"
         >
@@ -93,7 +93,7 @@ const OrderConfirmPopUp = ({
                   Please verify your details before placing the order
                 </p>
               </div>
-              <button 
+              <button
                 onClick={handleCross}
                 className="text-white hover:text-gray-200 transition-colors"
                 aria-label="Close"
@@ -139,7 +139,7 @@ const OrderConfirmPopUp = ({
                 </svg>
                 Delivery Address
               </h4>
-              
+
               {isAddressValid ? (
                 <div className="text-sm text-gray-600 space-y-1">
                   {address.address1 && <p>{address.address1},</p>}
@@ -150,10 +150,14 @@ const OrderConfirmPopUp = ({
                   <p>
                     {address.country} - {address.pincode}
                   </p>
-                  {address.phone && <p className="mt-2">Phone: {address.phone}</p>}
+                  {address.phone && (
+                    <p className="mt-2">Phone: {address.phone}</p>
+                  )}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500 italic">No address provided</p>
+                <p className="text-sm text-gray-500 italic">
+                  No address provided
+                </p>
               )}
             </div>
 
@@ -176,7 +180,7 @@ const OrderConfirmPopUp = ({
               <div className="text-sm text-gray-600 space-y-1">
                 <p>Items: {products.length}</p>
                 <p>Total: ₹{orderData.totalPrice.toFixed(2)}</p>
-                <p>Payment: {paymentmethod.replace(/_/g, ' ')}</p>
+                <p>Payment: {paymentmethod.replace(/_/g, " ")}</p>
               </div>
             </div>
 

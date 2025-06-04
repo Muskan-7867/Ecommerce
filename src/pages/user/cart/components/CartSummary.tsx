@@ -6,7 +6,7 @@ import useCurrentUserStore from "../../../../store/User/user.store";
 import { CurrentUser } from "../../../../types/auth";
 import PopupMessage from "../../../../components/common/OrderConfirmPopUp";
 import SummaryDetails from "./SummaryDetails";
-import useOrderHandler from "../../../../hooks/useOrderHandler";
+import useOrderHandler from "../../../../hooks/cartorder/useOrderHandler";
 import { AddressFormData } from "../../../../types/auth";
 
 export type PaymentType = "online_payment" | "cash_on_delivery";
