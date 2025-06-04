@@ -58,7 +58,7 @@ const Navbar = () => {
         {/* Right side icons */}
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Show cart only if user is logged in */}
-          {currentUserFromStore && (
+         
             <button
               className="hover:opacity-80 transition-opacity relative"
               aria-label="Cart"
@@ -69,7 +69,7 @@ const Navbar = () => {
               </p>
               <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
             </button>
-          )}
+          
 
           {/* Conditional rendering based on user authentication */}
           {currentUserFromStore ? (
