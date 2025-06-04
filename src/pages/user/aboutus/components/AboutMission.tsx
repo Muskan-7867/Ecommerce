@@ -1,4 +1,3 @@
-// AboutMission.tsx
 import Lottie from "lottie-react";
 import missionAnimation from "../../../../../public/animations/mission.json";
 import { motion } from "framer-motion";
@@ -20,16 +19,25 @@ const AboutMission = () => {
             Our Mission
           </h2>
           <p className="text-gray-600 leading-relaxed mb-4">
-            At Omeg Bazaar, we're committed to revolutionizing your shopping experience by offering:
+            Welcome to <strong>omegbazaar.com</strong> – your ultimate destination for discovering unique and trending products!
+          </p>
+          <p className="text-gray-600 leading-relaxed mb-4">
+            At <strong>omeg.in</strong>, we're passionate about curating a collection of one-of-a-kind items you won't find anywhere else. From the latest tech gadgets and fashion accessories to home decor and lifestyle must-haves, every product is handpicked with care.
+          </p>
+          <p className="text-gray-600 leading-relaxed mb-4">
+            Our goal is to offer a shopping experience that blends convenience, affordability, and the excitement of finding something truly special.
           </p>
           <ul className="text-gray-600 leading-relaxed space-y-2 mb-4">
-            <li>• Carefully curated products with quality assurance</li>
-            <li>• Competitive pricing with no hidden costs</li>
-            <li>• Fast and reliable delivery services</li>
-            <li>• Exceptional 24/7 customer support</li>
+            <li>• Unique, curated product collections</li>
+            <li>• Competitive pricing – no hidden costs</li>
+            <li>• Fast, reliable delivery across regions</li>
+            <li>• Friendly, responsive customer support</li>
           </ul>
+          <p className="text-gray-600 leading-relaxed mb-4">
+            Whether you're hunting for the perfect gift, upgrading your essentials, or simply treating yourself, <strong>omeg.in</strong> makes it effortless and fun.
+          </p>
           <p className="text-gray-600 leading-relaxed">
-            We believe in building lasting relationships with our customers through transparency, innovation, and continuous improvement.
+            Join our community of savvy shoppers and elevate your lifestyle with Omeg Bazaar. Happy shopping!
           </p>
         </div>
       </motion.div>
