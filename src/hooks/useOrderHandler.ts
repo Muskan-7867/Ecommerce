@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import placeOrder from "../services/order";
 import { OrderData, Product } from "../types/Product";
 import useCurrentUser from "./useCurrentUser";
-import { initiateRazorpayPayment } from "../services/razorpayforcartorder";
+import { initiateRazorpayPayment } from "../services/cart/razorpayforcartorder";
 
 interface Props {
   orderData: OrderData;
@@ -25,8 +25,7 @@ const useOrderHandler = ({
   const navigate = useNavigate();
   const token = Cookies.get("authToken");
 
-
-  const { currentUserFromStore } = useCurrentUser() 
+  const { currentUserFromStore } = useCurrentUser();
 
   const placeOrderHandler = async () => {
     setShowConfirmPopUp(false);
@@ -36,7 +35,7 @@ const useOrderHandler = ({
       ...orderData,
       paymentMethod: paymentmethod
     };
-    
+
     try {
       const response = await placeOrder(dataForCod, Cookies.get("authToken")!);
       if (response?.data.success) {
@@ -67,7 +66,7 @@ const useOrderHandler = ({
         orderData,
         products,
         currentUserFromStore,
-        token ,
+        token,
         navigate,
         setLoading,
         paymentmethod,
