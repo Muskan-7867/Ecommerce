@@ -12,7 +12,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
   );
   const [maxPrice, setMaxPrice] = useQueryState(
     "maxPrice",
-    parseAsInteger.withDefault(0)
+    parseAsInteger.withDefault(10000)
   );
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
         height: "auto",
         transition: { duration: 0.3, ease: "easeInOut" }
       }}
-      className="p-4 rounded-md shadow-sm bg-white w-full lg:mt-32 mt-12"
+      className="p-4 rounded-md shadow-sm bg-white w-full absolute lg:top-0 top-12 lg:relative "
     >
       <h3 className="text-lg font-semibold mb-4 text-gray-800">
         Filter by Price
@@ -45,8 +45,8 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
             Min
           </label>
           <motion.input
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 1 } }}
+          initial={{ opacity:0}}
+          animate={{opacity:1 , transition:{duration:1}}}
             id="min"
             type="range"
             style={{ accentColor: "#ca8888" }}
@@ -56,7 +56,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
             onChange={handleMinChange}
             className=" border  rounded px-3 py-2 focus:outline-none "
           />
-          <span className="text-sm text-gray-700 mt-1">₹{minPrice}</span>
+             <span className="text-sm text-gray-700 mt-1">₹{minPrice}</span>
         </motion.div>
         <div className="flex flex-col w-1/2">
           <label htmlFor="max" className="text-sm text-gray-600">
@@ -72,7 +72,8 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
             onChange={handleMaxChange}
             className=" rounded px-3 py-2 focus:outline-none "
           />
-          <span className="text-sm text-gray-700 mt-1">₹{maxPrice}</span>
+             <span className="text-sm text-gray-700 mt-1">₹{minPrice}</span>
+
         </div>
       </motion.div>
     </motion.div>
