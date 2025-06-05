@@ -7,7 +7,6 @@ const Footer = () => {
     { name: "Home", link: "/" },
     { name: "About Us", link: "/about" },
     { name: "Contact", link: "/contact" },
-    { name: "Catalog", link: "/catalog" },
     { name: "Products", link: "/products" }
   ];
 
@@ -16,7 +15,6 @@ const Footer = () => {
     { name: "Best Sellers", link: "/bestsellers" },
     { name: "Special Offers", link: "/offers" },
     { name: "Gift Cards", link: "/gifts" },
-    { name: "My Account", link: "/account" }
   ];
 
   return (
@@ -25,9 +23,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Info */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold">
-              Omeg <br className="hidden sm:block" /> Bazaar
-            </h2>
+            <h2 className="text-2xl font-bold text-white">Omeg Bazaar</h2>
             <p className="text-white text-sm leading-relaxed">
               Your one-stop destination for quality products. We provide the
               best shopping experience with a wide range of items to choose
@@ -51,7 +47,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold uppercase tracking-wider">
+            <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
               Quick Links
             </h3>
             <ul className="space-y-2">
@@ -70,7 +66,7 @@ const Footer = () => {
 
           {/* Shop Now */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold uppercase tracking-wider">
+            <h3 className="text-lg  text-white font-semibold uppercase tracking-wider">
               Shop Now
             </h3>
             <ul className="space-y-2">
@@ -89,7 +85,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold uppercase tracking-wider">
+            <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
               Contact Us
             </h3>
             <p className="text-white text-sm leading-relaxed">
@@ -102,11 +98,12 @@ const Footer = () => {
                   className="text-white mt-1 flex-shrink-0"
                   size={18}
                 />
-                <span className="text-white text-sm">
-                  123 Business Ave, Suite 456
-                  <br />
-                  New York, NY 10001
-                </span>
+                <p className="text-sm text-white mt-1">
+                  23-A, near Lal Chand Shoe Maker,
+             
+                  Prakash Nagar, Shankar Garden Colony, <br /> Model Town,
+                  Jalandhar, Punjab 144003
+                </p>
               </div>
               <div className="flex items-center space-x-3">
                 <MdLocalPhone className="text-white" size={18} />
@@ -114,7 +111,7 @@ const Footer = () => {
                   href="tel:+14578986546"
                   className="text-white hover:text-black transition text-sm"
                 >
-                  +1 (457) 898-6546
+                  09872144408
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -123,7 +120,7 @@ const Footer = () => {
                   href="mailto:info@example.com"
                   className="text-white hover:text-black transition text-sm"
                 >
-                  info@example.com
+                  omegbazaar@gmail.com
                 </a>
               </div>
             </div>
@@ -131,8 +128,8 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-white text-sm">
-          <p>
+        <div className="border-t border-white mt-12 pt-8 text-center  text-sm">
+          <p className="text-white">
             &copy; {new Date().getFullYear()} Omeg Bazaar. All rights reserved.
             |
             <a href="#" className="hover:text-white ml-2">
