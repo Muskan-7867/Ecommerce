@@ -22,7 +22,7 @@ const ProductPageLayout: React.FC = () => {
               <Products />
             </div>
           </div>
-          <Pagination totalProducts={30} productPerPage={5} />
+          <Pagination totalProducts={24} productPerPage={9} />
         </div>
       </PaddingWrapper>
     </ScreenHandler>

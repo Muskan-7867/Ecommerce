@@ -30,12 +30,17 @@ const ProductDisplay = () => {
     }
   };
 
-  const fetchRelatedProducts = async (currentProductId: string, categoryId: string) => {
+  const fetchRelatedProducts = async (
+    currentProductId: string,
+    categoryId: string
+  ) => {
     try {
       const res = await axios.get(
         `${Base_url}/api/v1/product/categoryid/${categoryId}`
       );
-      const filtered = res.data.products.filter((p: Product) => p._id !== currentProductId);
+      const filtered = res.data.products.filter(
+        (p: Product) => p._id !== currentProductId
+      );
       setRelatedProducts(filtered);
     } catch (err) {
       console.error("Failed to fetch related products:", err);
@@ -98,19 +103,19 @@ const ProductDisplay = () => {
       </div>
 
       <div className="max-w-full mx-auto mt-16 p-4 relative">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 px-4">
           <h1 className="text-2xl font-bold text-primary">Related Products</h1>
-          
+
           {/* Scroll buttons - visible only on mobile */}
           <div className="lg:hidden flex gap-4">
-            <button 
+            <button
               onClick={scrollLeft}
               className="rounded-full p-1 hover:bg-gray-100 transition-colors"
               aria-label="Scroll left"
             >
               <CircleChevronLeft className="w-6 h-6 text-gray-700" />
             </button>
-            <button 
+            <button
               onClick={scrollRight}
               className="rounded-full p-1 hover:bg-gray-100 transition-colors"
               aria-label="Scroll right"
@@ -119,22 +124,22 @@ const ProductDisplay = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Mobile - Horizontal Scroll */}
-        <div 
+        {/* Mobile - Horizontal Scroll */}
+        <div
           ref={scrollRef}
-          className="lg:hidden overflow-x-auto pb-4 scrollbar-hide relative"
+          className="lg:hidden overflow-x-auto pb-4 scrollbar-hide relative w-full px-4"
         >
           <div className="flex space-x-4 w-max">
             {relatedProducts.map((prod) => (
-              <div key={prod._id} className="w-48 flex-shrink-0">
+              <div key={prod._id} className="w-[180px] flex-shrink-0">
+                {" "}
+                {/* Match max-w from ProductCard */}
                 <ProductCard product={prod} />
               </div>
             ))}
           </div>
-          {relatedProducts.length === 0 && (
-            <p className="text-gray-500 mt-4">No related products found</p>
-          )}
         </div>
 
         {/* Desktop - Grid Layout */}
@@ -143,7 +148,9 @@ const ProductDisplay = () => {
             <ProductCard product={prod} key={prod._id} />
           ))}
           {relatedProducts.length === 0 && (
-            <p className="text-gray-500 mt-4 col-span-full">No related products found</p>
+            <p className="text-gray-500 mt-4 col-span-full">
+              No related products found
+            </p>
           )}
         </div>
       </div>
