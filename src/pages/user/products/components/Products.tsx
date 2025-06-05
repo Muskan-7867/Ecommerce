@@ -14,7 +14,7 @@ const Products = () => {
   const [page] = useQueryState("page", parseAsInteger.withDefault(1));
   const [limit] = useQueryState("limit", parseAsInteger.withDefault(9));
   const [minPrice] = useQueryState("minPrice", parseAsInteger.withDefault(0));
-  const [maxPrice] = useQueryState(  "maxPrice",  parseAsInteger.withDefault(100000));
+  const [maxPrice] = useQueryState(  "maxPrice",  parseAsInteger.withDefault(0));
   const [loading, setLoading] = useState<boolean>(true);
 
 
