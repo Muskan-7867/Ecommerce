@@ -17,7 +17,8 @@ const ProductDisplay = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
+  
+  
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -124,8 +125,6 @@ const ProductDisplay = () => {
             </button>
           </div>
         </div>
-
-        {/* Mobile - Horizontal Scroll */}
         {/* Mobile - Horizontal Scroll */}
         <div
           ref={scrollRef}

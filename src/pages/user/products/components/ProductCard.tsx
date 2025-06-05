@@ -81,7 +81,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           className={`flex items-center justify-center rounded-full p-1.5 sm:p-2 text-lg transition-colors cursor-pointer ${
             isPresentInCart
               ? "bg-gray-100 text-primary "
-              : " text-primaryr"
+              : " text-primary"
           }`}
           aria-label={isPresentInCart ? "Remove from cart" : "Add to cart"}
         >
@@ -92,4 +92,4 @@ const ProductCard = ({ product }: { product: Product }) => {
   );
 };
 
-export default ProductCard;
+export default ProductCard; 
