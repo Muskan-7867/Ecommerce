@@ -14,7 +14,6 @@ interface RazorpayParams {
   setShowSuccessPopup: (val: boolean) => void;
   setError?: (error: string) => void;
 }
-
 export const initiateRazorpayPayment = async ({
   orderData,
   products,
