@@ -56,7 +56,7 @@ export const initiateRazorpayPayment = async ({
       return acc;
     }, {} as Record<string, number>);
 
-    const { data } = await axios.post(
+    const  createOrderResponse  = await axios.post(
       `${BASE_URL}/api/v1/order/cartrazorpayorder`,
       {
         cartProductIds,
@@ -69,12 +69,12 @@ export const initiateRazorpayPayment = async ({
       }
     );
 
-    if (!data?.razorpayOrder?.id || !data?.order?._id) {
+    if (!createOrderResponse?.data.razorpayOrder?.id || !createOrderResponse?.data.order?._id) {
       throw new Error("Invalid response from server");
     }
 
-    const { id, amount } = data.razorpayOrder;
-    const orderId = data.order._id;
+    const { id, amount } = createOrderResponse.data.razorpayOrder;
+    const orderId = createOrderResponse.data.order._id;
 
     const options = {
       key: RAZORPAY_KEY,
