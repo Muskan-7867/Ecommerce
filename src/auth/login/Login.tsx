@@ -85,13 +85,13 @@ const Login = () => {
               <p className="mb-6">
                 Login to access your account and continue your journey with us.
               </p>
-              <div className="w-62 h-54 rounded-md flex justify-center items-center mx-auto">
+              <div className="w-62 h-54 rounded-md flex justify-center items-center mx-auto ">
                 <Lottie animationData={LoginAnimation} loop={true} />
               </div>
             </div>
           </div>
 
-          {/* Login form */}
+          {/* Login-form */}
           <LoginForm
             handleLogin={handleLogin}
             password={password}
