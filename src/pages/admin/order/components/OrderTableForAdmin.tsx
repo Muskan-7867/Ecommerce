@@ -16,6 +16,7 @@ export interface Payment {
   paymentStatus: string;
 }
 export interface Order {
+  _id: "string"
   quantity: number;
   totalPrice: number;
   status: string;
