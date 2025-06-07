@@ -18,12 +18,12 @@ const OrderPaymentInfo = ({ selectedRow }: { selectedRow: Order }) => {
           <p className="text-sm text-gray-500 font-bold">Payment Status</p>
           <p
             className={`text-sm ${
-              selectedRow.payment?.status === "Success"
+              selectedRow.payment?.paymentStatus === "Success"
                 ? "text-green-600"
                 : "text-yellow-600"
             }`}
           >
-            {selectedRow.payment.status || "N/A"}
+            {selectedRow.payment.paymentStatus || "N/A"}
           </p>
         </div>
         <div>
