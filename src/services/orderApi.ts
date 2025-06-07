@@ -15,6 +15,7 @@ export interface UpdatePaymentStatusParams {
 export interface UpdatePaymentPaidStatusParams {
   orderId: string;
   isPaid: boolean;
+
   
 }
 
