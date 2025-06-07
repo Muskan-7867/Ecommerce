@@ -18,7 +18,6 @@ const ProductDisplay = () => {
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   
-  
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -95,7 +94,7 @@ const ProductDisplay = () => {
 
   return (
     <div className="min-h-screen w-full py-12 px-4 mt-28">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl overflow-hidden">
+      <div className="max-w-6xl mx-auto  rounded-xl overflow-hidden">
         <div className="md:flex">
           <ProductImage product={product} />
           {error && <p className="text-red-700">{error}</p>}

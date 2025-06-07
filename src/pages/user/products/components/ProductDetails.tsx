@@ -16,7 +16,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
     }, []);
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full  p-4">
       <ProductName product={product} />
       <ProductDescAndFeature product={product} />
       <ProductPriceAndButton

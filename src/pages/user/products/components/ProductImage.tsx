@@ -16,12 +16,11 @@ const ProductImage = ({ product }: { product: Product }) => {
     const { left, top, width, height } = container.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
-
     setZoomPosition({ x, y });
   };
 
   return (
-    <div className="w-full md:w-1/2 p-4 md:p-6 space-y-4">
+    <div className="  md:w-1/2 p-4 md:p-6 space-y-4 ">
       {/* Main Image */}
       <div
         ref={containerRef}
@@ -29,7 +28,7 @@ const ProductImage = ({ product }: { product: Product }) => {
         onMouseLeave={() => setIsHovering(false)}
         onMouseMove={handleMouseMove}
         // layoutId={product?.images[0]?.publicId}
-        className="relative w-full aspect-square max-h-[400px] overflow-hidden rounded-lg"
+        className="relative w-full aspect-square h-[35rem] overflow-hidden rounded-lg"
       >
         <img
           src={mainImage}

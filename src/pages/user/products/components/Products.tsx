@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { getFilteredProducts } from "../../../../services/fetchers";
 import ProductCardShimmer from "./ProductCardShimmer";
 
-
 const Products = () => {
   const [products, setProducts] = useState<Product[] | []>([]);
   const [search] = useQueryState("search");
@@ -16,7 +15,6 @@ const Products = () => {
   const [minPrice] = useQueryState("minPrice", parseAsInteger.withDefault(0));
   const [maxPrice] = useQueryState(  "maxPrice",  parseAsInteger.withDefault(0));
   const [loading, setLoading] = useState<boolean>(true);
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
