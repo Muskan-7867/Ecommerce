@@ -1,6 +1,7 @@
 import { FaLock, FaUserAlt } from "react-icons/fa";
 import PasswordHint from "./PasswordHint";
 import { Dispatch, SetStateAction } from "react";
+import { Link } from "react-router-dom";
 
 type LoginFormProps = {
   handleLogin: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -101,9 +102,9 @@ const LoginForm = ({
       <div className="mt-8 text-center">
         <p className="text-gray-600">
           Don't have an account?{" "}
-          <a href="/register" className="text-primary hover:underline">
+          <Link to="/register" className="text-primary hover:underline">
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

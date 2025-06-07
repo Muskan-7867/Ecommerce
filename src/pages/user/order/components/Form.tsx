@@ -38,7 +38,7 @@ const Form = ({
           placeholder="123 Main St"
           value={formData.street}
           onChange={handleChange}
-          className="py-2 border-b-2 "
+          className="py-2 border-b-2 border-primary"
         />
       
       </div>
@@ -51,7 +51,7 @@ const Form = ({
           placeholder="Type Your Address"
           value={formData.address}
           onChange={handleChange}
-          className="py-2 border-b-2  "
+          className="py-2 border-b-2  border-primary"
         />
         
       </div>
@@ -64,7 +64,7 @@ const Form = ({
           placeholder="Another Address"
           value={formData.address1}
           onChange={handleChange}
-          className="py-2 border-b-2 "
+          className="py-2 border-b-2 border-primary"
         />
       
       </div>
@@ -77,7 +77,7 @@ const Form = ({
           placeholder="Phone"
           value={formData.phone}
           onChange={handleChange}
-          className="py-2 border-b-2"
+          className="py-2 border-b-2 border-primary"
         />
        
       </div>
@@ -90,7 +90,7 @@ const Form = ({
           placeholder="City"
           value={formData.city}
           onChange={handleChange}
-          className="py-2 border-b-2" 
+          className="py-2 border-b-2 border-primary" 
         />
        
       </div>
@@ -103,7 +103,7 @@ const Form = ({
           placeholder="State"
           value={formData.state}
           onChange={handleChange}
-          className="py-2 border-b-2 "
+          className="py-2 border-b-2 border-primary"
         />
        
       </div>
@@ -116,7 +116,7 @@ const Form = ({
           placeholder="Country"
           value={formData.country}
           onChange={handleChange}
-          className="py-2 border-b-2"
+          className="py-2 border-b-2 border-primary"
         />
       
       </div>
@@ -129,7 +129,7 @@ const Form = ({
           placeholder="Postal Code"
           value={formData.pincode}
           onChange={handleChange}
-          className="py-2 border-b-2"
+          className="py-2 border-b-2 border-primary"
         />
        
       </div>
