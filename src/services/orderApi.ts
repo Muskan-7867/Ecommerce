@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export interface UpdateOrderStatusParams {
   orderId: string;
@@ -20,7 +20,7 @@ export interface UpdatePaymentPaidStatusParams {
 export const updateOrderStatus = async (params: UpdateOrderStatusParams) => {
 
     const response = await axios.patch(
-      `${API_BASE_URL}/admin/orders/${params.orderId}/status`,
+      `${API_BASE_URL}/api/v1/order/${params.orderId}/status`,
       { status: params.status },
       { withCredentials: true }
     );
@@ -31,7 +31,7 @@ export const updateOrderStatus = async (params: UpdateOrderStatusParams) => {
 export const updatePaymentStatus = async (params: UpdatePaymentStatusParams) => {
 
     const response = await axios.patch(
-      `${API_BASE_URL}/admin/orders/${params.orderId}/payment-status`,
+      `${API_BASE_URL}/api/v1/order/${params.orderId}/payment-status`,
       { paymentStatus: params.paymentStatus },
       { withCredentials: true }
     );
@@ -42,7 +42,7 @@ export const updatePaymentStatus = async (params: UpdatePaymentStatusParams) => 
 export const updatePaymentPaidStatus = async (params: UpdatePaymentPaidStatusParams) => {
  
     const response = await axios.patch(
-      `${API_BASE_URL}/admin/orders/${params.orderId}/payment-paid`,
+      `${API_BASE_URL}/api/v1/order/${params.orderId}/payment-paid`,
       { isPaid: params.isPaid },
       { withCredentials: true }
     );
