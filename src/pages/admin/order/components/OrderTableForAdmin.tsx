@@ -68,7 +68,7 @@ const OrderTableForAdmin = () => {
 
     try {
       await updateOrderStatus({
-        orderId: order._id, // Assuming your order has an _id field
+        orderId: order._id, 
         status: newStatus
       });
       // Optional: show success message
