@@ -60,8 +60,8 @@ const ProfileDropdown = ({
 
             {/* Links */}
             <div className="mt-4 ">
-              <ul className="flex gap-4 flex-col" onClick={handleClick}>
-                <li className="hover:bg-white/10 rounded-md p-2 flex justify-start gap-2">
+              <ul className="flex gap-4 flex-col" >
+                <li onClick={handleClick} className="hover:bg-white/10 rounded-md p-2 flex justify-start gap-2">
                  <FaUser size={20} />
                   <Link to="/profile">Go To Profile</Link>
                 </li>
