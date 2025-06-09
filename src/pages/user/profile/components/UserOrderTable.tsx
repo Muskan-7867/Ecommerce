@@ -36,11 +36,16 @@ const UserOrderTable = () => {
         </p>
       ) : (
         <div className="overflow-x-auto  px-8">
+     
           <table className="min-w-full rounded-lg bg-white border border-gray-200">
             <thead className="bg-primary text-white">
               <tr>
+             
                 <th className="px-6 py-3 text-left text-sm font-medium">
                   Quantity
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-medium">
+                  Price
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium">
                   Total Price
@@ -56,20 +61,28 @@ const UserOrderTable = () => {
             <tbody className="text-gray-700">
               {currentUserFromStore?.order.map(
                 (order: OrderData, index: number) => (
-                  <tr key={index} className="border-t">
-                    <td className="px-6 py-4">{order.quantity}</td>
-                    <td className="px-6 py-4">₹{order.totalPrice}</td>
-                    <td className="px-6 py-4">{order?.status}</td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`font-semibold ${
-                          order.isPaid ? "text-green-600" : "text-red-500"
-                        }`}
-                      >
-                        {order.isPaid ? "Paid" : "Unpaid"}
-                      </span>
-                    </td>
-                  </tr>
+                  <>
+                    {order.orderItems.map((item, itemIndex) => (
+                      <tr key={`${index}-${itemIndex}`} className="border-t">
+                       
+                        <td className="px-6 py-4">{item.quantity}</td>
+                        <td className="px-6 py-4">₹{item.price}</td>
+                        <td className="px-6 py-4">
+                          ₹{item.price * item.quantity}
+                        </td>
+                        <td className="px-6 py-4">{order?.status}</td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`font-semibold ${
+                              order.isPaid ? "text-green-600" : "text-red-500"
+                            }`}
+                          >
+                            {order.isPaid ? "Paid" : "Unpaid"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 )
               )}
             </tbody>
