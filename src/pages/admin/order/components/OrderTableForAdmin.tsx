@@ -16,7 +16,7 @@ export interface Payment {
   paymentStatus: string;
 }
 export interface Order {
-  _id: "string"
+  _id: "string";
   quantity: number;
   totalPrice: number;
   status: string;
@@ -68,7 +68,7 @@ const OrderTableForAdmin = () => {
 
     try {
       await updateOrderStatus({
-        orderId: order._id, 
+        orderId: order._id,
         status: newStatus
       });
       // Optional: show success message
@@ -83,7 +83,10 @@ const OrderTableForAdmin = () => {
     e: React.ChangeEvent<HTMLSelectElement>,
     order: Order
   ) => {
-    const newPaymentStatus = e.target.value as "success" | "pending" | "failed";
+    const newPaymentStatus = e.target.value.toLowerCase() as
+      | "success"
+      | "pending"
+      | "failed"; // Ensure lowercase
 
     // Optimistic update
     const updated = localOrders.map((o) =>
@@ -101,11 +104,8 @@ const OrderTableForAdmin = () => {
         orderId: order._id,
         paymentStatus: newPaymentStatus
       });
-      // Optional: show success message
     } catch {
-      // Revert on error
       setLocalOrders(orders);
-      // Optional: show error message
     }
   };
 
@@ -214,25 +214,25 @@ const OrderTableForAdmin = () => {
         );
       }
     },
-    {
-      label: "Payment Status",
-      render: (order) => {
-        const selected = order.payment?.paymentStatus;
-        return (
-          <select
-            value={selected}
-            onChange={(e) => handlePaymentStatusChange(e, order)}
-            className={`px-3 py-1 rounded-md outline-none ${
-              selected ? "border-none" : ""
-            }`}
-          >
-            <option value="success">Success</option>
-            <option value="pending">Pending</option>
-            <option value="failed">Failed</option>
-          </select>
-        );
-      }
-    },
+   {
+  label: "Payment Status",
+  render: (order) => {
+    const selected = order.payment?.paymentStatus?.toLowerCase(); // Ensure lowercase
+    return (
+      <select
+        value={selected}
+        onChange={(e) => handlePaymentStatusChange(e, order)}
+        className={`px-3 py-1 rounded-md outline-none ${
+          selected ? "border-none" : ""
+        }`}
+      >
+        <option value="success">Success</option>
+        <option value="pending">Pending</option>
+        <option value="failed">Failed</option>
+      </select>
+    );
+  }
+},
     { label: "Action", key: "action" as const }
   ];
 
