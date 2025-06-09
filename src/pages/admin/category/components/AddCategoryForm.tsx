@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { CategoryFormData } from "../../../../types/Product";
 import { createCategory } from "../../../../services/fetchers";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddCategoryForm = () => {
   const [formData, setFormData] = useState<CategoryFormData>({
@@ -14,6 +15,7 @@ const AddCategoryForm = () => {
   const [disabled, setDisabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,6 +59,7 @@ const AddCategoryForm = () => {
     try {
       const response = await createCategory(data, token || "");
       console.log("Category added:", response);
+      await queryClient.invalidateQueries({ queryKey: ["admincategories"] });
       setSubmitSuccess(true);
       setFormData({ name: "", description: "", products: [] });
       setProductImages([]);
