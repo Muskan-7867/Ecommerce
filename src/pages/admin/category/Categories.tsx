@@ -6,7 +6,9 @@ import { motion } from "motion/react";
 import PaddingWrapper from "../../../components/wrappers/PaddingWrapper";
 import AddCategoryForm from "./components/AddCategoryForm";
 import { useEffect, useState } from "react";
-import { fetchCategory } from "../../../services/fetchers";
+import { deleteCategory, fetchCategory } from "../../../services/fetchers";
+import { FaTrash } from "react-icons/fa";
+import ConfirmModal from "./components/ConfirmModal";
 
 const Categories = () => {
   const queryClient = useQueryClient();
@@ -16,6 +18,11 @@ const Categories = () => {
   const { data, isPending, isError } = useQuery(getAdminCategoriesQuery());
   const [Categories, setCategories] = useState<CategoryType[]>([]);
 
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
+
   useEffect(() => {
     if (data) {
       setCategories(data);
@@ -23,7 +30,7 @@ const Categories = () => {
   }, [data]);
 
   const handleApproved = async (categoryId: string) => {
-    console.log("from approved" , categoryId);
+    console.log("from approved", categoryId);
     try {
       // setUpdating(true);
       const response = await fetchCategory(categoryId);
@@ -33,6 +40,18 @@ const Categories = () => {
       // setUpdating(false);
     } catch {
       console.log("error");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedCategoryId) return;
+    try {
+      await deleteCategory(selectedCategoryId);
+      queryClient.invalidateQueries({ queryKey: ["admincategories"] });
+      setIsConfirmOpen(false);
+      setSelectedCategoryId(null);
+    } catch  {
+      console.error("error for delete category");
     }
   };
 
@@ -64,6 +83,17 @@ const Categories = () => {
                     className="w-full h-full object-contain p-2"
                     transition={{ duration: 0.1 }}
                   />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedCategoryId(category._id);
+                      setIsConfirmOpen(true);
+                    }}
+                    className="absolute top-1 right-1 bg-white text-red-600 rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Delete"
+                  >
+                    <FaTrash size={14}/>
+                  </button>
                 </div>
                 <span className="text-lg font-medium text-gray-700 text-center">
                   {category.name.charAt(0).toUpperCase() +
@@ -85,6 +115,15 @@ const Categories = () => {
             ))}
           </div>
         </div>
+
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => {
+            setIsConfirmOpen(false);
+            setSelectedCategoryId(null);
+          }}
+          onConfirm={handleDelete}
+        />
 
         <div className="lg:col-span-5 col-span-12 p-6">
           <h1 className="text-xl font-bold font-serif mb-4">Category Form</h1>

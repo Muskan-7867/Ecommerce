@@ -355,6 +355,20 @@ const getClientByOrderId = async (orderId: string) => {
   return response.data;
 };
 
+export const deleteCategory = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/api/v1/product/category/delete/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || "Failed to delete category");
+  }
+
+  return res.json();
+};
+
+
 
 export {
   fetchUserCategories,
