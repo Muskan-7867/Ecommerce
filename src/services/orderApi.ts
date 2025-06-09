@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -20,33 +21,48 @@ export interface UpdatePaymentPaidStatusParams {
 }
 
 export const updateOrderStatus = async (params: UpdateOrderStatusParams) => {
-
+    const token = Cookies.get('authToken')
     const response = await axios.patch(
       `${API_BASE_URL}/api/v1/order/${params.orderId}/status`,
       { status: params.status },
-      { withCredentials: true }
+       { 
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    },
+      
     );
     return response.data;
  
 };
 
 export const updatePaymentStatus = async (params: UpdatePaymentStatusParams) => {
-
+    const token = Cookies.get('authToken')
     const response = await axios.patch(
       `${API_BASE_URL}/api/v1/order/${params.orderId}/payment-status`,
       { paymentStatus: params.paymentStatus },
-      { withCredentials: true }
+      { 
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    },
+    
     );
     return response.data;
   
 };
 
 export const updatePaymentPaidStatus = async (params: UpdatePaymentPaidStatusParams) => {
- 
+   const token = Cookies.get('authToken')
     const response = await axios.patch(
       `${API_BASE_URL}/api/v1/order/${params.orderId}/payment-paid`,
       { isPaid: params.isPaid },
-      { withCredentials: true }
+       { 
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    },
+  
     );
     return response.data;
   
