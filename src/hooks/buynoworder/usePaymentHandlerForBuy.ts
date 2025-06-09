@@ -5,7 +5,7 @@ import { CurrentUser } from "../../types/auth";
 import { AddressFormData } from "../../types/auth";
 import { PaymentType } from "../../pages/user/cart/components/CartSummary";
 import { useCODHandler } from "./useCodHandler";
-import { useOnlinePaymentHandler } from "./useOnlineHandler"; 
+import { useOnlinePaymentHandler } from "./useOnlineHandler";
 
 interface OrderData {
   quantity: number;
@@ -86,6 +86,6 @@ export const usePaymentHandlerForBuy = () => {
     loading: codLoading || onlineLoading,
     loginMsg,
     handleOrder,
-    popup: codPopup.show ? codPopup : onlinePopup 
+    popup: codPopup.show ? codPopup : onlinePopup
   };
 };
