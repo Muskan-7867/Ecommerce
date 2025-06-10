@@ -1,12 +1,12 @@
 import React from "react";
-import { circle, circle1, circle2, Down, graphone, graph2, graph3, UP } from "../../../constants/imagePath"
+import { circle, circle1,   graphone, graph2, graph3 } from "../../../constants/imagePath"
 
 interface InsightCardProps {
   title: string;
   value: string | number;
   subtitle: string;
-  information: string;
-  comparison: string;
+ 
+ 
   isPositive: boolean;
 }
 
@@ -14,19 +14,16 @@ const InsightCard: React.FC<InsightCardProps> = ({
   title,
   value,
   subtitle,
-  comparison,
-  isPositive,
-  information,
+  
+ 
 }) => {
   // Dynamically set the value text size based on the title
   const valueTextSize = title === "Total Users" ? "text-sm" : "text-2xl";
-  const infoTextSize = title === "Total Users" ? "text-sm" : "text-2xl";
   const valueordertext = title === "Total Orders" ? "text-3xl" : "text-2xl";
 
   // Artist-specific images
   const completedImage = circle;
   const pendingImage = circle1;
-  const newImage = circle2;
 
   return (
     <div
@@ -66,10 +63,7 @@ const InsightCard: React.FC<InsightCardProps> = ({
               <p className={` ${valueordertext} text-lg text-[#2c5B8C] font-bold`}>{value}</p>
             </div>
 
-            <div className="flex items-center mb-4">
-              <img src={newImage} alt="New Icon" className="h-5 w-5 mr-2" />
-              <p className="text-lg text-[#2c5B8C] font-bold">{information}</p>
-            </div>
+         
           </>
         ) : (
           // Default layout for other cards
@@ -80,31 +74,11 @@ const InsightCard: React.FC<InsightCardProps> = ({
                 {value}
               </span>
             </div>
-            <div className="flex items-center font-bold mb-2">
-              <span className={`${infoTextSize} text-2xl font-bold text-[#2c5B8C]`}>
-                {information}
-              </span>
-            </div>
+          
           </>
         )}
 
-        {/*  icon, value, and comparison text */}
-        <div className="flex items-center justify-start space-x-1">
-          <img
-            src={isPositive ? UP : Down}
-            alt="Arrow Icon"
-            className="h-4 w-4"
-          />
-          <span
-            className={`text-base font-bold ${isPositive ? "text-[#5AB987]" : "text-red-500"
-              }`}
-          >
-            {comparison}
-          </span>
-          <span className="text-sm text-[#83ACDB] font-normal">
-            Compared to January
-          </span>
-        </div>
+    
       </div>
 
       {/* Graph Image */}

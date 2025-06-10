@@ -5,7 +5,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { Package } from "lucide-react";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { FaUser, FaTimes } from "react-icons/fa";
+import {  FaTimes } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
 
 type OptionTypes = {
@@ -30,7 +30,7 @@ const Sidebar: React.FC = () => {
       href: "customers",
       Icon: <LiaUserFriendsSolid size={22} />
     },
-    { title: "Profile", href: "adminprofile", Icon: <FaUser size={20} /> }
+    // { title: "Profile", href: "adminprofile", Icon: <FaUser size={20} /> }
     
   ];
 
