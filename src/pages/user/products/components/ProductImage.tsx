@@ -28,7 +28,7 @@ const ProductImage = ({ product }: { product: Product }) => {
         onMouseLeave={() => setIsHovering(false)}
         onMouseMove={handleMouseMove}
         // layoutId={product?.images[0]?.publicId}
-        className="relative w-full aspect-square h-[35rem] overflow-hidden rounded-lg"
+        className="relative w-full aspect-square lg:h-[35rem] h-[20rem] overflow-hidden rounded-lg object-cover"
       >
         <img
           src={mainImage}
