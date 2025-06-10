@@ -66,7 +66,7 @@ const CategorySection = () => {
         {showLeftBtn && (
           <button
             onClick={scrollLeft}
-            className="absolute left-0 top-[5rem] -translate-y-1/2 z-10 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 transition bg-white/80 backdrop-blur-sm border border-primary"
+            className="absolute left-0 top-[5rem]  -translate-y-1/2 z-10 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 transition bg-white/80 backdrop-blur-sm border border-primary"
           >
             <FaChevronLeft className="w-4 h-4 text-black" />
           </button>
@@ -91,7 +91,7 @@ const CategorySection = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="cursor-pointer flex flex-col items-center gap-3 flex-shrink-0 w-36"
+            className="cursor-pointer flex flex-col items-center gap-3  flex-shrink-0 w-36"
           >
             <div className="lg:w-32 lg:h-32 w-28 h-28 rounded-full shadow-md border-2 border-white hover:border-primary transition-all duration-500 group overflow-hidden relative">
               <div className="absolute -top-12 w-12 h-[16rem] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-16 -rotate-45 group-hover:translate-x-[11rem] transition-all duration-500" />

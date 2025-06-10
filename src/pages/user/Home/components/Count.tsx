@@ -56,22 +56,28 @@ export default function Count({ from = 0, to, duration = 2 }: CountUpProps) {
   ];
 
   return (
-    <motion.div className="w-full h-auto min-h-[20rem] backdrop-blur-lg flex justify-center items-center text-white rounded-2xl lg:gap-16 gap-4 flex-wrap bg-red-50 mt-4">
-      {stats.map((stat) => {
-        const Icon = stat.icon;
-        return (
-          <div
-            key={stat.id}
-            className="lg:w-[16rem] w-[14rem] lg:h-[12rem] h-[9rem] rounded-md p-4 mb-2 border border-white transition-all duration-300 ease-in-out hover:scale-105 flex flex-col items-center border-b-[8px] border-b-primary bg-white hover:border-primary mt-4 hover:bg-gradient-to-t hover:from-white hover:to-red-100"
-          >
-            <Icon className="w-10 h-10 text-primary mb-2" />
-            <motion.span className="text-primary font-serif font-semibold lg:text-5xl text-2xl">
-              {rounded}
-            </motion.span>
-            <p className="text-neutral-600/50 text-center mt-2">{stat.title}</p>
-          </div>
-        );
-      })}
-    </motion.div>
-  );
+  <motion.div
+    className="w-full h-auto min-h-[20rem] backdrop-blur-lg flex items-center text-white rounded-2xl bg-red-50 mt-4 
+               gap-4 overflow-x-auto flex-nowrap lg:flex-wrap justify-start lg:justify-center px-4 scroll-smooth scrollbar-hide lg:gap-12 "
+  >
+    {stats.map((stat) => {
+      const Icon = stat.icon;
+      return (
+        <div
+          key={stat.id}
+          className="lg:w-[18rem] w-[14rem] lg:h-[12rem] h-[9rem] flex-shrink-0 rounded-md p-4 mb-2 border border-white transition-all duration-300 ease-in-out hover:scale-105 
+                     flex flex-col items-center border-b-[8px] border-b-primary bg-white hover:border-primary mt-4 
+                     hover:bg-gradient-to-t hover:from-white hover:to-red-100"
+        >
+          <Icon className="w-10 h-10 text-primary mb-2" />
+          <motion.span className="text-primary font-serif font-semibold lg:text-5xl text-2xl">
+            {rounded}
+          </motion.span>
+          <p className="text-neutral-600/50 text-center mt-2">{stat.title}</p>
+        </div>
+      );
+    })}
+  </motion.div>
+);
+
 }
