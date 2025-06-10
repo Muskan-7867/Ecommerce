@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <div className="w-full mt-20">
       {/* Hero Section */}
-      <div className="w-full bg-gradient-to-r from-primary to-red-100 py-16 md:py-24 px-4">
+      <div className="w-full bg-gradient-to-b from-white to-primary py-16 md:py-24 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
             We're Here to Help

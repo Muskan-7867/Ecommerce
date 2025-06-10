@@ -26,21 +26,21 @@ const AboutValue = () => {
               description:
                 "Every product undergoes rigorous quality checks before reaching you. We partner only with trusted suppliers and manufacturers.",
               icon: "✨",
-              color: "bg-blue-100"
+              color: "bg-gradient-to-t from-white to-red-100"
             },
             {
               title: "Customer Focus",
               description:
                 "Your satisfaction drives our decisions. We offer easy returns, 24/7 support, and personalized recommendations.",
               icon: "❤️",
-              color: "bg-red-100"
+              color: "bg-gradient-to-b from-white to-red-50"
             },
             {
               title: "Innovation",
               description:
                 "We constantly explore new technologies and trends to enhance your shopping experience and product selection.",
               icon: "🚀",
-              color: "bg-purple-100"
+              color: "bg-gradient-to-t from-white to-red-100"
             }
           ].map((item, index) => (
             <motion.div
@@ -51,8 +51,8 @@ const AboutValue = () => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               whileHover={{ y: -5 }}
             >
-              <div className="text-4xl mb-4">{item.icon}</div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <div className="text-4xl mb-4 text-center">{item.icon}</div>
+              <h3 className="text-xl text-center font-bold text-gray-800 mb-3">
                 {item.title}
               </h3>
               <p className="text-gray-600">{item.description}</p>
