@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
-
 import {
   FaCertificate,
   FaHeadset,
@@ -45,7 +44,6 @@ const HeroSection = () => {
       icon: FaCertificate,
       tag: "Verified"
     },
-
     {
       id: 4,
       title: "24/7 Customer Support",
@@ -63,12 +61,21 @@ const HeroSection = () => {
     >
       <motion.div
         style={{ scaleX: x, y: translateY }}
-        className="w-full  h-auto min-h-[25rem] backdrop-blur-lg flex justify-center items-center text-white rounded-2xl lg:gap-16 md:gap-6 flex-wrap bg-white mt-14 gap-2 "
+        className="w-full h-auto min-h-[25rem] backdrop-blur-lg flex items-center text-white rounded-2xl bg-white mt-14  lg:gap-6 gap-2
+             overflow-x-auto flex-nowrap lg:flex-wrap justify-start lg:justify-center px-4 scroll-smooth scrollbar-hide"
       >
         {cards.map((card) => (
-          <div
+          <motion.div
             key={card.id}
-            className="lg:w-[18rem] w-[16rem] h-[14rem] rounded-3xl p-4 mb-4 mt-4 overflow-hidden border border-primary transition-all duration-300 ease-in-out hover:scale-105 shadow-sm bg-gradient-to-b from-transparent to-red-50 hover:from-transparent hover:to-red-100"
+            initial={{
+              background: "linear-gradient(to bottom, transparent, #fee1e1 )"
+            }}
+            whileHover={{
+              scale: 1.05,
+              background: "linear-gradient(to top, transparent, #ffe5e5)"
+            }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="lg:w-[20rem] w-[16rem] h-[14rem] flex-shrink-0 rounded-3xl p-4 mb-4 mt-4 overflow-hidden border border-primary shadow-sm"
           >
             <div className="flex items-center justify-center mb-3">
               <card.icon className="w-12 h-12 text-primary" />
@@ -79,7 +86,7 @@ const HeroSection = () => {
             <p className="text-neutral-600/80 text-sm text-center">
               {card.description}
             </p>
-          </div>
+          </motion.div>
         ))}
       </motion.div>
     </div>
