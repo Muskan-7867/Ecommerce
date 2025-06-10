@@ -8,34 +8,31 @@ import { FaCartPlus } from "react-icons/fa";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const [isPresentInCart, setIsPresentInCart] = useState<boolean>(false);
-  const [refreshCart, setRefreshCart] = useState<boolean>(false);
-  const [currentId, setCurrentId] = useState<string>(product?._id);
   const { addProductToCart, RemoveProductFromCart } = useCart();
   const navigate = useNavigate();
   const { cartCountValue } = useCartStore();
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
-    const arrayOfProdId = JSON.parse(data!);
+    const arrayOfProdId = data ? JSON.parse(data) : [];
+    setIsPresentInCart(arrayOfProdId.includes(product._id));
+  }, [cartCountValue, product._id]);
 
-    if (arrayOfProdId) {
-      for (let i = 0; i < arrayOfProdId.length; i++) {
-        if (arrayOfProdId[i] == product._id) {
-          setIsPresentInCart(true);
-        }
-      }
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isPresentInCart) {
+      RemoveProductFromCart(product._id);
+      setIsPresentInCart(false);
+    } else {
+      addProductToCart(product._id);
+      setIsPresentInCart(true);
     }
-  }, [isPresentInCart, cartCountValue, currentId, product]);
-
-  useEffect(() => {
-    setCurrentId(product?._id);
-  }, [product]);
+  };
 
   return (
     <div
-      key={product.name}
       onClick={() => navigate(`/products/${product._id}`)}
-      className="bg-white p-3 rounded-md flex flex-col w-full max-w-[180px] sm:max-w-[220px] hover:shadow-sm transition-shadow duration-300 mx-auto cursor-pointer"
+      className="bg-white p-2 sm:p-3 rounded-md flex flex-col w-full max-w-[160px] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[220px] lg:max-w-[240px] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
     >
       {/* Image Container - Fixed aspect ratio */}
       <div className="relative pb-[100%] w-full overflow-hidden rounded-sm">
@@ -48,48 +45,37 @@ const ProductCard = ({ product }: { product: Product }) => {
       </div>
 
       {/* Product Info */}
-      <div className="mt-3 flex-grow overflow-hidden">
-        <h2 className="text-xs sm:text-sm font-semibold line-clamp-1">
+      <div className="mt-2 sm:mt-3 flex-grow overflow-hidden">
+        <h2 className="text-xs xs:text-sm sm:text-base font-semibold line-clamp-1">
           {product.name}
         </h2>
-        <p className="text-gray-600 text-xs line-clamp-2 mt-1">
+        <p className="text-gray-600 text-[0.65rem] xs:text-xs sm:text-sm line-clamp-2 mt-0.5 sm:mt-1">
           {product.description}
         </p>
       </div>
 
       {/* Price and Add to Cart */}
-      <div className="flex justify-between items-center mt-2">
-        <div className="text-amber-600 font-bold text-xs sm:text-sm">
+      <div className="flex justify-between items-center mt-1 sm:mt-2">
+        <div className="text-amber-600 font-bold text-xs xs:text-sm sm:text-base">
           <div className="flex items-center">
-            <LiaRupeeSignSolid className="font-semibold text-base" />
+            <LiaRupeeSignSolid className="font-semibold text-sm xs:text-base" />
             <p>{product.price}</p>
           </div>
         </div>
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (isPresentInCart) {
-              setRefreshCart(!refreshCart);
-              RemoveProductFromCart(product._id);
-              setIsPresentInCart(false);
-            } else {
-              setRefreshCart(!refreshCart);
-              addProductToCart(product._id);
-              setIsPresentInCart(true);
-            }
-          }}
-          className={`flex items-center justify-center rounded-full p-1.5 sm:p-2 text-lg transition-colors cursor-pointer ${
+          onClick={handleCartClick}
+          className={`flex items-center justify-center rounded-full p-1 xs:p-1.5 sm:p-2 text-sm xs:text-base transition-colors cursor-pointer ${
             isPresentInCart
-              ? "bg-gray-100 text-primary "
-              : " text-primary"
+              ? "bg-gray-100 text-primary"
+              : "text-primary"
           }`}
           aria-label={isPresentInCart ? "Remove from cart" : "Add to cart"}
         >
-          <FaCartPlus className="text-xs sm:text-sm" />
+          <FaCartPlus className="text-xs xs:text-sm sm:text-base" />
         </button>
       </div>
     </div>
   );
 };
 
-export default ProductCard; 
+export default ProductCard;
