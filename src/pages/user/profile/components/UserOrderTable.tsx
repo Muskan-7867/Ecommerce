@@ -15,7 +15,7 @@ const UserOrderTable = () => {
   const productIds = currentUserFromStore?.order?.flatMap((order) =>
     order.orderItems.map((item) => item.product)
   );
-  
+
   const productQueries = useQueries({
     queries: productIds?.map((id) => getProductByIdQuery(id)) || []
   });
@@ -58,6 +58,9 @@ const UserOrderTable = () => {
                 <th className="px-6 py-3 text-left text-sm font-medium">
                   Product
                 </th>
+                <th className="px-6 py-3 text-left text-sm font-medium">
+                  Product Name
+                </th>
 
                 <th className="px-6 py-3 text-left text-sm font-medium">
                   Quantity
@@ -80,7 +83,7 @@ const UserOrderTable = () => {
               {currentUserFromStore?.order.map((order, index) => (
                 <React.Fragment key={index}>
                   {order.orderItems.map((item, itemIndex) => {
-                    const product = productMap.get(item.product); 
+                    const product = productMap.get(item.product);
 
                     return (
                       <tr key={`${index}-${itemIndex}`} className="border-t">
@@ -97,6 +100,9 @@ const UserOrderTable = () => {
                             </span>
                           )}
                         </td>
+                        <td className="px-6 py-4">{product?.name}</td>
+                     
+                  
                         <td className="px-6 py-4">{item.quantity}</td>
                         <td className="px-6 py-4">₹{item.price}</td>
                         <td className="px-6 py-4">
