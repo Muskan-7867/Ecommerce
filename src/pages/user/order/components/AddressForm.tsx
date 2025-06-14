@@ -22,7 +22,6 @@ const FORM_DATA: AddressFormData = {
 const AddressForm = () => {
   const { userId } = useParams<{ userId: string }>();
   const token = Cookies.get("authToken");
- 
   const { state } = useLocation();
   const existingAddress = state?.address as
     | Partial<AddressFormData>

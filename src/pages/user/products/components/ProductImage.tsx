@@ -20,22 +20,25 @@ const ProductImage = ({ product }: { product: Product }) => {
   };
 
   return (
-    <div className="  md:w-1/2 p-4 md:p-6 space-y-4 ">
+    <div className="md:w-1/2 p-4 md:p-6 space-y-4">
       {/* Main Image */}
       <div
         ref={containerRef}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         onMouseMove={handleMouseMove}
-        // layoutId={product?.images[0]?.publicId}
         className="relative w-full aspect-square lg:h-[35rem] h-[20rem] overflow-hidden rounded-lg object-cover"
       >
-        <img
-          src={mainImage}
-          className="w-full h-full object-cover rounded-lg"
-          alt={product?.name || "Product main image"}
-        />
+        {/* Main image - only shown when not hovering */}
+        {!isHovering && (
+          <img
+            src={mainImage}
+            className="w-full h-full object-cover rounded-lg"
+            alt={product?.name || "Product main image"}
+          />
+        )}
 
+        {/* Zoomed image - only shown when hovering */}
         {isHovering && (
           <div className="absolute inset-0 overflow-hidden">
             <div
@@ -44,7 +47,6 @@ const ProductImage = ({ product }: { product: Product }) => {
                 backgroundImage: `url(${mainImage})`,
                 backgroundSize: "200%",
                 backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                transform: "sacle(1.5)"
               }}
             />
           </div>
@@ -52,7 +54,7 @@ const ProductImage = ({ product }: { product: Product }) => {
 
         {isHovering && (
           <div
-            className="absolute pointer-events-none bg-blue-200/40  overflow-hidden"
+            className="absolute pointer-events-none bg-blue-200/40 overflow-hidden"
             style={{
               width: "200px",
               height: "160px",
@@ -61,20 +63,17 @@ const ProductImage = ({ product }: { product: Product }) => {
               transform: "translate(-50%, -50%)",
               zIndex: 10,
               backgroundImage: `
-                   linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
-                   linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px)
-    `,
+                linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px)`,
               backgroundSize: "2px 2px"
             }}
           />
         )}
       </div>
+      
       {/* Thumbnails */}
       <div className="w-full flex justify-center">
-        <div
-          // layoutId={product.images[0].publicId}
-          className="flex gap-2 md:gap-4 overflow-x-auto pb-2 scrollbar-hide"
-        >
+        <div className="flex gap-2 md:gap-4 overflow-x-auto pb-2 scrollbar-hide">
           {images.length > 0 ? (
             images.map((image, index) => (
               <img
