@@ -16,6 +16,7 @@ import {
   getSingleProductById,
   getUsers
 } from "./fetchers";
+import { updateOrderStatus, UpdateOrderStatusParams, updatePaymentPaidStatus, UpdatePaymentPaidStatusParams, updatePaymentStatus, UpdatePaymentStatusParams } from "./orderApi";
 
 const getCategoriesQuery = () => {
   return queryOptions({
@@ -141,6 +142,20 @@ const getCurrentUser = () => ({
   enabled: true
 })
 
+const updateOrderStatusQuery = (params: UpdateOrderStatusParams) => ({
+  queryKey: ["updateorderstatus", params.orderId],
+  queryFn:() => updateOrderStatus(params),
+})
+
+const updatePaymentStatusQuery = (params: UpdatePaymentStatusParams) => ({
+  queryKey: ["updatepaymentstatus", params.orderId],
+  queryFn:() => updatePaymentStatus(params),
+})
+
+const updatePaymentPaidStatusQuery = (params: UpdatePaymentPaidStatusParams) => ({
+  queryKey: ["updatepaidstatus", params.orderId],
+  queryFn:() => updatePaymentPaidStatus(params),
+})
 
 export {
   getCategoriesQuery,
@@ -157,5 +172,9 @@ export {
   fetchUsersQuery,
   getAdminQuery,
   getClientQuery,
-  getCurrentUser
+  getCurrentUser,
+  updateOrderStatusQuery,
+  updatePaymentStatusQuery,
+  updatePaymentPaidStatusQuery
+
 };

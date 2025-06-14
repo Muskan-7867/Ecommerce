@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQueryState } from "nuqs";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import TableData, { Column } from "./TableData";
 import { fetchOrdersQuery } from "../../../../services/queries";
 import { OrderItem } from "../../../../types/Product";
@@ -30,6 +30,7 @@ export interface Order {
 }
 
 const OrderTableForAdmin = () => {
+  const queryClient = useQueryClient();
   const [page] = useQueryState("page", { defaultValue: "1" });
   const currentPage = Number(page);
   const itemsPerPage = 10;
@@ -50,6 +51,7 @@ const OrderTableForAdmin = () => {
       <p className="p-4 text-center">You have not placed any orders yet.</p>
     );
   }
+
   const handleStatusChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
     order: Order
@@ -71,7 +73,7 @@ const OrderTableForAdmin = () => {
         orderId: order._id,
         status: newStatus
       });
-      // Optional: show success message
+     queryClient.invalidateQueries({queryKey : ['updateorderstatus']})
     } catch {
       // Revert on error
       setLocalOrders(orders);

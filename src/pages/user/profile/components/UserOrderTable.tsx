@@ -101,8 +101,7 @@ const UserOrderTable = () => {
                           )}
                         </td>
                         <td className="px-6 py-4">{product?.name}</td>
-                     
-                  
+                        
                         <td className="px-6 py-4">{item.quantity}</td>
                         <td className="px-6 py-4">₹{item.price}</td>
                         <td className="px-6 py-4">
