@@ -5,51 +5,72 @@ const UserAddress = ({
 }: {
   currentUserFromStore: CurrentUser;
 }) => {
-  // Check if address exists and is not a string
   const address = currentUserFromStore?.address;
   const isAddressValid = address && typeof address !== 'string';
 
   if (!isAddressValid) {
     return (
-      <div className="p-6 rounded-xl">
-        <h2 className="text-xl font-semibold text-primary mb-4">Address</h2>
-        <p className="text-gray-700">No address available</p>
+      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-medium text-gray-900">Shipping Address</h2>
+        </div>
+        <div className="text-gray-500 italic">No address saved</div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 rounded-xl">
-      <h2 className="text-xl font-semibold text-primary mb-4">Address</h2>
-      <div className="text-gray-700 space-y-1">
-        {address.address1 && (
-          <p>
-            <strong>Address 1:</strong> {address.address1}
-          </p>
-        )}
-        {address.address && (
-          <p>
-            <strong>Address 2:</strong> {address.address}
-          </p>
-        )}
-        <p>
-          <strong>Street:</strong> {address.street}
-        </p>
-        <p>
-          <strong>City:</strong> {address.city}
-        </p>
-        <p>
-          <strong>State:</strong> {address.state}
-        </p>
-        <p>
-          <strong>Country:</strong> {address.country}
-        </p>
-        <p>
-          <strong>Pincode:</strong> {address.pincode}
-        </p>
-        <p>
-          <strong>Phone:</strong> {address.phone}
-        </p>
+    <div className=" p-6 rounded-lg ">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-medium text-gray-900">Shipping Address</h2>
+      </div>
+      
+      <div className="space-y-3 text-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {address.address1 && (
+            <div className="col-span-2">
+              <p className="text-sm text-gray-500">Address line 1</p>
+              <p className="font-medium">{address.address1}</p>
+            </div>
+          )}
+          
+          {address.address && (
+            <div className="col-span-2">
+              <p className="text-sm text-gray-500">Address line 2</p>
+              <p className="font-medium">{address.address}</p>
+            </div>
+          )}
+          
+          <div>
+            <p className="text-sm text-gray-500">Street</p>
+            <p className="font-medium">{address.street}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-gray-500">City</p>
+            <p className="font-medium">{address.city}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-gray-500">State</p>
+            <p className="font-medium">{address.state}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-gray-500">Country</p>
+            <p className="font-medium">{address.country}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-gray-500">Postal Code</p>
+            <p className="font-medium">{address.pincode}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-gray-500">Phone</p>
+            <p className="font-medium">{address.phone}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
