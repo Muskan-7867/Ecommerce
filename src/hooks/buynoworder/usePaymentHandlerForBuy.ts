@@ -50,9 +50,13 @@ export const usePaymentHandlerForBuy = () => {
   ) => {
     if (!isLoggined) {
       setLoginMsg(true);
-      if (window.location.pathname.startsWith("/checkout")) {
-        sessionStorage.setItem("prevPath", window.location.pathname);
-      }
+
+      const currentPath = window.location.pathname;
+
+      // ✅ Set previous path and login source
+      sessionStorage.setItem("prevPath", currentPath);
+      sessionStorage.setItem("loginFrom", "checkout");
+
       setTimeout(() => {
         navigate("/login");
       }, 1000);
@@ -85,6 +89,7 @@ export const usePaymentHandlerForBuy = () => {
   return {
     loading: codLoading || onlineLoading,
     loginMsg,
+    setLoginMsg,
     handleOrder,
     popup: codPopup.show ? codPopup : onlinePopup
   };

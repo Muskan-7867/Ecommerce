@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchCurrentUser } from "../services/fetchers";
 import { CurrentUser } from "../types/auth";
 import useCurrentUserStore from "../store/User/user.store";
@@ -12,6 +12,7 @@ const useCurrentUser = () => {
     reFetch, 
     fetch 
   } = useCurrentUserStore();
+   const [loading, setLoading] = useState(true);
 
   const allocateCurrentUser = (user: CurrentUser | null) => {
     setCurrentUserForStore(user);
@@ -19,6 +20,7 @@ const useCurrentUser = () => {
   };
 
   const fetchUser = async () => {
+    setLoading(true);
     try {
       const token = Cookies.get("authToken");
       if (!token) {
@@ -41,6 +43,8 @@ const useCurrentUser = () => {
       console.log("Error fetching user:", error);
       setIsLoggined(false);
       allocateCurrentUser(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +63,7 @@ const useCurrentUser = () => {
     fetchUser,
     allocateCurrentUser,
     reFetch,
+    loading
   };
 };
 
