@@ -68,13 +68,9 @@ const Register = () => {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-    } catch (error: any) {
-      console.error("Registration error:", error);
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError("Registration failed. Please try again.");
-      }
+    } catch  {
+      console.error("Registration error:");
+     
     } finally {
       setIsLoading(false);
     }

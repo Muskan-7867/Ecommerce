@@ -8,16 +8,18 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import LoginForm from "./LoginForm";
+import useCurrentUserStore from "../../store/User/user.store";
 
 const Login = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { isLoggined } = useCurrentUserStore();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { reFetch } = useCurrentUserStore();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,31 +43,53 @@ const Login = () => {
         setShowPasswordHint(true);
         return;
       }
+
       const data = await loginUser(userData);
       if (data.token) {
         Cookies.set("authToken", data.token, { expires: 7 });
       }
+
+      reFetch();
       await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       await queryClient.refetchQueries({ queryKey: ["currentUser"] });
+
       setSuccessMessage("Login successful! Redirecting...");
       setErrorMessage(null);
-      let redirectPath = "/"; // Default to dashboard
+
+      // ✅ Custom redirection logic
+       let redirectPath = "/";
+      const loginFrom = sessionStorage.getItem("loginFrom");
       const prevPath = sessionStorage.getItem("prevPath");
-      if (prevPath) {
+
+     
+      if (loginFrom === "dashboard") {
+        redirectPath = "/";
+      } else if (prevPath) {
         redirectPath = prevPath;
-        sessionStorage.removeItem("prevPath");
       }
-      setTimeout(() => navigate(redirectPath), 500);
-    } catch (error: any) {
-      console.error("Login error:", error);
+
+      // Clean up
+      sessionStorage.removeItem("loginFrom");
+      sessionStorage.removeItem("prevPath");
+
+      navigate(redirectPath);
+    } catch  {
+      console.error("Login error:");
       setErrorMessage(
-        error.response?.data?.message || "Login failed. Please try again."
+        "Login failed. Please try again."
       );
       setShowPasswordHint(true);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (isLoggined) {
+      const prevPath = sessionStorage.getItem("prevPath");
+      navigate(prevPath || "/");
+    }
+  }, [isLoggined, navigate]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
