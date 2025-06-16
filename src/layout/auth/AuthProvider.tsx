@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import useCurrentUser from "../../hooks/useCurrentUser";
+import useCurrentUserStore from "../../store/User/user.store";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const {  currentUserFromStore } = useCurrentUser();
+  const {  currentUserFromStore, isLoggined } = useCurrentUserStore();
+  console.log(isLoggined)
 
   useEffect(() => {
    console.log("from auth provider", currentUserFromStore,);

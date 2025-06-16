@@ -26,11 +26,18 @@ const PaymentSummaryForBuy: React.FC<CartSummaryProps> = ({
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentType>("online_payment");
 
-  const { loading, loginMsg, handleOrder, popup } = usePaymentHandlerForBuy();
+  const { loading, loginMsg, handleOrder, popup, setLoginMsg } = usePaymentHandlerForBuy();
 
   useEffect(() => {
     // This will run when the component mounts and when isLoggined changes
   }, [isLoggined, currentUserFromStore]);
+  // In PaymentSummaryForBuy component
+useEffect(() => {
+  if (isLoggined) {
+    // Reset login message when user logs in
+    setLoginMsg(false);
+  }
+}, [isLoggined]);
   // Calculate order summary
   const subtotal = products.reduce((acc, product) => {
     const qty = quantities[product._id] || 1;
