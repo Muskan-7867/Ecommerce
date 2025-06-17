@@ -47,7 +47,44 @@ const registerUser = async (
   }
 };
 
-//add user address
 
+export const forgotPassword = async (email: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/v1/user/forgotpassword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send reset email");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (token: string | undefined, newPassword: string) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/user/resetpassword/${token}`,
+      { newPassword }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Reset password error:", error);
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to reset password');
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
 
 export { loginUser, registerUser };
