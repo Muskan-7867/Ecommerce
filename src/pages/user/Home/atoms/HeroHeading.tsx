@@ -1,6 +1,7 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { GoArrowRight} from "react-icons/go";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { GoArrowRight } from "react-icons/go";
 import { Link } from "react-router-dom";
+
 const HeroHeading = ({
   containerRef
 }: {
@@ -26,20 +27,38 @@ const HeroHeading = ({
   return (
     <div
       ref={containerRef}
-      className="absolute left-0 w-full h-[10rem] flex flex-col justify-center items-center z-10  gap-22"
+      className="absolute left-0 w-full h-[10rem] flex flex-col justify-center items-center z-10 gap-22"
     >
-      <div className="  flex flex-col justify-center items-center text-white ">
+      <div className="flex flex-col justify-center items-center text-white">
         <motion.h1
           style={{ fontSize: fontSizex }}
           className="text-[10vw] lg:[5rem] md:[5rem] leading-none font-bold font-serif text-center text-shadow-sm"
         >
-          Omeg
+          <motion.span
+            className="inline-block cursor-pointer"
+            whileHover={{
+              textShadow: "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF8DA1",
+              scale: 1.1
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            Omeg
+          </motion.span>
         </motion.h1>
         <motion.h1
           style={{ fontSize: fontSizey }}
           className="text-[10vw] lg:[5rem] md:[5rem] leading-none font-semibold font-serif text-shadow-sm"
         >
-          Bazaar
+          <motion.span
+            className="inline-block cursor-pointer"
+            whileHover={{
+              textShadow: "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF8DA1",
+              scale: 1.1
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            Bazaar
+          </motion.span>
         </motion.h1>
       </div>
 
@@ -49,7 +68,6 @@ const HeroHeading = ({
       >
         Our Products
         <GoArrowRight className="transition-transform duration-300 hover:translate-x-1 hover:-translate-y-1" />
-
       </Link>
     </div>
   );
