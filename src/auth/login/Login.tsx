@@ -3,12 +3,13 @@ import Lottie from "lottie-react";
 import LoginAnimation from "../../../public/animations/animation.json";
 import ScreenHandler from "../../components/wrappers/ScreenHandler";
 import SuccessMessage from "../../components/common/SuccessMessage";
-import { loginUser } from "../../services/authServices";
+import { forgotPassword, loginUser } from "../../services/authServices"; // Add forgotPassword to your authServices
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import LoginForm from "./LoginForm";
 import useCurrentUserStore from "../../store/User/user.store";
+import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -17,6 +18,12 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [password, setPassword] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [forgotPasswordStatus, setForgotPasswordStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { reFetch } = useCurrentUserStore();
@@ -56,33 +63,48 @@ const Login = () => {
       setSuccessMessage("Login successful! Redirecting...");
       setErrorMessage(null);
 
-      // ✅ Custom redirection logic
-       let redirectPath = "/";
+      let redirectPath = "/";
       const loginFrom = sessionStorage.getItem("loginFrom");
       const prevPath = sessionStorage.getItem("prevPath");
 
-     
       if (loginFrom === "dashboard") {
         redirectPath = "/";
       } else if (prevPath) {
         redirectPath = prevPath;
       }
 
-      // Clean up
       sessionStorage.removeItem("loginFrom");
       sessionStorage.removeItem("prevPath");
 
       navigate(redirectPath);
-    } catch  {
+    } catch {
       console.error("Login error:");
-      setErrorMessage(
-        "Login failed. Please try again."
-      );
+      setErrorMessage("Login failed. Please try again.");
       setShowPasswordHint(true);
     } finally {
       setIsLoading(false);
     }
   };
+
+const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const data = await forgotPassword(forgotPasswordEmail);
+    setForgotPasswordStatus({
+      success: true,
+      message: data.message || "Password reset email sent successfully"
+    });
+  } catch (error) {
+    setForgotPasswordStatus({
+      success: false,
+      message: error instanceof Error ? error.message : "An error occurred. Please try again."
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   useEffect(() => {
     if (isLoggined) {
@@ -98,8 +120,7 @@ const Login = () => {
   return (
     <ScreenHandler>
       <div className="min-h-screen flex justify-center items-center">
-        <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row relative  rounded-lg overflow-hidden">
-          {/* Success message */}
+        <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row relative rounded-lg overflow-hidden">
           {successMessage && <SuccessMessage successMessage={successMessage} />}
 
           {/* Left panel with Lottie animation */}
@@ -109,23 +130,36 @@ const Login = () => {
               <p className="mb-6">
                 Login to access your account and continue your journey with us.
               </p>
-              <div className="w-62 h-54 rounded-md flex justify-center items-center mx-auto ">
+              <div className="w-62 h-54 rounded-md flex justify-center items-center mx-auto">
                 <Lottie animationData={LoginAnimation} loop={true} />
               </div>
             </div>
           </div>
 
-          {/* Login-form */}
-          <LoginForm
-            handleLogin={handleLogin}
-            password={password}
-            setPassword={setPassword}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-            showPasswordHint={showPasswordHint}
-            setShowPasswordHint={setShowPasswordHint}
-            isLoading={isLoading}
-          />
+          {/* Right panel with login form */}
+
+          {!showForgotPassword ? (
+            <LoginForm
+              handleLogin={handleLogin}
+              password={password}
+              setPassword={setPassword}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+              showPasswordHint={showPasswordHint}
+              setShowPasswordHint={setShowPasswordHint}
+              isLoading={isLoading}
+              onForgotPassword={() => setShowForgotPassword(true)}
+            />
+          ) : (
+            <ForgotPassword
+              forgotPasswordStatus={forgotPasswordStatus}
+              setShowForgotPassword={setShowForgotPassword}
+              forgotPasswordEmail={forgotPasswordEmail}
+              setForgotPasswordEmail={setForgotPasswordEmail}
+              handleForgotPassword={handleForgotPassword}
+              isLoading={isLoading}
+            />
+          )}
         </div>
       </div>
     </ScreenHandler>

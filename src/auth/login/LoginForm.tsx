@@ -12,6 +12,7 @@ type LoginFormProps = {
   showPasswordHint: boolean;
   setShowPasswordHint: Dispatch<SetStateAction<boolean>>;
   isLoading: boolean;
+  onForgotPassword: () => void;
 };
 const LoginForm = ({
   handleLogin,
@@ -21,11 +22,9 @@ const LoginForm = ({
   setErrorMessage,
   showPasswordHint,
   setShowPasswordHint,
-  isLoading
+  isLoading,
+  onForgotPassword
 }: LoginFormProps) => {
-
- 
-
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
@@ -88,7 +87,15 @@ const LoginForm = ({
         {(showPasswordHint || errorMessage) && (
           <PasswordHint password={password} errorMessage={errorMessage} />
         )}
-
+        <p className="text-sm text-right mt-2">
+          <button
+            type="button"
+            onClick={onForgotPassword}
+            className="text-primary hover:underline focus:outline-none"
+          >
+            Forgot password?
+          </button>
+        </p>
         {/* Submit button */}
         <button
           type="submit"

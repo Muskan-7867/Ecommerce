@@ -17,6 +17,7 @@ import React from "react";
 import AdminPrivateLayout from "../layout/admin/AdminPrivateLayout";
 import CheckOut from "../pages/user/order/components/CheckOut";
 import UserOrderTable from "../pages/user/profile/components/UserOrderTable";
+import ResetPassword from "../auth/login/ResetPassword";
 
 const Router = () => {
   return (
@@ -36,7 +37,9 @@ const Router = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout/:id" element={<CheckOut  />} />
           <Route path="/edit/:userId" element={<EditProfile />} />
-           <Route path="/userordertable" element={<UserOrderTable />} />
+          <Route path="/userordertable" element={<UserOrderTable />} />
+          <Route path="/resetpassword/:token" element={<ResetPassword />} />
+
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
 
