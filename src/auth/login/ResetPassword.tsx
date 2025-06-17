@@ -44,8 +44,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-md">
+      <div className="min-h-screen flex items-center justify-center ">
+        <div className="max-w-md w-full p-6 bg-white ">
           <h2 className="text-2xl font-bold mb-6 text-center">Invalid Token</h2>
           <p className="text-red-500 mb-4">
             The password reset link is invalid or has expired.
@@ -63,8 +63,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-md">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="max-w-md w-full p-6 bg-white ">
           <h2 className="text-2xl font-bold mb-6 text-center text-green-600">
             Password Reset Successful!
           </h2>
@@ -77,8 +77,8 @@ const handleSubmit = async (e: React.FormEvent) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="max-w-md w-full p-6 bg-white ">
         <h2 className="text-2xl font-bold mb-6 text-center">Reset Your Password</h2>
         
         {error && (
@@ -97,7 +97,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-2 border-b border-primary rounded"
               required
               minLength={8}
             />
@@ -112,7 +112,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-2 border-b border-primary rounded"
               required
               minLength={8}
             />
