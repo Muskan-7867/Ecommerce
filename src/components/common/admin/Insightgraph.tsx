@@ -23,9 +23,7 @@ const Insightgraph: React.FC<InsightgraphProps> = ({ data }) => {
     <div className="p-6 bg-white rounded-xl border border-gray-200">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-semibold text-gray-800">User Statistics</h2>
-        <div className="w-10 h-5 bg-gray-300 rounded-full relative">
-          <div className="w-5 h-5 bg-blue-500 rounded-full absolute right-0 transition-all"></div>
-        </div>
+       
       </div>
 
       <ResponsiveContainer width="100%" height={300}>
