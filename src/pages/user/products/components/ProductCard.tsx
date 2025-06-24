@@ -29,19 +29,37 @@ const ProductCard = ({ product }: { product: Product }) => {
     }
   };
 
+
+
   return (
     <div
       onClick={() => navigate(`/products/${product._id}`)}
       className="bg-white p-2 sm:p-3 rounded-md flex flex-col w-full max-w-[160px] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[220px] lg:max-w-[240px] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
     >
       {/* Image Container - Fixed aspect ratio */}
-      <div className="relative pb-[100%] w-full overflow-hidden rounded-sm">
+      {/* Image Container */}
+      <div className="relative pb-[100%] w-full overflow-hidden rounded-sm group">
+        {/* Main Image (applies hover effect to ALL products) */}
         <img
           src={product.images?.[0]?.url}
           alt={product.name}
-          className="absolute top-0 left-0 w-full h-full object-contain p-2"
+          className="absolute top-0 left-0 w-full h-full object-contain p-2 
+             transition-all duration-300 ease-in-out
+             group-hover:brightness-90 group-hover:scale-[1.05]"
           loading="lazy"
         />
+
+        {/* Second Image (only for multi-image products) */}
+        {product.images?.length > 1 && (
+          <img
+            src={product.images[1].url}
+            alt={product.name}
+            className="absolute top-0 left-0 w-full h-full object-contain p-2 
+               opacity-0 group-hover:opacity-100 
+               transition-all duration-300 ease-in-out"
+            loading="lazy"
+          />
+        )}
       </div>
 
       {/* Product Info */}
@@ -65,9 +83,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <button
           onClick={handleCartClick}
           className={`flex items-center justify-center rounded-full p-1 xs:p-1.5 sm:p-2 text-sm xs:text-base transition-colors cursor-pointer ${
-            isPresentInCart
-              ? "bg-gray-100 text-primary"
-              : "text-primary"
+            isPresentInCart ? "bg-gray-100 text-primary" : "text-primary"
           }`}
           aria-label={isPresentInCart ? "Remove from cart" : "Add to cart"}
         >

@@ -54,7 +54,7 @@ const ProductImage = ({ product }: { product: Product }) => {
 
         {isHovering && (
           <div
-            className="absolute pointer-events-none bg-blue-200/40 overflow-hidden"
+            className="absolute pointer-events-none  overflow-hidden"
             style={{
               width: "200px",
               height: "160px",
@@ -76,17 +76,21 @@ const ProductImage = ({ product }: { product: Product }) => {
         <div className="flex gap-2 md:gap-4 overflow-x-auto pb-2 scrollbar-hide">
           {images.length > 0 ? (
             images.map((image, index) => (
-              <img
+              <div 
                 key={index}
-                src={image.url}
-                onClick={() => setSelectedImage(image.url)}
-                alt={`Thumbnail ${index + 1}`}
-                className={`w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-md object-cover cursor-pointer transition border-2 ${
+                className={`relative rounded-md transition ${
                   (selectedImage || images[0].url) === image.url
-                    ? "border-primary"
-                    : "border-transparent"
+                    ? "border-2 border-primary"
+                    : "border-2 border-transparent"
                 }`}
-              />
+              >
+                <img
+                  src={image.url}
+                  onClick={() => setSelectedImage(image.url)}
+                  alt={`Thumbnail ${index + 1}`}
+                  className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-md object-cover cursor-pointer"
+                />
+              </div>
             ))
           ) : (
             <div className="text-sm text-gray-500">
