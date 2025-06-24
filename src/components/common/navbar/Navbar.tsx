@@ -39,13 +39,12 @@ const Navbar = () => {
     setCartCount(array.length);
   }, [cartCountValue]);
 
-  const getFirstLetter = (email: string) =>
-    email?.charAt(0).toUpperCase();
+  const getFirstLetter = (email: string) => email?.charAt(0).toUpperCase();
 
   const handleLogOut = () => {
     Cookies.remove("authToken");
-    allocateCurrentUser(null); 
-    localStorage.removeItem("user"); 
+    allocateCurrentUser(null);
+    localStorage.removeItem("user");
     setIsDropdownVisible(false);
     navigate("/login");
   };
@@ -87,7 +86,6 @@ const Navbar = () => {
             <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
           </button>
 
-          {/* Conditional rendering based on user authentication */}
           {currentUserFromStore ? (
             <div className="relative">
               <button
@@ -98,12 +96,14 @@ const Navbar = () => {
               >
                 {getFirstLetter(currentUserFromStore.email)}
               </button>
-              <ProfileDropdown
-                isDropdownVisible={isDropdownVisible}
-                setIsDropdownVisible={setIsDropdownVisible}
-                userEmail={currentUserFromStore.email}
-                handleLogOut={handleLogOut}
-              />
+              {isDropdownVisible && (
+                <ProfileDropdown
+                  isDropdownVisible={isDropdownVisible}
+                  setIsDropdownVisible={setIsDropdownVisible}
+                  userEmail={currentUserFromStore.email}
+                  handleLogOut={handleLogOut}
+                />
+              )}
             </div>
           ) : (
             <Link
