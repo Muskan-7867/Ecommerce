@@ -1,21 +1,16 @@
 import React from "react";
-import { circle, circle1,   graphone, graph2, graph3 } from "../../../constants/imagePath"
-
+import {circle,circle1,graphone,graph2,graph3 } from "../../../constants/imagePath";
 interface InsightCardProps {
   title: string;
   value: string | number;
   subtitle: string;
- 
- 
   isPositive: boolean;
 }
 
 const InsightCard: React.FC<InsightCardProps> = ({
   title,
   value,
-  subtitle,
-  
- 
+  subtitle
 }) => {
   // Dynamically set the value text size based on the title
   const valueTextSize = title === "Total Users" ? "text-sm" : "text-2xl";
@@ -36,7 +31,7 @@ const InsightCard: React.FC<InsightCardProps> = ({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <div>
@@ -60,10 +55,12 @@ const InsightCard: React.FC<InsightCardProps> = ({
                 alt="Pending Icon"
                 className="h-5 w-5 mr-2"
               />
-              <p className={` ${valueordertext} text-lg text-[#2c5B8C] font-bold`}>{value}</p>
+              <p
+                className={` ${valueordertext} text-lg text-[#2c5B8C] font-bold`}
+              >
+                {value}
+              </p>
             </div>
-
-         
           </>
         ) : (
           // Default layout for other cards
@@ -74,11 +71,8 @@ const InsightCard: React.FC<InsightCardProps> = ({
                 {value}
               </span>
             </div>
-          
           </>
         )}
-
-    
       </div>
 
       {/* Graph Image */}
@@ -88,8 +82,8 @@ const InsightCard: React.FC<InsightCardProps> = ({
             title === "Total Orders"
               ? graphone
               : title === "Total Amount (In Rupees)"
-                ? graph2
-                : graph3
+              ? graph2
+              : graph3
           }
           alt="Graph"
           className="h-[93px] w-[137px]"
@@ -97,6 +91,6 @@ const InsightCard: React.FC<InsightCardProps> = ({
       </div>
     </div>
   );
-}
+};
 
 export default InsightCard;

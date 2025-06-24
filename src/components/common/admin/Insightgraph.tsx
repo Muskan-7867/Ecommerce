@@ -1,44 +1,65 @@
-import React from 'react';
+import React from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-} from 'recharts';
+  ResponsiveContainer
+} from "recharts";
 
-const data = [
-  { name: 'January', users: 5 },
-  { name: 'February', users: 12 },
-  { name: 'March', users: 17 },
-  { name: 'April', users: 22 },
-  { name: 'May', users: 26 },
-  { name: 'June', users: 28 },
-];
+interface InsightgraphProps {
+  data: {
+    month: string;
+    monthlyUsers: number;
+    orders: number;
+    amount: number;
+  }[];
+}
 
-const Insightgraph: React.FC = () => {
+const Insightgraph: React.FC<InsightgraphProps> = ({ data }) => {
   return (
-    <div className="p-8 bg-[#ffffff] border border-gray-100 rounded-2xl">
-      <h2 className="text-lg font-semibold mb-4 text-custom-red">User Registration Trend</h2>
-      <ResponsiveContainer width="100%" height={380} >
-        <BarChart data={data}>
+    <div className="p-6 bg-white rounded-xl border border-gray-200">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-md font-semibold text-gray-800">User Statistics</h2>
+        <div className="w-10 h-5 bg-gray-300 rounded-full relative">
+          <div className="w-5 h-5 bg-blue-500 rounded-full absolute right-0 transition-all"></div>
+        </div>
+      </div>
 
-          {/* Months (name) on the X-axis */}
-          <XAxis dataKey="name" axisLine={{ stroke: '#ffffff' }} />
-          {/* Users count on the Y-axis */}
-          <YAxis
-            domain={[0, 30]}
-            ticks={[0, 5, 10, 15, 20, 25, 30]}
-            axisLine={{ stroke: "#ffffff" }}
-          />
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={data}>
+          <XAxis dataKey="month" />
+          <YAxis />
           <Tooltip />
           <Legend />
-          {/* Bar with red color */}
-          <Bar dataKey="users" fill="#A31F3E" radius={[10, 10, 0, 0]} />
-        </BarChart>
+
+          <Line
+            type="monotone"
+            dataKey="monthlyUsers"
+            stroke="#ffc107"
+            strokeWidth={2}
+            name="Monthly Users"
+          />
+          <Line
+            type="monotone"
+            dataKey="orders"
+            stroke="#2196f3"
+            strokeWidth={2}
+            name="Orders"
+          />
+          <Line
+            type="monotone"
+            dataKey="amount"
+            stroke="#4caf50"
+            name="Total Amount (₹)"
+            strokeWidth={2}
+          />
+        </LineChart>
       </ResponsiveContainer>
+
+ 
     </div>
   );
 };
