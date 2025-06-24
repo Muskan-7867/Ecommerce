@@ -9,6 +9,8 @@ import useCartStore from "../../../store/Cart/Cart.store";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import ProfileDropdown from "./ProfileDropdown";
 import Cookies from "js-cookie";
+import { motion, useMotionValueEvent } from "framer-motion";
+import { useScroll } from "framer-motion";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,12 +20,22 @@ const Navbar = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { cartCountValue } = useCartStore();
-
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
   const { currentUserFromStore, allocateCurrentUser } = useCurrentUser();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous! && latest > 800) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
-    const array = JSON.parse(data || "[]");
+    const array = data ? JSON.parse(data) : [];
     setCartCount(array.length);
   }, [cartCountValue]);
 
@@ -40,7 +52,13 @@ const Navbar = () => {
 
   return (
     <div className="relative">
-      <div
+      <motion.div
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" }
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
         className={`h-14 w-full flex justify-between items-center fixed top-0 left-0 right-0 z-[100] backdrop-blur-lg ${
           isHomePage ? "bg-primary text-white" : "bg-transparent text-primary"
         } px-4 sm:px-6 md:px-8 lg:px-12`}
@@ -58,18 +76,16 @@ const Navbar = () => {
         {/* Right side icons */}
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Show cart only if user is logged in */}
-         
-            <button
-              className="hover:opacity-80 transition-opacity relative"
-              aria-label="Cart"
-              onClick={() => navigate("/cart")}
-            >
-              <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
-                {cartCount}
-              </p>
-              <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
-            </button>
-          
+          <button
+            className="hover:opacity-80 transition-opacity relative"
+            aria-label="Cart"
+            onClick={() => navigate("/cart")}
+          >
+            <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
+              {cartCount}
+            </p>
+            <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
+          </button>
 
           {/* Conditional rendering based on user authentication */}
           {currentUserFromStore ? (
@@ -108,7 +124,7 @@ const Navbar = () => {
             <IoMenu size={20} />
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Mobile Menu */}
       <MobileMenu
