@@ -7,6 +7,7 @@ import InsightCard from "../../../components/common/admin/InsightCard";
 import Insightgraph from "../../../components/common/admin/Insightgraph";
 import { fetchOrdersQuery, fetchUsersQuery } from "../../../services/queries";
 import { Order } from "../order/components/OrderTableForAdmin";
+import { getMonthlySummary } from "../../../utills/InsightData";
 
 const Dashboard: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -24,7 +25,7 @@ const Dashboard: React.FC = () => {
       title: "Total Orders",
       value: `${totalOrders}`,
       subtitle: "This Month",
-      // You can calculate this dynamically later
+
       isPositive: false
     },
     {
@@ -40,14 +41,7 @@ const Dashboard: React.FC = () => {
       subtitle: "",
 
       isPositive: false
-    },
-    // {
-    //   title: "Total Artist's",
-    //   value: "Pending - 11 ",
-    //   subtitle: "Completed - 55",
-
-    //   isPositive: true
-    // }
+    }
   ];
 
   const scrollLeft = () => {
@@ -58,6 +52,7 @@ const Dashboard: React.FC = () => {
     scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
   };
 
+  const monthlySummary = getMonthlySummary(orders, users || []);
   return (
     <div className="min-h-screen mt-16 border border-gray-100 py-2 pl-8">
       <InsightsHeader
@@ -102,7 +97,7 @@ const Dashboard: React.FC = () => {
 
       {/* Insight Graph Section */}
       <div className="mb-8 mr-8">
-        <Insightgraph />
+        <Insightgraph data={monthlySummary} />
       </div>
     </div>
   );
