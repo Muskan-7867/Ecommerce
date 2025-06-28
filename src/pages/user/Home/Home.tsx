@@ -11,6 +11,7 @@ import useCurrentUser from "../../../hooks/useCurrentUser";
 import { fetchCurrentUser } from "../../../services/fetchers";
 import Cookies from "js-cookie";
 import { CurrentUser } from "../../../types/auth";
+import OurApp from "./components/OurApp";
 
  const Home: React.FC = () => {
   const { currentUserFromStore, allocateCurrentUser} = useCurrentUser();
@@ -41,6 +42,7 @@ import { CurrentUser } from "../../../types/auth";
         <ElectronicsProducts />
         <KitchenProducts />
         <Count from={0} to={50} duration={3} />
+        <OurApp />
       </div>
     </>
   );
