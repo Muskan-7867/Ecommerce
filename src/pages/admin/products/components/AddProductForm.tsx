@@ -4,6 +4,7 @@ import { useQueryState } from "nuqs";
 import { createProduct } from "../../../../services/fetchers";
 import { fields } from "./data";
 import UploadProdImage from "./UploadProdImage";
+import { useNavigate } from "react-router-dom";
 
 const AddProductForm = () => {
   const [category, setCategory] = useQueryState("category", {
@@ -13,7 +14,7 @@ const AddProductForm = () => {
   const [productImages, setProductImages] = useState<File[]>([]);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -90,6 +91,9 @@ const handleChange = (
         deliveryCharges: ""
       });
       setProductImages([]);
+     setTimeout(() => {
+      navigate("/admin/products");
+    }, 3000);
     } catch (err) {
       console.error("Failed to add product:", err);
     } finally {

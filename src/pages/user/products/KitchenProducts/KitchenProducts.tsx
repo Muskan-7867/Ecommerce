@@ -7,9 +7,10 @@ import { Product } from "../../../../types/Product";
 
 const KitchenProducts = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [Products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [showLeftBtn, setShowLeftBtn] = useState(false);
   const [showRightBtn, setShowRightBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkScrollPosition = () => {
     if (scrollContainerRef.current) {
@@ -23,10 +24,13 @@ const KitchenProducts = () => {
   useEffect(() => {
     const fetchBeauty = async () => {
       try {
-        const data = await getProductsByCategory("kitchen");
+        setIsLoading(true);
+        const data = await getProductsByCategory("Kitchen");
         setProducts(data);
       } catch (err) {
         console.error("Error fetching beauty products", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -49,7 +53,7 @@ const KitchenProducts = () => {
         window.removeEventListener("resize", checkScrollPosition);
       };
     }
-  }, [Products]);
+  }, [products]);
 
   const scrollLeft = () => {
     scrollContainerRef.current?.scrollBy({ left: -300, behavior: "smooth" });
@@ -68,36 +72,42 @@ const KitchenProducts = () => {
         <Button />
       </div>
 
-      <div className="relative px-6">
-        {showLeftBtn && (
-          <button
-            onClick={scrollLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 transition bg-white/80 backdrop-blur-sm border border-primary"
+      {isLoading ? (
+        <div className="px-6 py-4">Loading products...</div>
+      ) : products.length === 0 ? (
+        <div className="px-6 py-4 text-gray-500">No kitchen products available</div>
+      ) : (
+        <div className="relative px-6">
+          {showLeftBtn && (
+            <button
+              onClick={scrollLeft}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 transition bg-white/80 backdrop-blur-sm border border-primary"
+            >
+              <FaChevronLeft className="w-4 h-4 text-black" />
+            </button>
+          )}
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto overflow-hidden scroll-smooth py-4 gap-6 px-1"
+            style={{ scrollbarWidth: "none" }}
           >
-            <FaChevronLeft className="w-4 h-4 text-black" />
-          </button>
-        )}
-        <div
-          ref={scrollContainerRef}
-          className="flex overflow-x-auto overflow-hidden scroll-smooth py-4 gap-6 px-1"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {Products.map((product) => (
-            <div key={product._id} className="flex-shrink-0 w-[140px] lg:w-[300px]">
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+            {products.map((product) => (
+              <div key={product._id} className="flex-shrink-0 w-[140px] lg:w-[300px]">
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
 
-        {showRightBtn && (
-          <button
-            onClick={scrollRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 transition bg-white/80 backdrop-blur-sm border border-primary"
-          >
-            <FaChevronRight className="w-4 h-4 text-black" />
-          </button>
-        )}
-      </div>
+          {showRightBtn && (
+            <button
+              onClick={scrollRight}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 transition bg-white/80 backdrop-blur-sm border border-primary"
+            >
+              <FaChevronRight className="w-4 h-4 text-black" />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
