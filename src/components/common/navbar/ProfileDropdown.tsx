@@ -1,7 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-
 import { Link } from "react-router-dom";
-import { MdOutlineSettings } from "react-icons/md";
 import {  FaUser } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 
@@ -65,10 +63,7 @@ const ProfileDropdown = ({
                  <FaUser size={20} />
                   <Link to="/profile">Go To Profile</Link>
                 </li>
-                <li className="hover:bg-white/10 rounded-md p-2 flex justify-start gap-2">
-                <MdOutlineSettings size={20}/>
-                  <Link to="/settings">Go To Settings</Link>
-                </li>
+             
                 <li onClick={handleLogOut} className="hover:bg-white/10 rounded-md p-2 flex justify-start gap-2">
                 <PiSignOutBold size={20} />
                   <button>Log Out</button>
