@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import InsightsHeader from "./Insights/components/insightHeader";
 import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
 import InsightCard from "../../../components/common/admin/InsightCard";
 import Insightgraph from "../../../components/common/admin/Insightgraph";
@@ -55,12 +54,7 @@ const Dashboard: React.FC = () => {
   const monthlySummary = getMonthlySummary(orders, users || []);
   return (
     <div className="min-h-screen mt-16 border border-gray-100 py-2 pl-8">
-      <InsightsHeader
-        title="Insights"
-        yearOptions={["2025", "2024", "2023", "2022"]}
-        monthOptions={["May", "April", "March"]}
-      />
-
+   
       {/* Insights Section */}
       <div className="relative">
         <div
