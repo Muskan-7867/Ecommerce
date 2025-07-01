@@ -47,7 +47,9 @@ const ProdTable = () => {
       {isLoading && <p>Loading Products....</p>}
       {isError && <p>Error Loading Products....</p>}
       <Table columns={columns} data={data?.products ?? []} />
+            <div className="px-4 py-3  border-t border-gray-200">
       <Pagination totalProducts={data?.ProductCount} productPerPage={5} />
+      </div>
     </>
   );
 };

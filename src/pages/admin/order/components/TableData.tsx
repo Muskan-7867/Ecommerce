@@ -21,9 +21,10 @@ export interface Column<T> {
 interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
+  className?: string;
 }
 
-function TableData<T>({ columns, data }: TableProps<T>) {
+function TableData<T>({ columns, data, className = "" }: TableProps<T>) {
   const tableRef = useRef<HTMLDivElement>(null);
   const [dialogPosition, setDialogPosition] = useState<"top" | "bottom">(
     "bottom"
@@ -59,68 +60,74 @@ function TableData<T>({ columns, data }: TableProps<T>) {
   };
 
   return (
-    <div
-      ref={tableRef}
-      className="overflow-x-auto w-full h-[40rem] relative scrollbar-hide"
-    >
-      <table className="min-w-[700px] w-full text-left mt-4 ">
-        <thead className="bg-gray-100">
-          <tr>
-            {columns.map((col, i) => (
-              <th
-                key={i}
-                className="py-3 px-4 text-start text-gray-700 font-semibold text-sm border-b border-gray-300"
-              >
-                {col.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="text-gray-800 text-sm">
-          {data.map((item, idx) => (
-            <tr
-              key={idx}
-              className="hover:bg-gray-50 transition-colors duration-150 relative"
-            >
-              {columns.map((col, colIndex) => (
-                <td
-                  key={colIndex}
-                  className="py-4 px-4 text-start align-top whitespace-normal border-b border-r border-gray-200"
+    <div className={`w-full overflow-hidden ${className}`}>
+      <div
+        ref={tableRef}
+        className="overflow-x-auto w-full relative scrollbar-hide"
+      >
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="">
+            <tr>
+              {columns.map((col, i) => (
+                <th
+                  key={i}
+                  scope="col"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
                 >
-                  {col.renderData ? (
-                    col.renderData(item, idx, handleActionClick)
-                  ) : col.render ? (
-                    col.render(item)
-                  ) : col.key === "action" ? (
-                    <button
-                      className="p-2 text-[#000] font-extrabold text-2xl"
-                      onClick={(event) => handleActionClick(idx, event, item)}
-                    >
-                      <CiMenuKebab />
-                    </button>
-                  ) : col.key ? (
-                    String(item[col.key as keyof T])
-                  ) : (
-                    ""
-                  )}
-                  {/* Render DialogBox inside the action cell */}
-                  {col.key === "action" && openDialog === idx && (
-                    <div
-                      className={`absolute right-0 z-10 ${
-                        dialogPosition === "top"
-                          ? "bottom-full mb-2"
-                          : "top-full mt-2"
-                      }`}
-                    >
-                      <DialogBox setOpenDialog={setOpenDialog} row={item} />
-                    </div>
-                  )}
-                </td>
+                  {col.label}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data.map((item, idx) => (
+              <tr
+                key={idx}
+                className="hover:bg-gray-50 transition-colors duration-150"
+              >
+                {columns.map((col, colIndex) => (
+                  <td
+                    key={colIndex}
+                    className="px-4 py-4 whitespace-normal align-top"
+                  >
+                    <div className="text-sm text-gray-900">
+                      {col.renderData ? (
+                        col.renderData(item, idx, handleActionClick)
+                      ) : col.render ? (
+                        col.render(item)
+                      ) : col.key === "action" ? (
+                        <div className="relative">
+                          <button
+                            className="p-2 text-gray-600 hover:text-gray-900 focus:outline-none"
+                            onClick={(event) => handleActionClick(idx, event, item)}
+                          >
+                            <CiMenuKebab />
+                          </button>
+                          {openDialog === idx && (
+                            <div
+                              className={`absolute right-0 z-10 ${
+                                dialogPosition === "top"
+                                  ? "bottom-full mb-2"
+                                  : "top-full mt-2"
+                              }`}
+                            >
+                              <DialogBox setOpenDialog={setOpenDialog} row={item} />
+                            </div>
+                          )}
+                        </div>
+                      ) : col.key ? (
+                        String(item[col.key as keyof T])
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

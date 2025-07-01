@@ -10,13 +10,15 @@ import {
   updatePaymentPaidStatus,
   updatePaymentStatus
 } from "../../../../services/orderApi";
+
 export interface Payment {
   amount: number;
   paymentMethod: string;
   paymentStatus: string;
 }
+
 export interface Order {
-  _id: "string";
+  _id: string;
   quantity: number;
   totalPrice: number;
   status: string;
@@ -46,11 +48,10 @@ const OrderTableForAdmin = () => {
       setLocalOrders(orders);
     }
   }, [orders]);
-  if (orders.length === 0) {
-    return (
-      <p className="p-4 text-center">You have not placed any orders yet.</p>
-    );
-  }
+
+  if (isLoading) return <div className="p-4 text-center">Loading orders...</div>;
+  if (error) return <div className="p-4 text-center text-red-500">Error loading orders: {(error as Error).message}</div>;
+  if (orders.length === 0) return <p className="p-4 text-center">You have not placed any orders yet.</p>;
 
   const handleStatusChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -62,7 +63,6 @@ const OrderTableForAdmin = () => {
       | "delivered"
       | "cancelled";
 
-    // Optimistic update
     const updated = localOrders.map((o) =>
       o === order ? { ...o, status: newStatus } : o
     );
@@ -73,11 +73,9 @@ const OrderTableForAdmin = () => {
         orderId: order._id,
         status: newStatus
       });
-     queryClient.invalidateQueries({queryKey : ['updateorderstatus']})
+      queryClient.invalidateQueries({queryKey: ['updateorderstatus']});
     } catch {
-      // Revert on error
       setLocalOrders(orders);
-      // Optional: show error message
     }
   };
 
@@ -88,9 +86,8 @@ const OrderTableForAdmin = () => {
     const newPaymentStatus = e.target.value.toLowerCase() as
       | "success"
       | "pending"
-      | "failed"; // Ensure lowercase
+      | "failed";
 
-    // Optimistic update
     const updated = localOrders.map((o) =>
       o === order
         ? {
@@ -114,7 +111,6 @@ const OrderTableForAdmin = () => {
   const handleTogglePaid = async (order: Order) => {
     const newIsPaid = !order.isPaid;
 
-    // Optimistic update
     const updated = localOrders.map((o) =>
       o === order ? { ...o, isPaid: newIsPaid } : o
     );
@@ -125,23 +121,22 @@ const OrderTableForAdmin = () => {
         orderId: order._id,
         isPaid: newIsPaid
       });
-      // Optional: show success message
     } catch {
-      // Revert on error
       setLocalOrders(orders);
-      // Optional: show error message
     }
   };
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentOrders = localOrders.slice(indexOfFirstItem, indexOfLastItem);
+
   const columns: Column<Order>[] = [
     {
       label: "Order Items",
       render: (order) => (
         <div className="space-y-1">
           {order.orderItems.map((item, i) => (
-            <p key={i} className="text-sm text-gray-700">
+            <p key={i} className="text-sm text-gray-700 line-clamp-2">
               {typeof item.product === "object"
                 ? item.product?.name
                 : item.product}
@@ -151,9 +146,9 @@ const OrderTableForAdmin = () => {
       )
     },
     {
-      label: "Product Image",
+      label: "Images",
       render: (order) => (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:gap-1 gap-4">
+        <div className="flex flex-wrap gap-1">
           {order.orderItems.map((item, i) => {
             const product = item.product;
             return typeof product === "object" && product?.images?.length ? (
@@ -161,12 +156,12 @@ const OrderTableForAdmin = () => {
                 key={i}
                 src={product.images[0].url}
                 alt="Product"
-                className="lg:w-12 lg:h-12 md:w-16 md:h-10 sm:w-14 sm:h-8 w-18 h-10 object-cover rounded border bg-white"
+                className="w-10 h-10 object-cover rounded border bg-white"
               />
             ) : (
               <div
                 key={i}
-                className="w-12 h-12 flex items-center justify-center bg-gray-100 border text-xs text-gray-500 rounded"
+                className="w-10 h-10 flex items-center justify-center bg-gray-100 border text-xs text-gray-500 rounded"
               >
                 No Image
               </div>
@@ -176,76 +171,79 @@ const OrderTableForAdmin = () => {
       )
     },
     {
-      label: "Quantity",
-      render: (order) => {
-        return order.totalQuantity;
-      }
+      label: "Qty",
+      render: (order) => order.totalQuantity
     },
-    { label: "Total Price", key: "totalPrice" },
+    { 
+      label: "Total", 
+      render: (order) => `Rs ${order.totalPrice.toFixed(2)} /-`
+    },
     {
-      label: "Order Status",
+      label: "Status",
+      render: (order) => (
+        <select
+          className={`px-2 py-1 rounded-md outline-none text-sm ${
+            order.status === "pending" ?" text-yellow-800" :
+            order.status === "processing" ? " text-blue-800" :
+            order.status === "delivered" ? " text-green-800" :
+            " text-red-800"
+          }`}
+          value={order.status}
+          onChange={(e) => handleStatusChange(e, order)}
+        >
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      )
+    },
+    {
+      label: "Paid",
+      render: (order) => (
+        <input
+          type="checkbox"
+          checked={order.isPaid}
+          onChange={() => handleTogglePaid(order)}
+          className="w-4 h-4 cursor-pointer accent-primary text-white"
+        />
+      )
+    },
+    {
+      label: "Payment",
       render: (order) => {
-        const selected = order.status;
+        const selected = order.payment?.paymentStatus?.toLowerCase();
         return (
           <select
-            className={`px-3 py-1 rounded-md outline-none ${
-              selected ? "border-none" : ""
-            }`}
             value={selected}
-            onChange={(e) => handleStatusChange(e, order)}
+            onChange={(e) => handlePaymentStatusChange(e, order)}
+            className={`px-2 py-1 rounded-md outline-none text-sm ${
+              selected === "success" ? " text-green-800" :
+              selected === "pending" ? " text-yellow-800" :
+              " text-red-800"
+            }`}
           >
+            <option value="success">Success</option>
             <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="failed">Failed</option>
           </select>
         );
       }
     },
-
-    {
-      label: "Is Paid",
-      render: (order) => {
-        return (
-          <input
-            type="checkbox"
-            checked={order.isPaid}
-            onChange={() => handleTogglePaid(order)}
-            className="w-5 h-5 cursor-pointer accent-primary text-white"
-          />
-        );
-      }
-    },
-   {
-  label: "Payment Status",
-  render: (order) => {
-    const selected = order.payment?.paymentStatus?.toLowerCase(); // Ensure lowercase
-    return (
-      <select
-        value={selected}
-        onChange={(e) => handlePaymentStatusChange(e, order)}
-        className={`px-3 py-1 rounded-md outline-none ${
-          selected ? "border-none" : ""
-        }`}
-      >
-        <option value="success">Success</option>
-        <option value="pending">Pending</option>
-        <option value="failed">Failed</option>
-      </select>
-    );
-  }
-},
-    { label: "Action", key: "action" as const }
+    { label: "", key: "action" as const }
   ];
 
-  if (isLoading) return <div>Loading orders...</div>;
-  if (error) return <div>Error loading orders: {(error as Error).message}</div>;
-
   return (
-    <>
-      <TableData<Order> columns={columns} data={currentOrders} />
-      <Pagination totalProducts={orders.length} productPerPage={itemsPerPage} />
-    </>
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      <TableData<Order> 
+        columns={columns} 
+        data={currentOrders} 
+        className="max-h-[calc(100vh-200px)]"
+      />
+      <div className="px-4 py-3  border-t border-gray-200">
+        <Pagination totalProducts={orders.length} productPerPage={itemsPerPage} />
+      </div>
+    </div>
   );
 };
 

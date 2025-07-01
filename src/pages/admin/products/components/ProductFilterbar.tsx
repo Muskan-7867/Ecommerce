@@ -4,22 +4,21 @@ import Category from "../../../user/products/components/Category";
 
 const ProductFilterBar = () => {
   const [search, setSearch] = useQueryState("search");
+  
   return (
-    <div className="flex items-center justify-between p-3 gap-4 rounded-lg w-full bg-white">
-      {/* Left Section: Inputs & Filters */}
-      <div className="flex items-center gap-2 w-full ">
-        {/* Search Input */}
-        <div className="flex items-center border gap-4 border-gray-300 rounded-lg px-3 py-3 w-[70vw]">
-          <TfiSearch className="text-gray-500" />
-          <input
-            type="text"
-            value={search || ""}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search..."
-            className="outline-none text-gray-700 "
-          />
-        </div>
+    <div className="flex flex-col md:flex-row items-stretch gap-3 p-3 rounded-lg w-full bg-white">
+      {/* Search Input */}
+      <div className="flex-1 flex items-center border gap-3 border-gray-300 rounded-lg px-3 py-2">
+        <TfiSearch className="text-gray-500 flex-shrink-0" />
+        <input
+          type="text"
+          value={search || ""}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search..."
+          className="flex-1 outline-none text-gray-700 bg-transparent min-w-[50px]"
+        />
       </div>
+      
       <Category />
     </div>
   );
