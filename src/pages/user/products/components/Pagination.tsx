@@ -69,8 +69,8 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="w-full flex justify-center mt-10">
-      <div className="flex gap-2 px-4 py-2 rounded-md items-center overflow-x-auto">
+    <div className="w-full flex justify-center mt-10 scrollbar-hide">
+      <div className="flex gap-2 px-4 py-2 rounded-md items-center overflow-x-auto scrollbar-hide">
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}

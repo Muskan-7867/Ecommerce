@@ -20,11 +20,11 @@ const Category = () => {
   } = useQuery(getCategoriesQuery());
 
   return (
-    <div className="w-full flex items-center gap-2 justify-between">
-      <div className="w-full px-2 border border-gray-200 p-2 rounded-lg">
+    <div className="flex items-center gap-2 w-full md:w-auto">
+      <div className="flex-1 min-w-[150px] border border-gray-200 rounded-lg">
         <select
           id="category-select"
-          className="w-full p-2 rounded-md focus:outline-none"
+          className="w-full p-2 rounded-md focus:outline-none bg-transparent"
           value={category || ""}
           onChange={(e) => {
             const value = e.target.value;
@@ -32,9 +32,8 @@ const Category = () => {
             setCategory(value);
           }}
         >
-          {isPending && <p>Loading Categories.......</p>}
-
-          {isError && <p>Error loading categories</p>}
+          {isPending && <option>Loading Categories...</option>}
+          {isError && <option>Error loading categories</option>}
           <option value="all">All</option>
           {categories?.map((category: Category) => (
             <option key={category._id} value={category._id}>
@@ -45,11 +44,13 @@ const Category = () => {
       </div>
 
       {/* Mobile Filter Toggle Button */}
-      <BsFilter
+      <button 
         onClick={() => setPrice(!price)}
-        size={28}
-        className="lg:hidden block cursor-pointer"
-      />
+        className="lg:hidden flex items-center justify-center p-2 rounded-lg border border-gray-200"
+        aria-label="Filter"
+      >
+        <BsFilter size={24} />
+      </button>
     </div>
   );
 };
