@@ -58,7 +58,7 @@ const Table = <T extends { [key: string]: unknown }>({
   };
 
   return (
-    <div ref={tableRef} className="overflow-x-auto w-full">
+    <div ref={tableRef} className="overflow-x-auto w-full scrollbar-hide">
       <table className="min-w-[700px] w-full text-left mt-4 border-collapse">
         <thead>
           <tr className="bg-[#F4F4F4] text-[#000] font-poppins font-semibold text-sm leading-normal">

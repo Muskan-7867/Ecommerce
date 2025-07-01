@@ -39,7 +39,7 @@ const UserOrderTable = () => {
   }
 
   return (
-    <div className="w-full mt-18">
+    <div className="w-full mt-18 ">
       <h2 className="text-2xl font-bold text-primary mb-4 px-8">
         Order History
       </h2>
@@ -51,7 +51,7 @@ const UserOrderTable = () => {
           You have no orders yet.!!
         </p>
       ) : (
-        <div className="overflow-x-auto  px-8">
+        <div className="overflow-x-auto  px-8 scrollbar-hide">
           <table className="min-w-full rounded-lg bg-white border border-gray-200">
             <thead className="bg-primary text-white">
               <tr>
