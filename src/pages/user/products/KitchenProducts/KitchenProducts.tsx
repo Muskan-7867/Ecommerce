@@ -20,8 +20,7 @@ const KitchenProducts = () => {
       setShowRightBtn(scrollLeft + clientWidth < scrollWidth);
     }
   };
-
-  useEffect(() => {
+ useEffect(() => {
     const fetchBeauty = async () => {
       try {
         setIsLoading(true);
