@@ -240,9 +240,9 @@ const OrderTableForAdmin = () => {
         data={currentOrders} 
         className="max-h-[calc(100vh-200px)]"
       />
-      <div className="px-4 py-3  border-t border-gray-200">
+    
         <Pagination totalProducts={orders.length} productPerPage={itemsPerPage} />
-      </div>
+
     </div>
   );
 };
