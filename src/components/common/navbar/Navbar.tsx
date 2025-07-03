@@ -39,7 +39,10 @@ const Navbar = () => {
     setCartCount(array.length);
   }, [cartCountValue]);
 
-  const getFirstLetter = (email: string) => email?.charAt(0).toUpperCase();
+  const getFirstLetter = (email: string | null | undefined) => {
+    if (!email) return '';  
+    return email.charAt(0).toUpperCase();
+  };
 
   const handleLogOut = () => {
     Cookies.remove("authToken");
@@ -94,7 +97,7 @@ const Navbar = () => {
                 title="Profile"
                 aria-label="User Profile"
               >
-                {getFirstLetter(currentUserFromStore.email)}
+                 {currentUserFromStore ? getFirstLetter(currentUserFromStore.email) : ''}
               </button>
               {isDropdownVisible && (
                 <ProfileDropdown
