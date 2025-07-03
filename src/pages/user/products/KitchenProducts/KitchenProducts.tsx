@@ -12,6 +12,8 @@ const KitchenProducts = () => {
   const [showRightBtn, setShowRightBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  
+
   const checkScrollPosition = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } =
