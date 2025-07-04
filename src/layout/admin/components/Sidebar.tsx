@@ -1,12 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { ReactElement, useState } from "react";
-import { MdDashboard } from "react-icons/md";
+// import { MdDashboard } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
 import { Package } from "lucide-react";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { FaArrowRightLong } from "react-icons/fa6";
 import {  FaTimes } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
+import { MdDashboard } from "react-icons/md";
 
 type OptionTypes = {
   href: string;
@@ -19,7 +20,7 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const SidebarOptions: OptionTypes[] = [
-    { title: "Dashboard", href: "dashboard", Icon: <MdDashboard size={20} /> },
+    { title: "Dashboard", href: "/admin/dashboard", Icon: <MdDashboard size={20} /> },
     { title: "Products", href: "products", Icon: <Package size={20} /> },
 
     { title: "Category", href: "category", Icon: <TbCategoryPlus size={20} /> },
@@ -30,7 +31,7 @@ const Sidebar: React.FC = () => {
       href: "customers",
       Icon: <LiaUserFriendsSolid size={22} />
     },
-    // { title: "Profile", href: "adminprofile", Icon: <FaUser size={20} /> }
+ 
     
   ];
 
@@ -61,7 +62,7 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* Navigation Options */}
-        <div className="flex flex-col space-y-4 mt-4 mb-4 px-2">
+        <div className="flex flex-col space-y-4 mt-18 mb-4 px-2 ">
           {SidebarOptions.map((option) => {
             const isActive = location.pathname === option.href;
             return (

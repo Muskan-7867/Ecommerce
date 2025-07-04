@@ -55,7 +55,7 @@ const Router = () => {
           ))}
         </Route>
 
-        <Route path="/admin/" element={<AdminPrivateLayout />}>
+        <Route path="/admin" element={<AdminPrivateLayout />}>
           {Admin_Private_routes?.map((route, i) => (
             <Route
               key={`ADMIN_PRIVATE_ROUTE_${i}`}
