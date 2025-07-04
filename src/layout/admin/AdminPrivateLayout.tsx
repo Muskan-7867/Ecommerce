@@ -6,9 +6,12 @@ import Sidebar from "./components/Sidebar";
 const AdminPrivateLayout: React.FC = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
+useEffect(() => {
+  // Only redirect if at exact /admin path
+  if (location.pathname === "/admin") {
     navigate("dashboard");
-  }, []);
+  }
+}, [navigate, location.pathname]); 
 
   return (
     <div className="flex h-screen w-full">

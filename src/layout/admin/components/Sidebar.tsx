@@ -20,7 +20,7 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const SidebarOptions: OptionTypes[] = [
-    { title: "Dashboard", href: "/admin/dashboard", Icon: <MdDashboard size={20} /> },
+    { title: "Dashboard", href: "dashboard", Icon: <MdDashboard size={20} /> },
     { title: "Products", href: "products", Icon: <Package size={20} /> },
 
     { title: "Category", href: "category", Icon: <TbCategoryPlus size={20} /> },
@@ -64,7 +64,7 @@ const Sidebar: React.FC = () => {
         {/* Navigation Options */}
         <div className="flex flex-col space-y-4 mt-18 mb-4 px-2 ">
           {SidebarOptions.map((option) => {
-            const isActive = location.pathname === option.href;
+            const isActive = location.pathname.endsWith(`/admin/${option.href}`);
             return (
               <Link
                 key={option.title}
