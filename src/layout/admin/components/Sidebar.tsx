@@ -64,7 +64,8 @@ const Sidebar: React.FC = () => {
         {/* Navigation Options */}
         <div className="flex flex-col space-y-4 mt-18 mb-4 px-2 ">
           {SidebarOptions.map((option) => {
-            const isActive = location.pathname.endsWith(`/admin/${option.href}`);
+           // In Sidebar component
+const isActive = location.pathname.includes(option.href);
             return (
               <Link
                 key={option.title}
