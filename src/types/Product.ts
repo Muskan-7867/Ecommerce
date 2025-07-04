@@ -77,6 +77,7 @@ export interface OrderData {
   quantity: number;
   totalQuantity: number;
   totalPrice: number;
+    expectedDeliveryDate: Date;
   address: AddressFormData | undefined;
   orderItems: {
     product: string;

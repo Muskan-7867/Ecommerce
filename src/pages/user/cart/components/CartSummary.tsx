@@ -69,6 +69,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ products, quantities }) => {
     quantity: totalQuantity,
     totalQuantity,
     totalPrice: total,
+     expectedDeliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     address,
     orderItems,
     status: "pending",

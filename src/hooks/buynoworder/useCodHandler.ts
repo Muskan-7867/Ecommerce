@@ -10,6 +10,7 @@ interface OrderData {
   totalQuantity: number;
   totalPrice: number;
   address: AddressFormData;
+  expectedDeliveryDate: Date
   orderItems: Array<{
     product: string;
     price: number;
