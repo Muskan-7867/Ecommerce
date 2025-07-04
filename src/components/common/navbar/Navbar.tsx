@@ -40,7 +40,7 @@ const Navbar = () => {
   }, [cartCountValue]);
 
   const getFirstLetter = (email: string | null | undefined) => {
-    if (!email) return '';  
+    if (!email) return '';
     return email.charAt(0).toUpperCase();
   };
 
@@ -51,6 +51,9 @@ const Navbar = () => {
     setIsDropdownVisible(false);
     navigate("/login");
   };
+
+  // Check if we have a valid user with email
+  const hasValidUser = currentUserFromStore?.email;
 
   return (
     <div className="relative">
@@ -89,7 +92,7 @@ const Navbar = () => {
             <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
           </button>
 
-          {currentUserFromStore ? (
+          {hasValidUser ? (
             <div className="relative">
               <button
                 onClick={() => setIsDropdownVisible(!isDropdownVisible)}
@@ -97,7 +100,7 @@ const Navbar = () => {
                 title="Profile"
                 aria-label="User Profile"
               >
-                 {currentUserFromStore ? getFirstLetter(currentUserFromStore.email) : ''}
+                {getFirstLetter(currentUserFromStore.email)}
               </button>
               {isDropdownVisible && (
                 <ProfileDropdown
