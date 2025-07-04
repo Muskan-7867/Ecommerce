@@ -18,6 +18,7 @@ import AdminPrivateLayout from "../layout/admin/AdminPrivateLayout";
 import CheckOut from "../pages/user/order/components/CheckOut";
 import UserOrderTable from "../pages/user/profile/components/UserOrderTable";
 import ResetPassword from "../auth/login/ResetPassword";
+import PrivacyPolicyPage from "../pages/user/privacypolicy/Privacy";
 
 const Router = () => {
   return (
@@ -39,7 +40,7 @@ const Router = () => {
           <Route path="/edit/:userId" element={<EditProfile />} />
           <Route path="/userordertable" element={<UserOrderTable />} />
           <Route path="/resetpassword/:token" element={<ResetPassword />} />
-
+           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
 
