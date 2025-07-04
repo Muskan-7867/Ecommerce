@@ -9,7 +9,7 @@ import dumbles from "/assets/dumbles.jpg";
 import juicer from "/assets/juicer.jpg";
 import Laptop from "/assets/Laptop.jpg";
 import Phone from "/assets/Phone.jpg";
-import Beauty from "/assets/beauty.jfif";
+
 import JuicerJag from "/assets/juicerjag.png";
 import toy from "/assets/toy.png";
 import purse from "/assets/purse.png";
@@ -49,7 +49,7 @@ export {
   toy,
   purse,
   foundation,
-  Beauty,
+ 
   All,
   graph2,
   graph3,
