@@ -1,6 +1,7 @@
 import { IoIosMail } from "react-icons/io";
 import { MdLocalPhone, MdLocationOn } from "react-icons/md";
 import { BsClock } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const ContactInfo = () => {
   return (
@@ -32,12 +33,12 @@ const ContactInfo = () => {
             </div>
             <div>
               <h4 className="font-medium text-gray-800">Phone Number</h4>
-              <a
+              <Link to="#"
                
                 className="text-sm text-gray-600 hover:text-primary transition mt-1 block"
               >
                 09872144408
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -47,12 +48,12 @@ const ContactInfo = () => {
             </div>
             <div>
               <h4 className="font-medium text-gray-800">Email Address</h4>
-              <a
-                href="mailto:omegbazaar@gmail.com"
+              <Link
+                to="mailto:omegbazaar@gmail.com"
                 className="text-sm text-gray-600 hover:text-primary transition mt-1 block"
               >
                 omegbazaar@gmail.com
-              </a>
+              </Link>
             </div>
           </div>
 

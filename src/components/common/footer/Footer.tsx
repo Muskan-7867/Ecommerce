@@ -1,6 +1,7 @@
 import { IoIosMail } from "react-icons/io";
 import { MdLocalPhone, MdLocationOn } from "react-icons/md";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const quickLinks = [
@@ -10,136 +11,107 @@ const Footer = () => {
     { name: "Products", link: "/products" }
   ];
 
-  const shopLinks = [
-    { name: "New Arrivals", link: "/new" },
-    { name: "Best Sellers", link: "/bestsellers" },
-    { name: "Special Offers", link: "/offers" },
-    { name: "Gift Cards", link: "/gifts" },
-  ];
-
   return (
-    <div className="  bg-transparent">
-      <div className="bg-primary h-auto min-h-[25rem]  p-6 sm:p-[4rem] flex justify-center items-center flex-wrap gap-6 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand Info */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">Omeg Bazaar</h2>
-            <p className="text-white text-sm leading-relaxed">
-              Your one-stop destination for quality products. We provide the
-              best shopping experience with a wide range of items to choose
-              from.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-black transition">
-                <FaFacebook size={20} />
-              </a>
-              <a href="#" className="text-white hover:text-black transition">
-                <FaTwitter size={20} />
-              </a>
-              <a href="#" className="text-white hover:text-black transition">
-                <FaInstagram size={20} />
-              </a>
-              <a href="#" className="text-white hover:text-black transition">
-                <FaLinkedin size={20} />
-              </a>
+    <div className="bg-transparent w-full">
+      <div className="bg-primary h-auto min-h-[25rem] p-6 sm:p-[4rem]">
+        <div className="max-w-[85%] mx-auto">
+          {/* Main content row */}
+          <div className="flex flex-col md:flex-row justify-between items-start gap-10">
+            {/* Brand Info - Left aligned */}
+            <div className="space-y-6 w-full md:w-auto">
+              <h2 className="text-2xl font-bold text-white">Omeg Bazaar</h2>
+              <p className="text-white text-sm leading-relaxed max-w-xs">
+                Your one-stop destination for quality products. We provide the
+                best shopping experience with a wide range of items to choose
+                from.
+              </p>
+              <div className="flex space-x-4">
+                <Link to="#" className="text-white hover:text-black transition">
+                  <FaFacebook size={20} />
+                </Link>
+                <Link to="#" className="text-white hover:text-black transition">
+                  <FaTwitter size={20} />
+                </Link>
+                <Link to="#" className="text-white hover:text-black transition">
+                  <FaInstagram size={20} />
+                </Link>
+                <Link to="#" className="text-white hover:text-black transition">
+                  <FaLinkedin size={20} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Quick Links - Centered */}
+            <div className="space-y-6 w-full md:w-auto mx-auto text-center md:text-left">
+              <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
+                Quick Links
+              </h3>
+              <ul className="space-y-2">
+                {quickLinks.map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      to={item.link}
+                      className="text-white hover:text-black transition duration-300 text-sm"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact Info - Right aligned */}
+            <div className="space-y-6 w-full md:w-auto ml-auto">
+              <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
+                Contact Us
+              </h3>
+              <p className="text-white text-sm leading-relaxed max-w-xs">
+                Have questions or need help? Reach out to our customer support
+                team anytime.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <MdLocationOn
+                    className="text-white mt-1 flex-shrink-0"
+                    size={18}
+                  />
+                  <p className="text-sm text-white mt-1">
+                    23-A, near Lal Chand Shoe Maker, Prakash Nagar, Shankar Garden
+                    Colony, <br /> Model Town, Jalandhar, Punjab 144003
+                  </p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MdLocalPhone className="text-white" size={18} />
+                  <Link
+                    to="tel:+14578986546"
+                    className="text-white hover:text-black transition text-sm"
+                  >
+                    09872144408
+                  </Link>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <IoIosMail className="text-white" size={18} />
+                  <Link
+                    to="mailto:info@example.com"
+                    className="text-white hover:text-black transition text-sm"
+                  >
+                    omegbazaarofficial@gmail.com
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="space-y-6">
-            <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
-              Quick Links
-            </h3>
-            <ul className="space-y-2">
-              {quickLinks.map((item, index) => (
-                <li key={index}>
-                  <a
-                    href={item.link}
-                    className="text-white hover:text-black transition duration-300 text-sm"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Shop Now */}
-          <div className="space-y-6">
-            <h3 className="text-lg  text-white font-semibold uppercase tracking-wider">
-              Shop Now
-            </h3>
-            <ul className="space-y-2">
-              {shopLinks.map((item, index) => (
-                <li key={index}>
-                  <a
-                    href={item.link}
-                    className="text-white hover:text-black transition duration-300 text-sm"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div className="space-y-6">
-            <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
-              Contact Us
-            </h3>
-            <p className="text-white text-sm leading-relaxed">
-              Have questions or need help? Reach out to our customer support
-              team anytime.
+          {/* Copyright */}
+          <div className="border-t border-white mt-12 pt-8 text-center text-sm">
+            <p className="text-white">
+              &copy; {new Date().getFullYear()} Omeg Bazaar. All rights reserved.
+              |
+              <Link to="/privacy" className="hover:text-white ml-2">
+                Privacy Policy
+              </Link>
             </p>
-            <div className="space-y-3">
-              <div className="flex items-start space-x-3">
-                <MdLocationOn
-                  className="text-white mt-1 flex-shrink-0"
-                  size={18}
-                />
-                <p className="text-sm text-white mt-1">
-                  23-A, near Lal Chand Shoe Maker,
-             
-                  Prakash Nagar, Shankar Garden Colony, <br /> Model Town,
-                  Jalandhar, Punjab 144003
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <MdLocalPhone className="text-white" size={18} />
-                <a
-                  href="tel:+14578986546"
-                  className="text-white hover:text-black transition text-sm"
-                >
-                  09872144408
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <IoIosMail className="text-white" size={18} />
-                <a
-                  href="mailto:info@example.com"
-                  className="text-white hover:text-black transition text-sm"
-                >
-                  omegbazaar@gmail.com
-                </a>
-              </div>
-            </div>
           </div>
-        </div>
-
-        {/* Copyright */}
-        <div className="border-t border-white mt-12 pt-8 text-center  text-sm">
-          <p className="text-white">
-            &copy; {new Date().getFullYear()} Omeg Bazaar. All rights reserved.
-            |
-            <a href="#" className="hover:text-white ml-2">
-              Privacy Policy
-            </a>{" "}
-            |
-            <a href="#" className="hover:text-white ml-2">
-              Terms of Service
-            </a>
-          </p>
         </div>
       </div>
     </div>

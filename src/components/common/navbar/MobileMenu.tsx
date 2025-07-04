@@ -102,7 +102,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   </motion.button>
                 </div>
 
-                <h3>omegbazaar@gmail.com</h3>
+                <h3> omegbazaarofficial@gmail.com</h3>
               </div>
             </div>
           </motion.div>
