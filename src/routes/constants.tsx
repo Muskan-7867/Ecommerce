@@ -10,6 +10,8 @@ import Categories from "../pages/admin/category/Categories";
 import EditProduct from "../pages/admin/products/components/EditProduct";
 import AdminProfile from "../components/common/admin/AdminProfile";
 
+
+
 interface RootDocument {
   href: string;
   page: React.FC;

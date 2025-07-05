@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { adminLogin } from "../../../services/fetchers";
 import Cookies from "js-cookie";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginAdmin: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const LoginAdmin: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, checked, type } = e.target;
@@ -29,9 +31,10 @@ const LoginAdmin: React.FC = () => {
         email: formData.email,
         password: formData.password
       });
-      if(response.token){
+      if (response.token) {
         Cookies.set("admintoken", response.token);
       }
+      await queryClient.invalidateQueries({ queryKey: ["admin-login"] });
       setTimeout(() => {
         navigate("/admin/dashboard");
       }, 2000);
@@ -57,7 +60,7 @@ const LoginAdmin: React.FC = () => {
           </p>
         </div>
 
-         {error && (
+        {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
             {error}
           </div>
@@ -119,7 +122,7 @@ const LoginAdmin: React.FC = () => {
             type="submit"
             className="w-full py-2 sm:py-3 px-4 bg-primary hover:bg-primary-dark text-white text-sm sm:text-base font-medium rounded-full transition duration-200 shadow-md hover:shadow-lg"
           >
-             {loading ? "Login..." : "Login Now"}
+            {loading ? "Login..." : "Login Now"}
           </button>
 
           <div className="text-center text-xs sm:text-sm text-gray-600">

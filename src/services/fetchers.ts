@@ -321,13 +321,14 @@ const adminLogin = async (adminData: { email: string; password: string }) => {
 };
 
 const getAdminInfo = async () => {
+  console.log("get admin info", admintoken)
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/admin/all`, {
       headers: {
         Authorization: `Bearer ${admintoken}`
       }
     });
-
+    console.log("form admin info", response.data);
     return response.data;
   } catch {
     console.log("error in get admin info");

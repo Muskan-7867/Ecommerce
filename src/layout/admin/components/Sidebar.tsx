@@ -5,7 +5,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { Package } from "lucide-react";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { FaArrowRightLong } from "react-icons/fa6";
-import {  FaTimes } from "react-icons/fa";
+import {  FaTimes, FaUser } from "react-icons/fa";
 import { TbCategoryPlus } from "react-icons/tb";
 import { MdDashboard } from "react-icons/md";
 
@@ -26,12 +26,10 @@ const Sidebar: React.FC = () => {
     { title: "Category", href: "category", Icon: <TbCategoryPlus size={20} /> },
     { title: "Orders", href: "order", Icon: <TiShoppingCart size={20} /> },
 
-    {
-      title: "Customers",
-      href: "customers",
-      Icon: <LiaUserFriendsSolid size={22} />
-    },
- 
+    { title: "Customers",  href: "customers", Icon: <LiaUserFriendsSolid size={22} />  },
+    { title: "Profile",  href: "adminprofile", Icon: <FaUser size={22} />  },
+
+     
     
   ];
 
@@ -65,7 +63,7 @@ const Sidebar: React.FC = () => {
         <div className="flex flex-col space-y-4 mt-18 mb-4 px-2 ">
           {SidebarOptions.map((option) => {
            // In Sidebar component
-const isActive = location.pathname.includes(option.href);
+           const isActive = location.pathname.includes(option.href);
             return (
               <Link
                 key={option.title}

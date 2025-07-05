@@ -13,7 +13,6 @@ const Header: React.FC = () => {
   return (
     <div className="h-18">
       <div className="m-4 flex justify-end lg:gap-4 items-center">
-        {/* Sign Up Button - Only shown when no token exists */}
         {!token && (
           <Link
             to="/adminregister"

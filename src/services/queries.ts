@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import {
+  adminLogin,
   deleteProduct,
   fetchAdminCategories,
   fetchCurrentUser,
@@ -131,6 +132,14 @@ const fetchUsersQuery = () => {
   enabled,
 });
 
+ const AdminLoginQuery = ( email: string, password: string, enabled: boolean = false) => ({
+
+    queryKey: ['admin-login', email, password],
+    queryFn: () => adminLogin({ email, password }),
+    enabled, 
+   
+  });
+
 const getClientQuery = (orderId: string) => ({
   queryKey: ["client", orderId],
   queryFn:() => getClientByOrderId(orderId),
@@ -175,6 +184,7 @@ export {
   getCurrentUser,
   updateOrderStatusQuery,
   updatePaymentStatusQuery,
-  updatePaymentPaidStatusQuery
+  updatePaymentPaidStatusQuery,
+  AdminLoginQuery
 
 };
