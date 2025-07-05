@@ -294,7 +294,7 @@ const adminRegister = async (adminData: {
   name: string;
   email: string;
   password: string;
-  role: string;
+
 }) => {
   try {
     const response = await axios.post(

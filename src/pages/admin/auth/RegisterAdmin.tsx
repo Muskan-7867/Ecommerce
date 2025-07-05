@@ -7,19 +7,17 @@ const RegisterAdmin = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    role: "",
-
-    password: ""
+   password: ""
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const roles = [
-    { value: "admin", label: "Admin" },
-    { value: "user", label: "User" }
-  ];
+  // const roles = [
+  //   { value: "admin", label: "Admin" },
+  //   { value: "user", label: "User" }
+  // ];
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -36,7 +34,6 @@ const RegisterAdmin = () => {
       const response = await adminRegister({
         name: formData.name,
         email: formData.email,
-        role: formData.role,
         password: formData.password
       });
 
@@ -109,7 +106,7 @@ const RegisterAdmin = () => {
               />
             </div>
 
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               <label
                 htmlFor="role"
                 className="block text-sm font-medium text-gray-700 pl-3"
@@ -130,7 +127,7 @@ const RegisterAdmin = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <div className="space-y-1 col-span-2 sm:col-span-1">
               <label
