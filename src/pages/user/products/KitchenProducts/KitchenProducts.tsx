@@ -75,7 +75,7 @@ const KitchenProducts = () => {
 
       {isLoading ? (
         <div className="px-6 py-4">Loading products...</div>
-      ) : products.length === 0 ? (
+      ) : products?.length === 0 ? (
         <div className="px-6 py-4 text-gray-500">No kitchen products available</div>
       ) : (
         <div className="relative px-6">
@@ -92,7 +92,7 @@ const KitchenProducts = () => {
             className="flex overflow-x-auto overflow-hidden scroll-smooth py-4 gap-6 px-1"
             style={{ scrollbarWidth: "none" }}
           >
-            {products.map((product) => (
+            {products?.map((product) => (
               <div key={product._id} className="flex-shrink-0 w-[140px] lg:w-[300px]">
                 <ProductCard product={product} />
               </div>
