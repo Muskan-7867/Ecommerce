@@ -29,12 +29,10 @@ const ProductCard = ({ product }: { product: Product }) => {
     }
   };
 
-
-
   return (
     <div
       onClick={() => navigate(`/products/${product._id}`)}
-      className="bg-white p-2 sm:p-3 rounded-md flex flex-col w-full max-w-[160px] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[220px] lg:max-w-[240px] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
+      className="bg-white p-2  rounded-md flex flex-col  max-w-[26rem] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[18rem] lg:max-w-[18rem] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
     >
       {/* Image Container - Fixed aspect ratio */}
       {/* Image Container */}
@@ -87,7 +85,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           }`}
           aria-label={isPresentInCart ? "Remove from cart" : "Add to cart"}
         >
-          <FaCartPlus className="text-xs xs:text-sm sm:text-base" />
+          <FaCartPlus className="text-lg xs:text-sm sm:text-base" />
         </button>
       </div>
     </div>

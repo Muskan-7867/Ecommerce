@@ -12,7 +12,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
   );
   const [maxPrice, setMaxPrice] = useQueryState(
     "maxPrice",
-    parseAsInteger.withDefault(10000)
+    parseAsInteger.withDefault(100000)
   );
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,14 +28,16 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
   };
 
   return (
-    <motion.div
-      initial={{ height: 0 }}
-      animate={{
-        height: "auto",
-        transition: { duration: 0.3, ease: "easeInOut" }
-      }}
-      className="p-4 rounded-md shadow-sm bg-white w-full absolute lg:top-0 top-12 lg:relative "
-    >
+ <motion.div
+  initial={{ height: 0, overflow: 'hidden' }}
+  animate={{ 
+    height: "auto",
+    overflow: 'visible',
+    transition: { duration: 0.3, ease: "easeInOut" }
+  }}
+  exit={{ height: 0, overflow: 'hidden' }}
+  className="p-4 rounded-md shadow-sm bg-white w-full"
+>
       <h3 className="text-lg font-semibold mb-4 text-gray-800">
         Filter by Price
       </h3>
@@ -67,12 +69,12 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ onChange }) => {
             type="range"
             style={{ accentColor: "#ca8888" }}
             min={minPrice}
-            max={1000}
+            max={100000}
             value={maxPrice}
             onChange={handleMaxChange}
             className=" rounded px-3 py-2 focus:outline-none "
           />
-             <span className="text-sm text-gray-700 mt-1">₹{minPrice}</span>
+         <span className="text-sm text-gray-700 mt-1">₹{maxPrice}</span>
 
         </div>
       </motion.div>

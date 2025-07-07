@@ -9,7 +9,7 @@ const Filter: React.FC = () => {
 
   return (
     <AnimatePresence>
-      <div className="w-full  flex-col lg:items-start gap-4 lg:gap-8 relative ">
+      <div className="w-full flex flex-col gap-4 lg:gap-8 sticky top-4">
         <Category />
         {price && <PriceFilter />}
       </div>
