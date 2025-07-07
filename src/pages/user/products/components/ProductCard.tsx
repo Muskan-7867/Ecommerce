@@ -32,7 +32,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <div
       onClick={() => navigate(`/products/${product._id}`)}
-      className="bg-white p-2  rounded-md flex flex-col  max-w-[26rem] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[18rem] lg:max-w-[18rem] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
+      className="bg-white p-2  rounded-md flex flex-col w-full  max-w-[26rem] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[18rem] lg:max-w-[18rem] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
     >
       {/* Image Container - Fixed aspect ratio */}
       {/* Image Container */}
@@ -43,7 +43,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           alt={product.name}
           className="absolute top-0 left-0 w-full h-full object-contain p-2 
              transition-all duration-300 ease-in-out
-             group-hover:brightness-90 group-hover:scale-[1.05]"
+              "
           loading="lazy"
         />
 
