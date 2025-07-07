@@ -53,7 +53,7 @@ const UserOrderTable = () => {
 
   if (currentUserFromStore.order?.length === 0) {
     return (
-      <p className="text-gray-500 p-4 text-center text-lg">
+      <p className="text-gray-500 p-4 text-center text-lg mt-28">
         You have no orders yet.!!
       </p>
     );
