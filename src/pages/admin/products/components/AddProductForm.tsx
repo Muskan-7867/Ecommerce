@@ -56,7 +56,7 @@ const handleChange = (
 
   useEffect(() => {
     console.log("from useffectr", productImages);
-    if (productImages.length >= 4) {
+    if (productImages.length >= 10) {
       setDisabled(true);
     }
   }, [productImages]);

@@ -25,6 +25,7 @@ const UploadProdImage = ({ disabled, productImages, setProductImages }: { disabl
         multiple
         accept="image/*"
         disabled={disabled}
+        maxLength={10}
         onChange={handleImage}
         className="py-2 focus:outline-none text-gray-700 border border-gray-200 p-2 rounded-md"
       />
