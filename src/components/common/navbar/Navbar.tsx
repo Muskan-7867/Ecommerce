@@ -78,8 +78,8 @@ const Navbar = () => {
         } px-4 sm:px-6 md:px-8 lg:px-12`}
       >
         {/* Logo/Brand */}
-        <Link to="/" className="font-serif text-xl sm:text-2xl lg:text-3xl">
-          OMEG BAZAAR
+        <Link to="/" className="font-serif  sm:text-2xl lg:text-3xl">
+          <img  src="/public/assets/newlogo.png" className=" h-10 text-white" />
         </Link>
 
         {/* Desktop Navigation */}
