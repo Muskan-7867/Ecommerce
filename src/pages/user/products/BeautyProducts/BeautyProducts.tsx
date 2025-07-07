@@ -73,7 +73,7 @@ const BeautyProducts = () => {
 
       {isLoading ? (
         <div className="px-6 py-4">Loading products...</div>
-      ) : products.length === 0 ? (
+      ) : products?.length === 0 ? (
         <div className="px-6 py-4 text-gray-500">No beauty products available</div>
       ) : (
         <div className="relative px-6">
@@ -91,7 +91,7 @@ const BeautyProducts = () => {
             className="flex overflow-x-auto scroll-smooth py-4 px-1 gap-6"
             style={{ scrollbarWidth: "none" }}
           >
-            {products.map((product) => (
+            {products?.map((product) => (
               <div key={product._id} className="flex-shrink-0 w-[140px] lg:w-[300px]">
                 <ProductCard product={product} />
               </div>
