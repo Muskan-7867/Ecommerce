@@ -52,7 +52,6 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  // Check if we have a valid user with email
   const hasValidUser = currentUserFromStore?.email;
 
   return (
@@ -78,9 +77,9 @@ const Navbar = () => {
           <NavLinks />
         </div>
 
-        {/* Right side icons */}
-        <div className="flex items-center gap-4 sm:gap-6">
-          {/* Show cart only if user is logged in */}
+        {/* Right side icons with improved spacing */}
+        <div className="flex items-center gap-3 xs:gap-4 sm:gap-5 md:gap-6">
+          {/* Cart button */}
           <button
             className="hover:opacity-80 transition-opacity relative"
             aria-label="Cart"
@@ -89,14 +88,14 @@ const Navbar = () => {
             <p className="bg-red-600 w-4 h-4 rounded-full flex justify-center items-center text-xs text-white absolute -top-1 left-4">
               {cartCount}
             </p>
-            <BsCartPlus size={24} className="sm:w-7 sm:h-7" />
+            <BsCartPlus className="w-6 h-6 sm:w-7 sm:h-7" />
           </button>
 
           {hasValidUser ? (
             <div className="relative">
               <button
                 onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-                className="w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-white text-primary font-semibold text-sm border border-primary"
+                className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full bg-white text-primary font-semibold text-sm border border-primary"
                 title="Profile"
                 aria-label="User Profile"
               >
@@ -117,17 +116,17 @@ const Navbar = () => {
               className="hover:opacity-80 transition-opacity"
               aria-label="Login"
             >
-              <FaUserPlus size={24} className="sm:w-8 sm:h-8" />
+              <FaUserPlus className="w-6 h-6 sm:w-7 sm:h-7" />
             </Link>
           )}
 
           {/* Mobile menu button */}
           <button
             onClick={() => setIsCardVisible(true)}
-            className="lg:hidden flex justify-center items-center text-color w-10 h-10 p-2 rounded-full hover:bg-white hover:text-primary"
+            className="lg:hidden flex justify-center items-center text-color w-9 h-9 rounded-full hover:bg-white hover:text-primary"
             aria-label="Open Mobile Menu"
           >
-            <IoMenu size={20} />
+            <IoMenu className="w-5 h-5" />
           </button>
         </div>
       </motion.div>

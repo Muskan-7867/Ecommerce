@@ -64,7 +64,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 <Link to="/products">Products</Link>
                 <Link to="/contact">Contact</Link>
               </ul>
-              <div className="flex justify-between items-center mt-8">
+              <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
                 <div className="flex gap-2">
                   <motion.button
                     animate={{
@@ -102,7 +102,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   </motion.button>
                 </div>
 
-                <h3> omegbazaarofficial@gmail.com</h3>
+                <h3 className="text-sm sm:text-base break-words text-center sm:text-right">
+                  omegbazaarofficial@gmail.com
+                </h3>
               </div>
             </div>
           </motion.div>

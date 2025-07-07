@@ -42,7 +42,7 @@ const Footer = () => {
             </div>
 
             {/* Quick Links - Centered */}
-            <div className="space-y-6 w-full md:w-auto mx-auto text-center md:text-left">
+            <div className="space-y-6 w-full md:w-auto mx-auto  md:text-left">
               <h3 className="text-lg text-white font-semibold uppercase tracking-wider">
                 Quick Links
               </h3>
