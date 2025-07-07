@@ -68,9 +68,7 @@ const fetchProductIds = async (productIds: string[]): Promise<Product[]> => {
   }
 };
 
-const fetchCurrentUser = async (
-  token?: string
-): Promise<CurrentUser | unknown> => {
+const fetchCurrentUser = async (token?: string): Promise<CurrentUser | null> => {
   if (!token) {
     console.warn("No token found");
     return null;
@@ -78,15 +76,15 @@ const fetchCurrentUser = async (
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/user/current`, {
       headers: {
-        Authorization: `Bearer ${token }`
+        Authorization: `Bearer ${token}`
       }
     });
-    console.log("from fetch current user", response.data.user);
     return response.data.user;
-  } catch (err) {
-    // setError("Failed to fetch user");
+  } catch  {
     console.error("Failed to fetch user");
-    return err;
+    // Remove invalid token
+    Cookies.remove("authToken");
+    return null;
   }
 };
 

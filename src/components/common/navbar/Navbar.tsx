@@ -34,6 +34,15 @@ const Navbar = () => {
   });
 
   useEffect(() => {
+  const token = Cookies.get("authToken");
+  if (!token && currentUserFromStore) {
+    // If token is removed but user still exists in store
+    allocateCurrentUser(null);
+    navigate("/login");
+  }
+}, [location.pathname]);
+
+  useEffect(() => {
     const data = localStorage.getItem("productIds");
     const array = data ? JSON.parse(data) : [];
     setCartCount(array.length);
@@ -50,6 +59,7 @@ const Navbar = () => {
     localStorage.removeItem("user");
     setIsDropdownVisible(false);
     navigate("/login");
+      
   };
 
   const hasValidUser = currentUserFromStore?.email;
