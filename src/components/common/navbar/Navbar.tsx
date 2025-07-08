@@ -33,14 +33,14 @@ const Navbar = () => {
     }
   });
 
-  useEffect(() => {
-  const token = Cookies.get("authToken");
-  if (!token && currentUserFromStore) {
-    // If token is removed but user still exists in store
-    allocateCurrentUser(null);
-    navigate("/login");
-  }
-}, [location.pathname]);
+//   useEffect(() => {
+//   const token = Cookies.get("authToken");
+//   if (!token && currentUserFromStore) {
+//     // If token is removed but user still exists in store
+//     allocateCurrentUser(null);
+//     navigate("/login");
+//   }
+// }, [location.pathname]);
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
@@ -79,7 +79,7 @@ const Navbar = () => {
       >
         {/* Logo/Brand */}
         <Link to="/" className="font-serif  sm:text-2xl lg:text-3xl">
-          <img  src="/public/assets/newlogo.png" className=" h-10 text-white" />
+          <img  src="/public/logos/newlogo.png" className=" h-10 text-white" />
         </Link>
 
         {/* Desktop Navigation */}
