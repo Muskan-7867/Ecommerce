@@ -51,7 +51,7 @@ const OrderTableForAdmin = () => {
 
   if (isLoading) return <div className="p-4 text-center">Loading orders...</div>;
   if (error) return <div className="p-4 text-center text-red-500">Error loading orders: {(error as Error).message}</div>;
-  if (orders.length === 0) return <p className="p-4 text-center">You have not placed any orders yet.</p>;
+  if (orders.length === 0) return <p className="p-4 text-center">No orders found.</p>;
 
   const handleStatusChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -109,6 +109,9 @@ const OrderTableForAdmin = () => {
   };
 
   const handleTogglePaid = async (order: Order) => {
+    // Only allow toggling for online payments, not COD
+    if (order.payment.paymentMethod.toLowerCase() === 'cod') return;
+    
     const newIsPaid = !order.isPaid;
 
     const updated = localOrders.map((o) =>
@@ -179,6 +182,18 @@ const OrderTableForAdmin = () => {
       render: (order) => `Rs ${order.totalPrice.toFixed(2)} /-`
     },
     {
+      label: "Payment Method",
+      render: (order) => (
+        <span className={`font-medium ${
+          order.payment.paymentMethod?.toLowerCase() === 'cod' 
+            ? 'text-orange-600' 
+            : 'text-blue-600'
+        }`}>
+          {order.payment.paymentMethod?.toUpperCase()}
+        </span>
+      )
+    },
+    {
       label: "Status",
       render: (order) => (
         <select
@@ -201,17 +216,25 @@ const OrderTableForAdmin = () => {
     {
       label: "Paid",
       render: (order) => (
-        <input
-          type="checkbox"
-          checked={order.isPaid}
-          onChange={() => handleTogglePaid(order)}
-          className="w-4 h-4 cursor-pointer accent-primary text-white"
-        />
+        order?.payment?.paymentMethod?.toLowerCase() === 'cod' ? (
+          <span className="text-gray-500 text-sm">COD</span>
+        ) : (
+          <input
+            type="checkbox"
+            checked={order.isPaid}
+            onChange={() => handleTogglePaid(order)}
+            className="w-4 h-4 cursor-pointer accent-primary text-white"
+          />
+        )
       )
     },
     {
-      label: "Payment",
+      label: "Payment Status",
       render: (order) => {
+        if (order.payment.paymentMethod?.toLowerCase() === 'cod') {
+          return <span className="text-gray-500 text-sm">N/A</span>;
+        }
+        
         const selected = order.payment?.paymentStatus?.toLowerCase();
         return (
           <select
@@ -241,8 +264,7 @@ const OrderTableForAdmin = () => {
         className="max-h-[calc(100vh-200px)]"
       />
     
-        <Pagination totalProducts={orders.length} productPerPage={itemsPerPage} />
-
+      <Pagination totalProducts={orders.length} productPerPage={itemsPerPage} />
     </div>
   );
 };

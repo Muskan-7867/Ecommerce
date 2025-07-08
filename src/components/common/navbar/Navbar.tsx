@@ -33,14 +33,14 @@ const Navbar = () => {
     }
   });
 
-//   useEffect(() => {
-//   const token = Cookies.get("authToken");
-//   if (!token && currentUserFromStore) {
-//     // If token is removed but user still exists in store
-//     allocateCurrentUser(null);
-//     navigate("/login");
-//   }
-// }, [location.pathname]);
+  //   useEffect(() => {
+  //   const token = Cookies.get("authToken");
+  //   if (!token && currentUserFromStore) {
+  //     // If token is removed but user still exists in store
+  //     allocateCurrentUser(null);
+  //     navigate("/login");
+  //   }
+  // }, [location.pathname]);
 
   useEffect(() => {
     const data = localStorage.getItem("productIds");
@@ -49,7 +49,7 @@ const Navbar = () => {
   }, [cartCountValue]);
 
   const getFirstLetter = (email: string | null | undefined) => {
-    if (!email) return '';
+    if (!email) return "";
     return email.charAt(0).toUpperCase();
   };
 
@@ -59,7 +59,6 @@ const Navbar = () => {
     localStorage.removeItem("user");
     setIsDropdownVisible(false);
     navigate("/login");
-      
   };
 
   const hasValidUser = currentUserFromStore?.email;
@@ -77,9 +76,21 @@ const Navbar = () => {
           isHomePage ? "bg-primary text-white" : "bg-transparent text-primary"
         } px-4 sm:px-6 md:px-8 lg:px-12`}
       >
-        {/* Logo/Brand */}
-        <Link to="/" className="font-serif  sm:text-2xl lg:text-3xl">
-          <img  src="/logos/newlogo.png" className=" h-10 text-white" />
+        <Link
+          to="/"
+          className={`font-serif sm:text-2xl lg:text-3xl ${
+            isHomePage ? "text-white" : "text-primary"
+          }`}
+        >
+          {isHomePage ? (
+            <img src="/logos/newlogo.png" className="h-10" alt="Home Logo" />
+          ) : (
+            <img
+              src="/logos/blacklogo.png"
+              className="h-10"
+              alt="Alternate Logo"
+            />
+          )}
         </Link>
 
         {/* Desktop Navigation */}
