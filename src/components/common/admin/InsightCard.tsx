@@ -1,5 +1,5 @@
 import React from "react";
-import {circle,circle1,graphone,graph2,graph3 } from "../../../constants/imagePath";
+import {graphone,graph2,graph3 } from "../../../constants/imagePath";
 interface InsightCardProps {
   title: string;
   value: string | number;
@@ -16,9 +16,7 @@ const InsightCard: React.FC<InsightCardProps> = ({
   const valueTextSize = title === "Total Users" ? "text-sm" : "text-2xl";
   const valueordertext = title === "Total Orders" ? "text-3xl" : "text-2xl";
 
-  // Artist-specific images
-  const completedImage = circle;
-  const pendingImage = circle1;
+
 
   return (
     <div
@@ -41,20 +39,12 @@ const InsightCard: React.FC<InsightCardProps> = ({
         {title === "Total Artist's" ? (
           <>
             <div className="flex items-center mb-2">
-              <img
-                src={completedImage}
-                alt="Completed Icon"
-                className="h-5 w-5 mr-2"
-              />
+             
               <p className="text-lg text-[#2c5B8C] font-bold">{subtitle}</p>
             </div>
 
             <div className="flex items-center mb-2">
-              <img
-                src={pendingImage}
-                alt="Pending Icon"
-                className="h-5 w-5 mr-2"
-              />
+             
               <p
                 className={` ${valueordertext} text-lg text-[#2c5B8C] font-bold`}
               >
