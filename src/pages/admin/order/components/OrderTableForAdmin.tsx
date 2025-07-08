@@ -45,14 +45,27 @@ const OrderTableForAdmin = () => {
 
   useEffect(() => {
     if (orders.length) {
-      setLocalOrders(orders);
+      // Filter orders to show:
+      // 1. Online payments that are paid (payment status success)
+      // 2. COD orders that are unpaid
+      const filteredOrders = orders.filter(order => {
+        const isOnlinePayment = order.payment.paymentMethod?.toLowerCase() !== 'cod';
+        const isPaidOnline = isOnlinePayment && 
+                            order.payment.paymentStatus?.toLowerCase() === 'success' && 
+                            order.isPaid;
+        const isUnpaidCOD = !isOnlinePayment && !order.isPaid;
+        
+        return isPaidOnline || isUnpaidCOD;
+      });
+      setLocalOrders(filteredOrders);
     }
   }, [orders]);
 
   if (isLoading) return <div className="p-4 text-center">Loading orders...</div>;
   if (error) return <div className="p-4 text-center text-red-500">Error loading orders: {(error as Error).message}</div>;
-  if (orders.length === 0) return <p className="p-4 text-center">No orders found.</p>;
+  if (localOrders.length === 0) return <p className="p-4 text-center">No orders found matching the criteria.</p>;
 
+  // ... rest of your component code remains the same ...
   const handleStatusChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
     order: Order
@@ -264,7 +277,7 @@ const OrderTableForAdmin = () => {
         className="max-h-[calc(100vh-200px)]"
       />
     
-      <Pagination totalProducts={orders.length} productPerPage={itemsPerPage} />
+      <Pagination totalProducts={localOrders.length} productPerPage={itemsPerPage} />
     </div>
   );
 };
