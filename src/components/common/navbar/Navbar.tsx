@@ -79,7 +79,7 @@ const Navbar = () => {
       >
         {/* Logo/Brand */}
         <Link to="/" className="font-serif  sm:text-2xl lg:text-3xl">
-          <img  src="/public/logos/newlogo.png" className=" h-10 text-white" />
+          <img  src="/logos/newlogo.png" className=" h-10 text-white" />
         </Link>
 
         {/* Desktop Navigation */}
