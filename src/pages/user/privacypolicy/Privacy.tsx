@@ -1,41 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import TermsContent from "./TermsContent";
 import { PrivacyContent } from "./PrivacyContent";
 import { ContactUs } from "./ContactUs";
 import { Cancelation } from "./Cancelation";
+import { useQueryState } from "nuqs";
 
-type accordianProps = {
+type AccordionProps = {
   title: string;
   content: React.ReactNode;
   isOpen: boolean;
   onClick: () => void;
 };
+
 const sections = [
   {
     title: "Privacy Policy",
-    content: <PrivacyContent />
+    content: <PrivacyContent />,
+    param: "privacyandpolicy",
   },
   {
     title: "Terms & Conditions",
-    content: <TermsContent />
+    content: <TermsContent />,
+    param: "termsandconditions",
   },
   {
     title: "Contact Us",
-    content: <ContactUs />
+    content: <ContactUs />,
+    param: "contactus",
   },
   {
     title: "Cancel & Return Policy",
-    content: <Cancelation />
-  }
+    content: <Cancelation />,
+    param: "cancelationandreturnpolicy",
+  },
 ];
 
-const AccordionItem: React.FC<accordianProps> = ({
+const AccordionItem: React.FC<AccordionProps> = ({
   title,
   content,
   isOpen,
-  onClick
+  onClick,
 }) => (
   <div className="border-b border-primary">
     <button
@@ -68,11 +74,34 @@ const AccordionItem: React.FC<accordianProps> = ({
 );
 
 const PrivacyPolicyPage = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [activeSections, setActiveSections] = useQueryState<string[]>(
+    "sections",
+    {
+      defaultValue: [],
+      parse: (value) => value.split(",").filter(Boolean),
+      serialize: (value) => value.join(","),
+    }
+  );
 
-  const handleToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+  const handleToggle = (param: string) => {
+    setActiveSections((prev = []) =>
+      prev.includes(param)
+        ? prev.filter((p) => p !== param)
+        : [...prev, param]
+    );
   };
+
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    // Scroll to the first active section
+    if (activeSections && activeSections.length > 0) {
+      const index = sections.findIndex((s) => s.param === activeSections[0]);
+      if (index !== -1 && sectionRefs.current[index]) {
+        sectionRefs.current[index]?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [activeSections]);
 
   return (
     <div className="max-w-full mx-auto p-6 mt-20">
@@ -81,13 +110,21 @@ const PrivacyPolicyPage = () => {
       </h1>
       <div className="space-y-4 text-black">
         {sections.map((section, index) => (
-          <AccordionItem
+          <div 
             key={index}
-            title={section.title}
-            content={section.content}
-            isOpen={openIndex === index}
-            onClick={() => handleToggle(index)}
-          />
+            ref={(el) => {
+              if (el) {
+                sectionRefs.current[index] = el;
+              }
+            }}
+          >
+            <AccordionItem
+              title={section.title}
+              content={section.content}
+              isOpen={activeSections?.includes(section.param) ?? false}
+              onClick={() => handleToggle(section.param)}
+            />
+          </div>
         ))}
       </div>
     </div>

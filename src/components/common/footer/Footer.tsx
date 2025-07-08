@@ -107,7 +107,7 @@ const Footer = () => {
             <p className="text-white">
               &copy; {new Date().getFullYear()} Omeg Bazaar. All rights reserved.
               |
-              <Link to="/privacy" className="hover:text-white ml-2">
+              <Link to="/privacyandpolicy" className="hover:text-white ml-2">
                 Privacy Policy
               </Link>
             </p>

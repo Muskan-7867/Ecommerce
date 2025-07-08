@@ -40,7 +40,7 @@ const Router = () => {
           <Route path="/edit/:userId" element={<EditProfile />} />
           <Route path="/userordertable" element={<UserOrderTable />} />
           <Route path="/resetpassword/:token" element={<ResetPassword />} />
-           <Route path="/privacy" element={<PrivacyPolicyPage />} />
+           <Route path="/privacyandpolicy" element={<PrivacyPolicyPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
 
