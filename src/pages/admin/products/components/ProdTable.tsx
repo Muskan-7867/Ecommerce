@@ -11,14 +11,14 @@ const ProdTable = () => {
   const [category] = useQueryState("category", { defaultValue: "all" });
 
   const [page] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [limit] = useQueryState("limit", parseAsInteger.withDefault(10));
+  const [limit] = useQueryState("limit", parseAsInteger.withDefault(9));
   const [minPrice] = useQueryState("minPrice", parseAsInteger.withDefault(0));
   const [maxPrice] = useQueryState("maxPrice", parseAsInteger.withDefault(100000));
 
   const { data, isLoading, isError } = useQuery(
     getFilteredProdQuery(page, limit, minPrice, maxPrice, category, search)
   );
-
+  console.log("from filterd prod", data?.ProductCount)
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [data]);
@@ -48,7 +48,7 @@ const ProdTable = () => {
       {isError && <p>Error Loading Products....</p>}
       <Table columns={columns} data={data?.products ?? []} />
          
-      <Pagination totalProducts={data?.ProductCount} productPerPage={5} />
+      <Pagination totalProducts={data?.ProductCount} productPerPage={9} />
      
     </>
   );

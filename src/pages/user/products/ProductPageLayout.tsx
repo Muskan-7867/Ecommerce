@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Filter from "./components/Filter";
 import Search from "./components/Search";
 import Products from "./components/Products";
@@ -7,6 +7,9 @@ import PaddingWrapper from "../../../components/wrappers/PaddingWrapper";
 import Pagination from "./components/Pagination";
 
 const ProductPageLayout: React.FC = () => {
+  const [totalProducts, setTotalProducts] = useState<number>(0);
+  const [productPerPage] = useState<number>(9);
+
   return (
     <ScreenHandler>
       <PaddingWrapper>
@@ -17,10 +20,10 @@ const ProductPageLayout: React.FC = () => {
               <Filter />
             </div>
             <div className="lg:col-span-9 col-span-12 mt-6 lg:mt-0">
-              <Products />
+              <Products onTotalProductsChange={setTotalProducts} />
             </div>
           </div>
-          <Pagination totalProducts={24} productPerPage={9} />
+          <Pagination totalProducts={totalProducts} productPerPage={productPerPage} />
         </div>
       </PaddingWrapper>
     </ScreenHandler>

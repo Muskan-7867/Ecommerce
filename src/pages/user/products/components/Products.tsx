@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import { getFilteredProducts } from "../../../../services/fetchers";
 import ProductCardShimmer from "./ProductCardShimmer";
 
-const Products = () => {
+interface ProductsProps {
+  onTotalProductsChange: (count: number) => void;
+}
+
+const Products:React.FC<ProductsProps> = ({onTotalProductsChange}) => {
   const [products, setProducts] = useState<Product[] | []>([]);
   const [search] = useQueryState("search");
   const [category] = useQueryState("category", { defaultValue: "all" });
@@ -35,7 +39,9 @@ const fetchFilterProducts = async () => {
       category,
       search
     );
+    console.log("from products pg---", data.ProductCount)
     setProducts(data.products);
+    onTotalProductsChange(data.ProductCount);
   } catch (error) {
     console.error("Failed to fetch products:", error);
   } finally {
