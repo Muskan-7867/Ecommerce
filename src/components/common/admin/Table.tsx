@@ -17,12 +17,17 @@ interface Column<T> {
   renderData?: (row: T) => React.ReactNode;
 }
 
-interface TableProps<T extends { [key: string]: unknown }> {
+interface BaseRowData {
+  _id: string;
+  [key: string]: unknown;
+}
+
+interface TableProps<T extends BaseRowData> {
   columns: Column<T>[];
   data: T[];
 }
 
-const Table = <T extends { [key: string]: unknown }>({
+const Table = <T extends BaseRowData>({
   columns,
   data
 }: TableProps<T>) => {
@@ -50,7 +55,14 @@ const Table = <T extends { [key: string]: unknown }>({
     if (container && trigger) {
       const containerRect = container.getBoundingClientRect();
       const triggerRect = trigger.getBoundingClientRect();
-      const position = getDialogPosition(containerRect, triggerRect, 200);
+    
+    
+      const position = getDialogPosition(
+        containerRect,
+        triggerRect,
+    
+        200
+      );
       setDialogPosition(position);
     }
 

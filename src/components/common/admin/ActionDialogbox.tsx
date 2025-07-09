@@ -8,18 +8,20 @@ import { deleteOrder, deleteProduct } from "../../../services/fetchers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-
-interface DialogBoxProps<T> {
+interface DialogBoxProps<T extends { _id: string }> {
   onDeleteSuccess?: () => void;
   onEditSuccess?: () => void;
   setOpenDialog: React.Dispatch<React.SetStateAction<number | null>>;
   row: T;
 }
 
-function DialogBox<T>({ onDeleteSuccess, setOpenDialog, row }: DialogBoxProps<T>) {
-  console.log(row)
-  const { setShowSingleProduct, selectedProduct } = useSingleProductStore();
-  const { selectedRow, setShowSingleOrder } = useSingleOrderStore();
+function DialogBox<T extends { _id: string }>({ 
+  onDeleteSuccess, 
+  setOpenDialog, 
+  row 
+}: DialogBoxProps<T>) {
+  const { setShowSingleProduct } = useSingleProductStore();
+  const { setShowSingleOrder } = useSingleOrderStore();
   const queryClient = useQueryClient();
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,10 +40,10 @@ function DialogBox<T>({ onDeleteSuccess, setOpenDialog, row }: DialogBoxProps<T>
   const handleDelete = async () => {
     try {
       if (route === "/admin/products") {
-        await deleteProduct(selectedProduct._id);
+        await deleteProduct(row._id);
         queryClient.invalidateQueries({ queryKey: ["filteredproducts"] });
       } else if (route === "/admin/order") {
-        await deleteOrder(selectedRow._id);
+        await deleteOrder(row._id); // Using the row prop's _id instead of selectedRow
         queryClient.invalidateQueries({ queryKey: ["orders"] });
       }
       setMessage("Deleted successfully.");
@@ -50,7 +52,7 @@ function DialogBox<T>({ onDeleteSuccess, setOpenDialog, row }: DialogBoxProps<T>
       if (onDeleteSuccess) onDeleteSuccess();
     } catch (err) {
       console.error("Failed to delete", err);
-      setError("Failed to delete.");
+      setError(`Failed to delete: ${err instanceof Error ? err.message : 'Unknown error'}`);
       setMessage(null);
     }
   };

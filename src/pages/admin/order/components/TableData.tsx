@@ -3,6 +3,10 @@ import DialogBox from "../../../../components/common/admin/ActionDialogbox";
 import { CiMenuKebab } from "react-icons/ci"; 
 import { useSingleOrderStore } from "../../../../store/product/Table.store";
 
+
+export interface ITableItem {
+  _id: string;
+}
 export interface Column<T> {
   label: string | React.ReactNode;
   key?: keyof T | "action";
@@ -18,13 +22,13 @@ export interface Column<T> {
   ) => React.ReactNode;
 }
 
-interface TableProps<T> {
+interface TableProps<T extends ITableItem> {
   columns: Column<T>[];
   data: T[];
   className?: string;
 }
 
-function TableData<T>({ columns, data, className = "" }: TableProps<T>) {
+function TableData<T extends ITableItem>({ columns, data, className = "" }: TableProps<T>) {
   const tableRef = useRef<HTMLDivElement>(null);
   const [dialogPosition, setDialogPosition] = useState<"top" | "bottom">(
     "bottom"
