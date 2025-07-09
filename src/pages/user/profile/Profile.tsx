@@ -20,7 +20,7 @@ const Profile = () => {
           <div className="md:col-span-1 flex flex-col items-center text-center space-y-4">
             <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-gray-200">
               <img
-                src="/public/images/user.png"
+                src="/images/user.png"
                 alt="User"
                 className="w-full h-full object-cover"
               />
