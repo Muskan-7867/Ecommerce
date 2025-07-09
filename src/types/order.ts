@@ -32,6 +32,7 @@ export interface Order {
   status: string;
   isPaid: boolean;
   deliveryCharges: number;
+
   payment: Payment;
   orderItems: OrderItem[];
   createdAt: string;

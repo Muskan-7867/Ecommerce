@@ -240,9 +240,10 @@ const getOrders = async () => {
         Authorization: `Bearer ${token}`
       }
     });
-    console.log("from orders fetchers" , response.data);
-    return response.data.orders;
-  } catch {
+    
+    return response.data.orders || [];
+  } catch (error) {
+    console.error("Error fetching orders:", error);
     return [];
   }
 };

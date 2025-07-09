@@ -88,4 +88,5 @@ export interface OrderData {
   deliveryCharges: number;
   payment: PaymentType;
   isPaid: boolean;
+  paymentMethod?: string;
 }

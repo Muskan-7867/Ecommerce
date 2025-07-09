@@ -6,12 +6,20 @@ import { RiSecurePaymentFill } from "react-icons/ri";
 import { useQuery } from "@tanstack/react-query";
 import { fetchOrdersQuery } from "../../../../services/queries";
 
+interface Payment {
+  status?: string;
+  paymentStatus?: string;
+  paymentMethod?: string;
+  amount: number;
+}
+
 interface Order {
+  _id: string;
   createdAt: string;
   totalPrice: number;
-  payment?: {
-    amount: number;
-  };
+  isPaid: boolean;
+  paymentMethod?: string;
+  payment: Payment;
 }
 
 const OrderSummary: React.FC = () => {
@@ -23,13 +31,31 @@ const OrderSummary: React.FC = () => {
   const currentYear = today.getFullYear();
   const todayString = today.toISOString().split("T")[0];
 
-  // Calculate summary data
-  const todaysOrders = orders.filter((order) => {
+  // Filter valid orders (paid online or COD)
+  const validOrders = orders.filter((order) => {
+    const paymentMethod = 
+      order.paymentMethod?.toLowerCase() || 
+      order.payment?.paymentMethod?.toLowerCase();
+    
+    if (paymentMethod === "cod" || paymentMethod === "cash_on_delivery") {
+      return true; // Count all COD orders
+    }
+    
+    // For online payments, check if payment was successful
+    const paymentStatus = 
+      order.payment?.paymentStatus?.toLowerCase() || 
+      order.payment?.status?.toLowerCase();
+    
+    return paymentStatus === "success" || order.isPaid;
+  });
+
+  // Calculate summary data using only valid orders
+  const todaysOrders = validOrders.filter((order) => {
     const orderDate = new Date(order.createdAt).toISOString().split("T")[0];
     return orderDate === todayString;
   }).length;
 
-  const monthsOrders = orders.filter((order) => {
+  const monthsOrders = validOrders.filter((order) => {
     const orderDate = new Date(order.createdAt);
     return (
       orderDate.getMonth() === currentMonth &&
@@ -37,9 +63,9 @@ const OrderSummary: React.FC = () => {
     );
   }).length;
 
-  const totalOrders = orders.length;
+  const totalOrders = validOrders.length;
 
-  const totalPayment = orders.reduce((sum, order) => {
+  const totalPayment = validOrders.reduce((sum, order) => {
     return sum + (order.totalPrice || 0);
   }, 0);
 

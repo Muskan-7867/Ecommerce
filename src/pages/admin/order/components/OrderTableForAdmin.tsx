@@ -12,6 +12,7 @@ import {
 } from "../../../../services/orderApi";
 
 export interface Payment {
+  status?: string;
   amount: number;
   paymentMethod: string;
   paymentStatus: string;
@@ -22,6 +23,7 @@ export interface Order {
   quantity: number;
   totalPrice: number;
   status: string;
+  paymentMethod?: string;
   isPaid: boolean;
   payment: Payment;
   orderItems: OrderItem[];
@@ -45,27 +47,38 @@ const OrderTableForAdmin = () => {
 
   useEffect(() => {
     if (orders.length) {
-      // Filter orders to show:
-      // 1. Online payments that are paid (payment status success)
-      // 2. COD orders that are unpaid
-      const filteredOrders = orders.filter(order => {
-        const isOnlinePayment = order.payment.paymentMethod?.toLowerCase() !== 'cod';
-        const isPaidOnline = isOnlinePayment && 
-                            order.payment.paymentStatus?.toLowerCase() === 'success' && 
-                            order.isPaid;
-        const isUnpaidCOD = !isOnlinePayment && !order.isPaid;
-        
-        return isPaidOnline || isUnpaidCOD;
+      const filteredOrders = orders.filter((order) => {
+        // Get payment method from either root or payment object
+        const paymentMethod =
+          order.paymentMethod?.toLowerCase() ||
+          order.payment?.paymentMethod?.toLowerCase();
+
+        if (paymentMethod === "online_payment") {
+          const paymentStatus =
+            order.payment?.paymentStatus?.toLowerCase() ||
+            order.payment?.status?.toLowerCase();
+          return paymentStatus === "success" || order.isPaid;
+        }
+
+        return paymentMethod === "cash_on_delivery" || paymentMethod === "cod";
       });
       setLocalOrders(filteredOrders);
     }
   }, [orders]);
 
-  if (isLoading) return <div className="p-4 text-center">Loading orders...</div>;
-  if (error) return <div className="p-4 text-center text-red-500">Error loading orders: {(error as Error).message}</div>;
-  if (localOrders.length === 0) return <p className="p-4 text-center">No orders found matching the criteria.</p>;
+  if (isLoading)
+    return <div className="p-4 text-center">Loading orders...</div>;
+  if (error)
+    return (
+      <div className="p-4 text-center text-red-500">
+        Error loading orders: {(error as Error).message}
+      </div>
+    );
+  if (localOrders.length === 0)
+    return (
+      <p className="p-4 text-center">No orders found matching the criteria.</p>
+    );
 
-  // ... rest of your component code remains the same ...
   const handleStatusChange = async (
     e: React.ChangeEvent<HTMLSelectElement>,
     order: Order
@@ -86,7 +99,7 @@ const OrderTableForAdmin = () => {
         orderId: order._id,
         status: newStatus
       });
-      queryClient.invalidateQueries({queryKey: ['updateorderstatus']});
+      queryClient.invalidateQueries({ queryKey: ["updateorderstatus"] });
     } catch {
       setLocalOrders(orders);
     }
@@ -96,6 +109,9 @@ const OrderTableForAdmin = () => {
     e: React.ChangeEvent<HTMLSelectElement>,
     order: Order
   ) => {
+    // Don't allow changing payment status for COD orders
+    if (order.payment.paymentMethod?.toLowerCase() === "cod") return;
+
     const newPaymentStatus = e.target.value.toLowerCase() as
       | "success"
       | "pending"
@@ -123,8 +139,8 @@ const OrderTableForAdmin = () => {
 
   const handleTogglePaid = async (order: Order) => {
     // Only allow toggling for online payments, not COD
-    if (order.payment.paymentMethod.toLowerCase() === 'cod') return;
-    
+    if (order.payment?.paymentMethod?.toLowerCase() === "cod") return;
+
     const newIsPaid = !order.isPaid;
 
     const updated = localOrders.map((o) =>
@@ -190,31 +206,41 @@ const OrderTableForAdmin = () => {
       label: "Qty",
       render: (order) => order.totalQuantity
     },
-    { 
-      label: "Total", 
+    {
+      label: "Total",
       render: (order) => `Rs ${order.totalPrice.toFixed(2)} /-`
     },
     {
       label: "Payment Method",
-      render: (order) => (
-        <span className={`font-medium ${
-          order.payment.paymentMethod?.toLowerCase() === 'cod' 
-            ? 'text-orange-600' 
-            : 'text-blue-600'
-        }`}>
-          {order.payment.paymentMethod?.toUpperCase()}
-        </span>
-      )
+      render: (order) => {
+        const method = order.paymentMethod || order.payment?.paymentMethod;
+        const isCOD =
+          method?.toLowerCase() === "cod" ||
+          method?.toLowerCase() === "cash_on_delivery";
+
+        return (
+          <span
+            className={`font-medium ${
+              isCOD ? "text-orange-600" : "text-blue-600"
+            }`}
+          >
+            {method?.toUpperCase()}
+          </span>
+        );
+      }
     },
     {
       label: "Status",
       render: (order) => (
         <select
           className={`px-2 py-1 rounded-md outline-none text-sm ${
-            order.status === "pending" ?" text-yellow-800" :
-            order.status === "processing" ? " text-blue-800" :
-            order.status === "delivered" ? " text-green-800" :
-            " text-red-800"
+            order.status === "pending"
+              ? " text-yellow-800"
+              : order.status === "processing"
+              ? " text-blue-800"
+              : order.status === "delivered"
+              ? " text-green-800"
+              : " text-red-800"
           }`}
           value={order.status}
           onChange={(e) => handleStatusChange(e, order)}
@@ -228,8 +254,8 @@ const OrderTableForAdmin = () => {
     },
     {
       label: "Paid",
-      render: (order) => (
-        order?.payment?.paymentMethod?.toLowerCase() === 'cod' ? (
+      render: (order) =>
+        order?.payment?.paymentMethod?.toLowerCase() === "cod" ? (
           <span className="text-gray-500 text-sm">COD</span>
         ) : (
           <input
@@ -239,24 +265,25 @@ const OrderTableForAdmin = () => {
             className="w-4 h-4 cursor-pointer accent-primary text-white"
           />
         )
-      )
     },
     {
       label: "Payment Status",
       render: (order) => {
-        if (order.payment.paymentMethod?.toLowerCase() === 'cod') {
+        if (order.payment.paymentMethod?.toLowerCase() === "cod") {
           return <span className="text-gray-500 text-sm">N/A</span>;
         }
-        
+
         const selected = order.payment?.paymentStatus?.toLowerCase();
         return (
           <select
             value={selected}
             onChange={(e) => handlePaymentStatusChange(e, order)}
             className={`px-2 py-1 rounded-md outline-none text-sm ${
-              selected === "success" ? " text-green-800" :
-              selected === "pending" ? " text-yellow-800" :
-              " text-red-800"
+              selected === "success"
+                ? " text-green-800"
+                : selected === "pending"
+                ? " text-yellow-800"
+                : " text-red-800"
             }`}
           >
             <option value="success">Success</option>
@@ -271,13 +298,16 @@ const OrderTableForAdmin = () => {
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
-      <TableData<Order> 
-        columns={columns} 
-        data={currentOrders} 
+      <TableData<Order>
+        columns={columns}
+        data={currentOrders}
         className="max-h-[calc(100vh-200px)]"
       />
-    
-      <Pagination totalProducts={localOrders.length} productPerPage={itemsPerPage} />
+
+      <Pagination
+        totalProducts={localOrders.length}
+        productPerPage={itemsPerPage}
+      />
     </div>
   );
 };

@@ -18,7 +18,7 @@ const OrderPaymentInfo = ({ selectedRow }: { selectedRow: Order }) => {
           <p className="text-sm text-gray-500 font-bold">Payment Status</p>
           <p
             className={`text-sm ${
-              selectedRow.payment?.paymentStatus?.toLowerCase() === "success"
+              selectedRow.payment?.status?.toLowerCase() === "success"
                 ? "text-green-600"
                 : selectedRow.payment?.paymentStatus?.toLowerCase() === "failed"
                 ? "text-red-600"
