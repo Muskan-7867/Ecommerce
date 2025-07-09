@@ -1,3 +1,4 @@
+import { PaymentType } from "../pages/user/cart/components/CartSummary";
 import { Product } from "./Product";
 
 export interface ProductImage {
@@ -32,12 +33,12 @@ export interface Order {
   status: string;
   isPaid: boolean;
   deliveryCharges: number;
-
   payment: Payment;
   orderItems: OrderItem[];
   createdAt: string;
   updatedAt: string;
   deliveredAt: string;
-  paymentMethod: string;
+  paymentMethod: PaymentType;
 
 }
+

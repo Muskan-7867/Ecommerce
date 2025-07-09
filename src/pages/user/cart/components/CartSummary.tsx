@@ -9,7 +9,8 @@ import SummaryDetails from "./SummaryDetails";
 import useOrderHandler from "../../../../hooks/cartorder/useOrderHandler";
 import { AddressFormData } from "../../../../types/auth";
 
-export type PaymentType = "online_payment" | "cash_on_delivery";
+// In CartSummary.tsx
+export type PaymentType = "online_payment" | "cash_on_delivery" | "razorpay" | "Razorpay";
 
 interface CartSummaryProps {
   products: Product[];

@@ -53,7 +53,7 @@ const OrderTableForAdmin = () => {
           order.paymentMethod?.toLowerCase() ||
           order.payment?.paymentMethod?.toLowerCase();
 
-        if (paymentMethod === "online_payment") {
+        if (paymentMethod === "online_payment" || paymentMethod === "razorpay") {
           const paymentStatus =
             order.payment?.paymentStatus?.toLowerCase() ||
             order.payment?.status?.toLowerCase();
@@ -210,25 +210,30 @@ const OrderTableForAdmin = () => {
       label: "Total",
       render: (order) => `Rs ${order.totalPrice.toFixed(2)} /-`
     },
-    {
-      label: "Payment Method",
-      render: (order) => {
-        const method = order.paymentMethod || order.payment?.paymentMethod;
-        const isCOD =
-          method?.toLowerCase() === "cod" ||
-          method?.toLowerCase() === "cash_on_delivery";
+   // In your columns definition:
+{
+  label: "Payment Method",
+  render: (order) => {
+    const method = order.paymentMethod || order.payment?.paymentMethod;
+    const lowerMethod = method?.toLowerCase();
+    const isCOD =
+      lowerMethod === "cod" ||
+      lowerMethod === "cash_on_delivery";
+    const isRazorpay = lowerMethod === "razorpay";
 
-        return (
-          <span
-            className={`font-medium ${
-              isCOD ? "text-orange-600" : "text-blue-600"
-            }`}
-          >
-            {method?.toUpperCase()}
-          </span>
-        );
-      }
-    },
+    return (
+      <span
+        className={`font-medium ${
+          isCOD ? "text-orange-600" : 
+          isRazorpay ? "text-purple-600" : 
+          "text-blue-600"
+        }`}
+      >
+        {isRazorpay ? "RAZORPAY" : method?.toUpperCase()}
+      </span>
+    );
+  }
+},
     {
       label: "Status",
       render: (order) => (

@@ -22,12 +22,15 @@ const UserOrderTable = () => {
         ...item,
         orderStatus: order.status,
         isPaid: order.isPaid,
-        paymentMethod: order.paymentMethod
+        paymentMethod: order.paymentMethod 
       }))
     )
     ?.filter(
       (item) =>
-        (item.paymentMethod === "online_payment" && item.isPaid) ||
+        ((item.paymentMethod === "online_payment" ||
+          item.paymentMethod === "Razorpay" ||
+          item.paymentMethod === "razorpay") &&
+          item.isPaid) ||
         item.paymentMethod === "cash_on_delivery"
     );
 
@@ -122,10 +125,15 @@ const UserOrderTable = () => {
                   <td className="px-6 py-4">₹{item.price}</td>
                   <td className="px-6 py-4">₹{item.price * item.quantity}</td>
                   <td className="px-6 py-4">{item.orderStatus}</td>
+                  {/* // In the UserOrderTable component, update the payment method
+                  display logic: */}
                   <td className="px-6 py-4">
-                    {item.paymentMethod === "online" ? (
+                    {item.paymentMethod?.toLowerCase() === "online_payment" ||
+                    item.paymentMethod?.toLowerCase() === "razorpay" ? (
                       <span className="font-semibold text-green-600">
-                        Paid Online
+                        {item.paymentMethod === "razorpay"
+                          ? "Razorpay"
+                          : "Online Payment"}
                       </span>
                     ) : (
                       <span className="font-semibold text-blue-600">
