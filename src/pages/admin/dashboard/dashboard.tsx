@@ -14,8 +14,26 @@ const Dashboard: React.FC = () => {
   const { data: orders = [] } = useQuery(fetchOrdersQuery());
   const { data: users } = useQuery(fetchUsersQuery());
 
-  const totalOrders = orders.length;
-  const totalPayment = orders.reduce((sum: number, order: Order) => {
+  // Filter valid orders (paid online or COD)
+  const validOrders = orders.filter((order: Order) => {
+    const paymentMethod = 
+      order.paymentMethod?.toLowerCase() || 
+      order.payment?.paymentMethod?.toLowerCase();
+    
+    if (paymentMethod === "cod" || paymentMethod === "cash_on_delivery") {
+      return true; // Count all COD orders
+    }
+    
+    // For online payments, check if payment was successful
+    const paymentStatus = 
+      order.payment?.paymentStatus?.toLowerCase() || 
+      order.payment?.status?.toLowerCase();
+    
+    return paymentStatus === "success" || order.isPaid;
+  });
+
+  const totalOrders = validOrders.length;
+  const totalPayment = validOrders.reduce((sum: number, order: Order) => {
     return sum + (order.totalPrice || 0);
   }, 0);
 
@@ -24,21 +42,18 @@ const Dashboard: React.FC = () => {
       title: "Total Orders",
       value: `${totalOrders}`,
       subtitle: "This Month",
-
       isPositive: false
     },
     {
       title: "Total Amount (In Rupees)",
       value: `₹${totalPayment.toLocaleString("en-IN")}/-`,
       subtitle: "This Month",
-
       isPositive: true
     },
     {
       title: "Total Users",
       value: `${users?.length}`,
       subtitle: "",
-
       isPositive: false
     }
   ];
@@ -51,10 +66,10 @@ const Dashboard: React.FC = () => {
     scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
   };
 
-  const monthlySummary = getMonthlySummary(orders, users || []);
+  const monthlySummary = getMonthlySummary(validOrders, users || []);
+  
   return (
     <div className="min-h-screen mt-16 border border-gray-100 py-2 pl-8">
-   
       {/* Insights Section */}
       <div className="relative">
         <div
