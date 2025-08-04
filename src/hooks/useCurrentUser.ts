@@ -19,6 +19,10 @@ const useCurrentUser = () => {
     setIsLoggined(!!user); 
   };
 
+    const refetchCurrentUser = async () => {
+    await fetchUser();
+  };
+
   const fetchUser = async () => {
     setLoading(true);
     try {
@@ -63,7 +67,8 @@ const useCurrentUser = () => {
     fetchUser,
     allocateCurrentUser,
     reFetch,
-    loading
+    loading,
+    refetchCurrentUser,
   };
 };
 

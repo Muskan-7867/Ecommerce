@@ -3,26 +3,59 @@ import useCurrentUser from "../../../../hooks/useCurrentUser";
 import { useQueries } from "@tanstack/react-query";
 import { getProductByIdQuery } from "../../../../services/queries";
 import Pagination from "./OrderPagination";
+import { toast } from "react-toastify";
+import { cancelOrder } from "../../../../services/fetchers";
 
 const UserOrderTable = () => {
-  const { currentUserFromStore } = useCurrentUser();
+  const { currentUserFromStore, refetchCurrentUser, allocateCurrentUser } =
+    useCurrentUser();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Flatten all order items from all orders and filter:
-  // - Online payment orders that are paid
-  // - COD orders (regardless of payment status)
+  const handleCancelOrder = async (orderId: string | undefined) => {
+    if (isCancelling) return;
+
+    setIsCancelling(true);
+    try {
+      const result = await cancelOrder(orderId);
+
+      if (result.success) {
+        toast.success("Order cancelled successfully");
+        if (currentUserFromStore?.order) {
+          const updatedOrders = currentUserFromStore.order.map((order) =>
+            order._id === orderId ? { ...order, status: "cancelled" } : order
+          );
+
+          allocateCurrentUser({
+            ...currentUserFromStore,
+            order: updatedOrders
+          });
+        }
+
+        await refetchCurrentUser();
+      } else {
+        toast.error(result.message || "Failed to cancel order");
+      }
+    } catch {
+      toast.error("Unexpected error occurred while cancelling order.");
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
   const allOrderItems = currentUserFromStore?.order
     ?.flatMap((order) =>
       order.orderItems.map((item) => ({
         ...item,
+        orderId: order._id, 
         orderStatus: order.status,
         isPaid: order.isPaid,
-        paymentMethod: order.paymentMethod 
+        paymentMethod: order.paymentMethod
       }))
     )
     ?.filter(
@@ -100,11 +133,18 @@ const UserOrderTable = () => {
               <th className="px-6 py-3 text-left text-sm font-medium">
                 Is Paid
               </th>
+              <th className="px-6 py-3 text-left text-sm font-medium">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
             {currentItems.map((item, index) => {
               const product = productMap.get(item.product);
+              const canCancel = ["pending", "processing"].includes(
+                item.orderStatus
+              );
+
               return (
                 <tr key={index} className="border-t">
                   <td className="px-6 py-4">
@@ -125,8 +165,6 @@ const UserOrderTable = () => {
                   <td className="px-6 py-4">₹{item.price}</td>
                   <td className="px-6 py-4">₹{item.price * item.quantity}</td>
                   <td className="px-6 py-4">{item.orderStatus}</td>
-                  {/* // In the UserOrderTable component, update the payment method
-                  display logic: */}
                   <td className="px-6 py-4">
                     {item.paymentMethod?.toLowerCase() === "online_payment" ||
                     item.paymentMethod?.toLowerCase() === "razorpay" ? (
@@ -148,6 +186,23 @@ const UserOrderTable = () => {
                       <span className="text-red-600 font-semibold">
                         Not Paid
                       </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {canCancel ? (
+                      <button
+                        onClick={() => handleCancelOrder(item.orderId)}
+                        disabled={isCancelling}
+                        className={`px-3 py-1 rounded text-white ${
+                          isCancelling
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-red-500 hover:bg-red-600"
+                        }`}
+                      >
+                        {isCancelling ? "Cancelling..." : "Cancel"}
+                      </button>
+                    ) : (
+                      <span className="text-gray-500">Not cancellable</span>
                     )}
                   </td>
                 </tr>
