@@ -368,6 +368,30 @@ export const deleteCategory = async (id: string) => {
   return res.json();
 };
 
+export const cancelOrder = async (orderId: string | undefined): Promise<{
+  success: boolean;
+  message?: string;
+}> => {
+  if (!orderId) {
+    return {
+      success: false,
+      message: "Order ID is required",
+    };
+  }
+
+  try {
+    const response = await axios.post(`${BASE_URL}/api/v1/order/cancel`, {
+      orderId,
+    });
+    return response.data;
+  } catch  {
+    console.error("Error cancelling order:");
+    return {
+      success: false,
+      
+    };
+  }
+};
 
 
 export {
