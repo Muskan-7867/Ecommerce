@@ -74,6 +74,7 @@ export interface payment {
 }
 
 export interface OrderData {
+  _id?: string;
   quantity: number;
   totalQuantity: number;
   totalPrice: number;
