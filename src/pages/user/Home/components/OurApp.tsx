@@ -1,8 +1,10 @@
 import React from "react";
+
 import MobileApp from "./MobileApp";
 import ScreenHandler from "../../../../components/wrappers/ScreenHandler";
-// import AppstoreButton from "../../../../../public/assets/appstore.png";
 import PlaystoreButton from "../../../../../public/assets/googleplay.png";
+import { Link } from "react-router-dom";
+
 
 const OurApp: React.FC = () => {
   return (
@@ -21,12 +23,19 @@ const OurApp: React.FC = () => {
               and boom—instant savings! 🎉
             </p>
             <div className="flex gap-2 justify-center">
-              {/* <img className="sm:h-12 h-10" src={AppstoreButton} alt="appstoreButton" /> */}
-              <img
-                className="sm:h-12 h-10"
-                src={PlaystoreButton}
-                alt="playstoreButton"
-              />
+              {/* Play Store Button */}
+              <Link
+                to="https://play.google.com/store/apps/details?id=com.omtel.omeg_bazaar"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="sm:h-12 h-10 w-auto"
+                  src={PlaystoreButton}
+                  alt="Download on Playstore"
+                />
+              </Link>
+
             </div>
           </div>
           <div className="col-span-12 md:col-span-6 order-1 md:order-2 h-full">
