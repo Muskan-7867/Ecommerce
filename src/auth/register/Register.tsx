@@ -3,18 +3,18 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 import LoginAnimation from "../../../public/animations/animation.json";
 import { useEffect, useState } from "react";
 import { registerUser } from "../../services/authServices";
-import SuccessMessage from "../../components/common/SuccessMessage";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import PasswordHint from "../login/PasswordHint";
 
 const Register = () => {
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [password, setPassword] = useState("");
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  console.log(userId, registrationSuccess)
   const navigate = useNavigate();
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,6 @@ const Register = () => {
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
 
-    // Frontend validation matching backend rules
     if (password !== confirmPassword) {
       setPasswordError("Passwords don't match");
       setIsLoading(false);
@@ -60,17 +59,13 @@ const Register = () => {
     const userData = { username, email, password };
     try {
       const data = await registerUser(userData);
-      if (data) {
-        const { token } = data;
-        Cookies.set("token", token);
+      if (data && data.userId) {
+        setUserId(data.userId);
+        setRegistrationSuccess(true);
+        navigate("/verifyuser", { state: { userId: data.userId, email } });
       }
-      setSuccessMessage("User registered successfully! Redirecting...");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    } catch  {
-      console.error("Registration error:");
-     
+    } catch {
+      setError("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -81,11 +76,10 @@ const Register = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex justify-center items-center ">
+    <div className="min-h-screen flex justify-center items-center">
       <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white flex flex-col md:flex-row rounded-lg overflow-hidden">
-        {/* Success message */}
-        {successMessage && <SuccessMessage successMessage={successMessage} />}
 
+        
         {/* Left side - Animation */}
         <div className="hidden md:block md:w-1/2 bg-red-50 p-8 lg:flex items-center justify-center">
           <div className="text-black text-center">
@@ -106,7 +100,6 @@ const Register = () => {
           </div>
           <h3 className="text-primary text-2xl font-semibold mb-8">WELCOME</h3>
 
-          {/* Error messages */}
           {error && (
             <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
               {error}
@@ -125,6 +118,7 @@ const Register = () => {
                 placeholder="Username"
                 className="w-full pl-10 pr-4 py-2 border-b-2 border-primary focus:outline-none focus:border-primary"
                 required
+                minLength={3}
               />
             </div>
 
@@ -166,7 +160,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Password requirements hint - only shows when relevant */}
             {(showPasswordHint || passwordError) && (
               <PasswordHint password={password} errorMessage={passwordError} />
             )}
@@ -191,12 +184,10 @@ const Register = () => {
               />
             </div>
 
-            {/* Password error message */}
             {passwordError && (
               <div className="text-red-500 text-sm -mt-2">{passwordError}</div>
             )}
 
-            {/* Submit button */}
             <button
               type="submit"
               disabled={isLoading}
@@ -206,7 +197,6 @@ const Register = () => {
             </button>
           </form>
 
-          {/* Login link */}
           <div className="mt-8 text-center">
             <p className="text-gray-600">
               Already have an account?{" "}

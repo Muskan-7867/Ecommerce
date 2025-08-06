@@ -19,6 +19,7 @@ import CheckOut from "../pages/user/order/components/CheckOut";
 import UserOrderTable from "../pages/user/profile/components/UserOrderTable";
 import ResetPassword from "../auth/login/ResetPassword";
 import PrivacyPolicyPage from "../pages/user/privacypolicy/Privacy";
+import VerifyEmailScreen from "../auth/verify/VerifyUser";
 
 const Router = () => {
   return (
@@ -30,7 +31,7 @@ const Router = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/products" element={<ProductPageLayout />} />
- 
+ <Route path="/verifyuser" element={<VerifyEmailScreen/>} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/products/:id" element={<ProductDisplay />} />
           <Route path="/addressform" element={<AddressForm />} />

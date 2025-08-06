@@ -3,9 +3,34 @@ import Cookies from "js-cookie";
 import {
   LoginData,
   LoginResponse,
-  RegisterData,
-  RegisterResponse
+
 } from "../types/auth";
+
+interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+}
+
+interface RegisterResponse {
+  userId: string;
+  message: string;
+}
+
+interface VerifyOtpData {
+  userId: string;
+  otp: string;
+}
+
+interface VerifyOtpResponse {
+  success: boolean;
+  token?: string;
+  message?: string;
+}
+
+interface ResendOtpData {
+  userId: string;
+}
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const token = Cookies.get("authToken")
@@ -29,20 +54,51 @@ const loginUser = async (userData: LoginData): Promise<LoginResponse> => {
   }
 };
 
-// Register
-const registerUser = async (
+
+ const registerUser = async (
   userData: RegisterData
 ): Promise<RegisterResponse> => {
   try {
     const response = await axios.post<RegisterResponse>(
-      `${BASE_URL}/api/v1/user/register`,
-      userData,
-      
+      `${BASE_URL}/api/v1/user/registerapp`,
+      userData
     );
-    console.log("from auth", response.data)
     return response.data;
   } catch {
     const message = "Registration failed";
+
+    throw new Error(message);
+  }
+};
+
+ const verifyOtp = async (
+  data: VerifyOtpData
+): Promise<VerifyOtpResponse> => {
+  try {
+    const response = await axios.post<VerifyOtpResponse>(
+      `${BASE_URL}/api/v1/user/verify`,
+      data
+    );
+    return response.data;
+  } catch  {
+    const message = "Verification failed";
+   
+    throw new Error(message);
+  }
+};
+
+ const resendOtp = async (
+  data: ResendOtpData
+): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/user/resendotp`,
+      data
+    );
+    return response.data;
+  } catch  {
+    const message = "Failed to resend OTP";
+    
     throw new Error(message);
   }
 };
@@ -87,4 +143,4 @@ export const resetPassword = async (token: string | undefined, newPassword: stri
   }
 };
 
-export { loginUser, registerUser };
+export { loginUser, registerUser , verifyOtp, resendOtp};
