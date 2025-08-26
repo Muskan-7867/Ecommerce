@@ -1,6 +1,6 @@
 import { IoIosMail } from "react-icons/io";
 import { MdLocalPhone, MdLocationOn } from "react-icons/md";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -26,18 +26,14 @@ const Footer = () => {
                 from.
               </p>
               <div className="flex space-x-4">
-                <Link to="#" className="text-white hover:text-black transition">
+                <Link to="#" className="text-white hover:text-black transition">  
                   <FaFacebook size={20} />
                 </Link>
-                <Link to="#" className="text-white hover:text-black transition">
-                  <FaTwitter size={20} />
-                </Link>
-                <Link to="#" className="text-white hover:text-black transition">
+              
+                <Link to="https://www.instagram.com/omegbazaar?igsh=MWdhNjc4djJ3aDdxYg==" className="text-white hover:text-black transition">
                   <FaInstagram size={20} />
                 </Link>
-                <Link to="#" className="text-white hover:text-black transition">
-                  <FaLinkedin size={20} />
-                </Link>
+             
               </div>
             </div>
 
@@ -86,7 +82,7 @@ const Footer = () => {
                     to="tel:+14578986546"
                     className="text-white hover:text-black transition text-sm"
                   >
-                    09872144408
+                    9501755756
                   </Link>
                 </div>
                 <div className="flex items-center space-x-3">

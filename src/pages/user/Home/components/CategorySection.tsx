@@ -53,7 +53,7 @@ const CategorySection = () => {
     scrollContainerRef.current?.scrollBy({ left: 300, behavior: "smooth" });
 
   return (
-    <div className="h-auto bg-white p-6 relative overflow-hidden">
+    <div className="h-auto bg-white px-6 relative overflow-hidden">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ const CategorySection = () => {
 
       <div
         ref={scrollContainerRef}
-        className="flex gap-8 overflow-x-auto pb-8 scrollbar-hide relative"
+        className="flex gap-8 overflow-x-auto  scrollbar-hide relative"
       >
         {isPending && <p>Loading Categories.......</p>}
 
@@ -91,7 +91,7 @@ const CategorySection = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="cursor-pointer flex flex-col items-center gap-3  flex-shrink-0 w-36"
+            className="cursor-pointer flex flex-col items-center gap-2  "
           >
             <div className="lg:w-32 lg:h-32 w-28 h-28 rounded-full shadow-md border-2 border-white hover:border-primary transition-all duration-500 group overflow-hidden relative">
               <div className="absolute -top-12 w-12 h-[16rem] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-16 -rotate-45 group-hover:translate-x-[11rem] transition-all duration-500" />

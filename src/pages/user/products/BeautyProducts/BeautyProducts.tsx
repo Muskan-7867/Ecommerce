@@ -92,7 +92,7 @@ const BeautyProducts = () => {
             style={{ scrollbarWidth: "none" }}
           >
             {products?.map((product) => (
-              <div key={product._id} className="flex-shrink-0 w-[140px] lg:w-[300px]">
+              <div key={product._id} className="flex-shrink-0 w-[200px] lg:w-[300px]">
                 <ProductCard product={product} />
               </div>
             ))}

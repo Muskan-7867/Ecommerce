@@ -39,7 +39,7 @@ const AboutUs = () => {
             Discover why thousands of customers trust Omeg Bazaar for their shopping needs.
           </p>
           <motion.button
-            className="px-8 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary-dark transition-colors shadow-lg"
+            className="px-8 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary-dark transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleClick}

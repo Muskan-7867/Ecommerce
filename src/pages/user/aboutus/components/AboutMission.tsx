@@ -22,7 +22,7 @@ const AboutMission = () => {
             Welcome to <strong>omegbazaar.com</strong> – your ultimate destination for discovering unique and trending products!
           </p>
           <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-3 md:mb-4">
-            At <strong>omeg.in</strong>, we're passionate about curating a collection of one-of-a-kind items you won't find anywhere else.
+            At <strong>omegbazaar.com</strong>, we're passionate about curating a collection of one-of-a-kind items you won't find anywhere else.
           </p>
           <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-3 md:mb-4">
             Our goal is to offer a shopping experience that blends convenience, affordability, and the excitement of finding something truly special.
@@ -34,7 +34,7 @@ const AboutMission = () => {
             <li>• Friendly, responsive customer support</li>
           </ul>
           <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-3 md:mb-4">
-            Whether you're hunting for the perfect gift or simply treating yourself, <strong>omeg.in</strong> makes it effortless and fun.
+            Whether you're hunting for the perfect gift or simply treating yourself, <strong>omegbazaar.com</strong> makes it effortless and fun.
           </p>
           <p className="text-gray-600 text-sm md:text-base leading-relaxed">
             Join our community of savvy shoppers and elevate your lifestyle with Omeg Bazaar.

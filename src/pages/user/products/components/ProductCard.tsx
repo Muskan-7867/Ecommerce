@@ -32,9 +32,9 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <div
       onClick={() => navigate(`/products/${product._id}`)}
-      className="bg-white p-2  rounded-md flex flex-col w-full  max-w-[26rem] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[18rem] lg:max-w-[18rem] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
+      className="bg-white p-4 rounded-md flex flex-col w-full  max-w-[26rem] xs:max-w-[180px] sm:max-w-[200px] md:max-w-[18rem] lg:max-w-[18rem] hover:shadow-sm transition-shadow duration-300 cursor-pointer gap-1 sm:gap-2"
     >
-      {/* Image Container - Fixed aspect ratio */}
+  
       {/* Image Container */}
       <div className="relative pb-[100%] w-full overflow-hidden rounded-sm group">
         {/* Main Image (applies hover effect to ALL products) */}
@@ -75,7 +75,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <div className="text-amber-600 font-bold text-xs xs:text-sm sm:text-base">
           <div className="flex items-center">
             <LiaRupeeSignSolid className="font-semibold text-sm xs:text-base" />
-            <p>{product.price}</p>
+            <p>{product.price}/-</p>
           </div>
         </div>
         <button

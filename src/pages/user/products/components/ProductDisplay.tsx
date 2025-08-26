@@ -93,7 +93,7 @@ const ProductDisplay = () => {
   }
 
   return (
-    <div className="min-h-screen w-full py-12 px-4 mt-28">
+    <div className="min-h-screen w-full mt-28">
       <div className="max-w-6xl mx-auto  rounded-xl overflow-hidden">
         <div className="md:flex">
           <ProductImage product={product} />
@@ -102,12 +102,12 @@ const ProductDisplay = () => {
         </div>
       </div>
 
-      <div className="max-w-full mx-auto mt-16 p-4 relative">
-        <div className="flex justify-between items-center mb-6 px-4">
-          <h1 className="text-2xl font-bold text-primary">Related Products</h1>
+      <div className="w-full mx-auto mt-12 p-4 relative">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-primary text-center">Related Products</h1>
 
           {/* Scroll buttons - visible only on mobile */}
-          <div className="lg:hidden flex gap-4">
+          <div className="lg:hidden flex  ">
             <button
               onClick={scrollLeft}
               className="rounded-full p-1 hover:bg-gray-100 transition-colors"
@@ -141,7 +141,7 @@ const ProductDisplay = () => {
         </div>
 
         {/* Desktop - Grid Layout */}
-        <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {relatedProducts.map((prod) => (
             <ProductCard product={prod} key={prod._id} />
           ))}

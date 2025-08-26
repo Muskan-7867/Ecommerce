@@ -37,7 +37,7 @@ const HeroHeading = ({
           <motion.span
             className="inline-block cursor-pointer"
             whileHover={{
-              textShadow: "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF8DA1",
+              
               scale: 1.1
             }}
             transition={{ duration: 0.3 }}
@@ -52,7 +52,7 @@ const HeroHeading = ({
           <motion.span
             className="inline-block cursor-pointer"
             whileHover={{
-              textShadow: "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF8DA1",
+              
               scale: 1.1
             }}
             transition={{ duration: 0.3 }}
